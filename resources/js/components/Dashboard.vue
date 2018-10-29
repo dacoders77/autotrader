@@ -17,7 +17,8 @@
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover">
-                            <tbody><tr>
+                            <tbody>
+                            <tr>
                                 <th>Created</th>
                                 <th>Symbol</th>
                                 <th>%</th>
@@ -31,8 +32,33 @@
                                 <th>Cls price</th>
                                 <th>Action</th>
                                 <th>Action</th>
-
                             </tr>
+                            <tr>
+                                <td>10/29/18 5:46 AM</td>
+                                <td>BTCUSD</td>
+                                <td>38</td>
+                                <td>10</td>
+                                <td>Buy</td>
+                                <td>7692.3412</td>
+                                <td>Filled</td>
+                                <td>10/29/18 5:47 AM</td>
+                                <td>7562.2111</td>
+                                <td>10/29/18 5:47 AM</td>
+                                <td>7562.2111</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-success">Open</button>
+                                        <button class="btn btn-danger">Close</button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-success"><i class="nav-icon fas fa-edit white"></i></button>
+                                        <button class="btn btn-danger"><i class="nav-icon fas fa-trash white"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+
                             <tr>
                                 <td>10/29/18 5:46 AM</td>
                                 <td>BTCUSD</td>
@@ -77,33 +103,34 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <form @submit.prevent="createUser">
+                        <div class="modal-body">
                         <div class="form-group">
                             <input v-model="form.name" type="text" name="name"
-                                   placeholder="name:"
+                                   placeholder="Symbol"
                                    class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
                             <has-error :form="form" field="name"></has-error>
                         </div>
                         <div class="form-group">
                             <input v-model="form.email" type="email" name="email"
-                                   placeholder="Email address:"
+                                   placeholder="%"
                                    class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
                             <has-error :form="form" field="email"></has-error>
                         </div>
                         <div class="form-group">
                             <select name="type" v-model="form.type" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
-                                <option value="">Select User Role</option>
-                                <option value="admin">Admin</option>
-                                <option value="user">Standard User</option>
-                                <option value="author">Author</option>
+                                <option value="">Side(direction)</option>
+                                <option value="admin">Long</option>
+                                <option value="user">Short</option>
                             </select>
                             <has-error :form="form" field="type"></has-error>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Add</button>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -126,6 +153,11 @@
               })
 
           }
+        },
+        methods:{
+            createUser(){
+                this.form.post('api/user');
+            }
         },
         mounted() {
             console.log('Component mounted.')
