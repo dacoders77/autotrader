@@ -18,3 +18,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/**
+ * For vue router routes. Vue routes must have the opportunity to be reloaded
+ * @see https://www.youtube.com/watch?v=z6yH6iB76nc&list=PLB4AdipoHpxaHDLIaMdtro1eXnQtl_UvE&index=7
+ */
+Route::get('{zzz}', "HomeController@index")->where( 'path', '([A-z\d-\/_.]+)?' );
+
+// Delete
+Route::get('user/{name}', function ($name) {
+    //return $name;
+    echo 22;
+});

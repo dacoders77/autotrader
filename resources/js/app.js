@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -8,6 +7,21 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import VueRouter from 'vue-router';
+Vue.use(VueRouter)
+
+// Define vue routs
+// https://router.vuejs.org/guide/#javascript
+let routes = [
+    { path: '/dashboard', component: require('./components/Dashboard.vue') },
+    { path: '/profile', component: require('./components/Profile.vue') }
+]
+
+// Link a new instance of vue router
+const router = new VueRouter({
+    mode: 'history',
+    routes
+})
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -18,5 +32,6 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    router
 });

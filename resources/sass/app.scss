@@ -10,6 +10,7 @@ $fa-font-path: "../webfonts";
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 // Font awesome
+// Disable it. Start using cdn version instead. NPM version does not work
 @import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
 @import "~@fortawesome/fontawesome-free/scss/solid.scss";
 @import "~@fortawesome/fontawesome-free/scss/brands.scss";
@@ -21,3 +22,8 @@ $fa-font-path: "../webfonts";
 
 // Admin LTE
 @import "~admin-lte/dist/css/adminlte.css";
+
+.router-link-exact-active{
+  background-color: #007bff;
+  color: #fff !important;
+}
