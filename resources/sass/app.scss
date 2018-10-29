@@ -11,9 +11,9 @@ $fa-font-path: "../webfonts";
 @import '~bootstrap/scss/bootstrap';
 // Font awesome
 // Disable it. Start using cdn version instead. NPM version does not work
-@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
-@import "~@fortawesome/fontawesome-free/scss/solid.scss";
-@import "~@fortawesome/fontawesome-free/scss/brands.scss";
+//@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+//@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+//@import "~@fortawesome/fontawesome-free/scss/brands.scss";
 
 .navbar-laravel {
   background-color: #fff;
