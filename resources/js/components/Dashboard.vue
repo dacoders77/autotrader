@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row mt-3">
-            <div class="col-md-24">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Signals table</h3>
@@ -9,7 +9,7 @@
                         <div class="card-tools">
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newSignal">
-                                New signal
+                                <i class="fas fa-plus-square"></i> New signal
                             </button>
 
                         </div>
@@ -26,10 +26,10 @@
                                 <th>Side</th>
                                 <th>Quote</th>
                                 <th>Status</th>
-                                <th>Opn date</th>
-                                <th>Opn price</th>
-                                <th>Cls date</th>
-                                <th>Cls price</th>
+                                <th>Open</th>
+                                <th>Price</th>
+                                <th>Close</th>
+                                <th>Price</th>
                                 <th>Action</th>
                                 <th>Action</th>
                             </tr>
@@ -38,13 +38,13 @@
                                 <td>BTCUSD</td>
                                 <td>38</td>
                                 <td>10</td>
-                                <td>Buy</td>
-                                <td>7692.3412</td>
+                                <td class="green">Buy</td>
+                                <td>7692.34</td>
                                 <td>Filled</td>
                                 <td>10/29/18 5:47 AM</td>
-                                <td>7562.2111</td>
+                                <td>7562.21</td>
                                 <td>10/29/18 5:47 AM</td>
-                                <td>7562.2111</td>
+                                <td>7562.21</td>
                                 <td>
                                     <div class="btn-group">
                                         <button class="btn btn-success">Open</button>
@@ -64,13 +64,13 @@
                                 <td>BTCUSD</td>
                                 <td>38</td>
                                 <td>10</td>
-                                <td>Buy</td>
-                                <td>7692.3412</td>
+                                <td class="red">Sell</td>
+                                <td>7692.34 </td>
                                 <td>Filled</td>
                                 <td>10/29/18 5:47 AM</td>
-                                <td>7562.2111</td>
+                                <td>7562.21</td>
                                 <td>10/29/18 5:47 AM</td>
-                                <td>7562.2111</td>
+                                <td>7562.21</td>
                                 <td>
                                     <div class="btn-group">
                                         <button class="btn btn-success">Open</button>

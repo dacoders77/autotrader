@@ -51361,7 +51361,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row mt-3" }, [
-      _c("div", { staticClass: "col-md-24" }, [
+      _c("div", { staticClass: "col-12" }, [
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header" }, [
             _c("h3", { staticClass: "card-title" }, [_vm._v("Signals table")]),
@@ -51378,9 +51378,8 @@ var staticRenderFns = [
                   }
                 },
                 [
-                  _vm._v(
-                    "\n                            New signal\n                        "
-                  )
+                  _c("i", { staticClass: "fas fa-plus-square" }),
+                  _vm._v(" New signal\n                        ")
                 ]
               )
             ])
@@ -51404,13 +51403,13 @@ var staticRenderFns = [
                   _vm._v(" "),
                   _c("th", [_vm._v("Status")]),
                   _vm._v(" "),
-                  _c("th", [_vm._v("Opn date")]),
+                  _c("th", [_vm._v("Open")]),
                   _vm._v(" "),
-                  _c("th", [_vm._v("Opn price")]),
+                  _c("th", [_vm._v("Price")]),
                   _vm._v(" "),
-                  _c("th", [_vm._v("Cls date")]),
+                  _c("th", [_vm._v("Close")]),
                   _vm._v(" "),
-                  _c("th", [_vm._v("Cls price")]),
+                  _c("th", [_vm._v("Price")]),
                   _vm._v(" "),
                   _c("th", [_vm._v("Action")]),
                   _vm._v(" "),
@@ -51426,19 +51425,19 @@ var staticRenderFns = [
                   _vm._v(" "),
                   _c("td", [_vm._v("10")]),
                   _vm._v(" "),
-                  _c("td", [_vm._v("Buy")]),
+                  _c("td", { staticClass: "green" }, [_vm._v("Buy")]),
                   _vm._v(" "),
-                  _c("td", [_vm._v("7692.3412")]),
+                  _c("td", [_vm._v("7692.34")]),
                   _vm._v(" "),
                   _c("td", [_vm._v("Filled")]),
                   _vm._v(" "),
                   _c("td", [_vm._v("10/29/18 5:47 AM")]),
                   _vm._v(" "),
-                  _c("td", [_vm._v("7562.2111")]),
+                  _c("td", [_vm._v("7562.21")]),
                   _vm._v(" "),
                   _c("td", [_vm._v("10/29/18 5:47 AM")]),
                   _vm._v(" "),
-                  _c("td", [_vm._v("7562.2111")]),
+                  _c("td", [_vm._v("7562.21")]),
                   _vm._v(" "),
                   _c("td", [
                     _c("div", { staticClass: "btn-group" }, [
@@ -51474,19 +51473,19 @@ var staticRenderFns = [
                   _vm._v(" "),
                   _c("td", [_vm._v("10")]),
                   _vm._v(" "),
-                  _c("td", [_vm._v("Buy")]),
+                  _c("td", { staticClass: "red" }, [_vm._v("Sell")]),
                   _vm._v(" "),
-                  _c("td", [_vm._v("7692.3412")]),
+                  _c("td", [_vm._v("7692.34 ")]),
                   _vm._v(" "),
                   _c("td", [_vm._v("Filled")]),
                   _vm._v(" "),
                   _c("td", [_vm._v("10/29/18 5:47 AM")]),
                   _vm._v(" "),
-                  _c("td", [_vm._v("7562.2111")]),
+                  _c("td", [_vm._v("7562.21")]),
                   _vm._v(" "),
                   _c("td", [_vm._v("10/29/18 5:47 AM")]),
                   _vm._v(" "),
-                  _c("td", [_vm._v("7562.2111")]),
+                  _c("td", [_vm._v("7562.21")]),
                   _vm._v(" "),
                   _c("td", [
                     _c("div", { staticClass: "btn-group" }, [
