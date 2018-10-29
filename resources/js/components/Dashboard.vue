@@ -1,82 +1,136 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card card-default">
-                    <div class="card-header">Dashboard Component</div>
+        <div class="row mt-3">
+            <div class="col-md-24">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Signals table</h3>
 
-                    <div class="card-body">
-                        I'm an example component.
+                        <div class="card-tools">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newSignal">
+                                New signal
+                            </button>
+
+                        </div>
                     </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover">
+                            <tbody><tr>
+                                <th>Created</th>
+                                <th>Symbol</th>
+                                <th>%</th>
+                                <th>Lvrg</th>
+                                <th>Side</th>
+                                <th>Quote</th>
+                                <th>Status</th>
+                                <th>Opn date</th>
+                                <th>Opn price</th>
+                                <th>Cls date</th>
+                                <th>Cls price</th>
+                                <th>Action</th>
+                                <th>Action</th>
 
-                    <div class="card-body">
-                        <table class="table table-bordered">
+                            </tr>
                             <tr>
-                                <th style="width: 10px">#</th>
-                                <th>Task</th>
-                                <th>Progress</th>
-                                <th style="width: 40px">Label</th>
-                                <th style="width: 40px">Label</th>
-                                <th style="width: 40px">Label</th>
-                                <th style="width: 40px">Label</th>
-                                <th style="width: 40px">Label</th>
-                                <th style="width: 40px">Label</th>
+                                <td>10/29/18 5:46 AM</td>
+                                <td>BTCUSD</td>
+                                <td>38</td>
+                                <td>10</td>
+                                <td>Buy</td>
+                                <td>7692.3412</td>
+                                <td>Filled</td>
+                                <td>10/29/18 5:47 AM</td>
+                                <td>7562.2111</td>
+                                <td>10/29/18 5:47 AM</td>
+                                <td>7562.2111</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-success">Open</button>
+                                        <button class="btn btn-danger">Close</button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-success"><i class="nav-icon fas fa-edit white"></i></button>
+                                        <button class="btn btn-danger"><i class="nav-icon fas fa-trash white"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
 
-
-                            </tr>
-                            <tr>
-                                <td>1.</td>
-                                <td>Update software</td>
-                                <td>
-                                    <div class="progress progress-xs">
-                                        <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge bg-danger">55%</span></td>
-                            </tr>
-                            <tr>
-                                <td>2.</td>
-                                <td>Clean database</td>
-                                <td>
-                                    <div class="progress progress-xs">
-                                        <div class="progress-bar bg-warning" style="width: 70%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge bg-warning">70%</span></td>
-                            </tr>
-                            <tr>
-                                <td>3.</td>
-                                <td>Cron job running</td>
-                                <td>
-                                    <div class="progress progress-xs progress-striped active">
-                                        <div class="progress-bar bg-primary" style="width: 30%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge bg-primary">30%</span></td>
-                            </tr>
-                            <tr>
-                                <td>4.</td>
-                                <td>Fix and squish bugs</td>
-                                <td>
-                                    <div class="progress progress-xs progress-striped active">
-                                        <div class="progress-bar bg-success" style="width: 90%"></div>
-                                    </div>
-                                </td>
-                                <td><span class="badge bg-success">90%</span></td>
-                            </tr>
-                        </table>
+                            </tbody></table>
                     </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="newSignal" tabindex="-1" role="dialog" aria-labelledby="newSignalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newSignalLabel">Add new signal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input v-model="form.name" type="text" name="name"
+                                   placeholder="name:"
+                                   class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
+                            <has-error :form="form" field="name"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <input v-model="form.email" type="email" name="email"
+                                   placeholder="Email address:"
+                                   class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                            <has-error :form="form" field="email"></has-error>
+                        </div>
+                        <div class="form-group">
+                            <select name="type" v-model="form.type" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
+                                <option value="">Select User Role</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">Standard User</option>
+                                <option value="author">Author</option>
+                            </select>
+                            <has-error :form="form" field="type"></has-error>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Add</button>
+                    </div>
                 </div>
             </div>
         </div>
+
+
     </div>
 </template>
 
 <script>
     export default {
+        data(){
+          return{
+              form: new Form({
+                  name: '',
+                  email: '',
+                  password: '',
+                  type: '',
+                  bio: '',
+                  photo: ''
+              })
+
+          }
+        },
         mounted() {
             console.log('Component mounted.')
         }
     }
 </script>
+
+

@@ -126,9 +126,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                     <li class="nav-item">
                         <router-link to="/dashboard" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <i class="nav-icon fas fa-tachometer-alt blue"></i> <!-- blue color is defuned in _variables.scss -->
                             <p>
-                                Dashboard
+                                Signals
                                 {{--<span class="right badge badge-danger">New</span> new red tag on the right--}}
                             </p>
                         </router-link>
@@ -137,7 +137,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                     <li class="nav-item has-treeview"> {{--<li class="nav-item has-treeview menu-open"> menu open on page startup--}}
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fa fa-cog"></i>
+                            <i class="nav-icon fa fa-cog green"></i>
                             <p>
                                 Management
                                 <i class="right fa fa-angle-left"></i>
@@ -147,13 +147,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="fa fa-circle-o nav-icon"></i>
-                                    <p>Active Page</p>
+                                    <p>Clients</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="fa fa-circle-o nav-icon"></i>
-                                    <p>Inactive Page</p>
+                                    <p>Logs</p>
                                 </a>
                             </li>
                         </ul>
@@ -161,7 +161,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                     <li class="nav-item">
                         <router-link to="/profile" class="nav-link">
-                            <i class="nav-icon fas fa-user"></i>
+                            <i class="nav-icon fas fa-user orange"></i>
                             <p>
                                 Profile
                             </p>
@@ -172,7 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <a class="nav-link" href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                            document.getElementById('logout-form').submit();">
-                            <i class="nav-icon fa fa-power-off"></i>
+                            <i class="nav-icon fa fa-power-off red"></i>
                             <p>
                                 {{ __('Logout') }}
                             </p>

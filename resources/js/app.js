@@ -7,10 +7,19 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+
+// Form validation
+// https://github.com/cretueusebiu/vform
+import { Form, HasError, AlertError } from 'vform';
+window.Form = Form;
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
+
+// Vue router
 import VueRouter from 'vue-router';
 Vue.use(VueRouter)
 
-// Define vue routs
+// Define routes for vue routing
 // https://router.vuejs.org/guide/#javascript
 let routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue') },
