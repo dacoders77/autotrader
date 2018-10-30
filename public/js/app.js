@@ -51134,6 +51134,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -51367,6 +51370,22 @@ var staticRenderFns = [
             _c("h3", { staticClass: "card-title" }, [_vm._v("Signals table")]),
             _vm._v(" "),
             _c("div", { staticClass: "card-tools" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success",
+                  attrs: {
+                    type: "button",
+                    "data-toggle": "modal",
+                    "data-target": "#newSignal"
+                  }
+                },
+                [
+                  _c("i", { staticClass: "fas fa-plus-square" }),
+                  _vm._v(" Update quotes\n                        ")
+                ]
+              ),
+              _vm._v(" "),
               _c(
                 "button",
                 {

@@ -9,6 +9,9 @@
                         <div class="card-tools">
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newSignal">
+                                <i class="fas fa-plus-square"></i> Update quotes
+                            </button>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newSignal">
                                 <i class="fas fa-plus-square"></i> New signal
                             </button>
 
