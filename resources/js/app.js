@@ -7,6 +7,19 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import moment from 'moment'; // Working with date formats
+
+// Sweet alert
+// https://sweetalert2.github.io/#download
+import swal from 'sweetalert2'
+window.swal = swal;
+const toast = swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+});
+window.toast = toast;
 
 // Form validation
 // https://github.com/cretueusebiu/vform
@@ -18,6 +31,24 @@ Vue.component(AlertError.name, AlertError)
 // Vue router
 import VueRouter from 'vue-router';
 Vue.use(VueRouter)
+
+// Progress bar. https://github.com/hilongjw/vue-progressbar
+import VueProgressBar from 'vue-progressbar';
+const options = {
+    color: '#bffaf3',
+    failedColor: '#874b4b',
+    thickness: '10px',
+    transition: {
+        speed: '0.2s',
+        opacity: '0.6s',
+        termination: 300
+    },
+    autoRevert: true,
+    location: 'top',
+    inverse: false
+}
+Vue.use(VueProgressBar, options)
+
 
 // Define routes for vue routing
 // https://router.vuejs.org/guide/#javascript
@@ -31,6 +62,22 @@ const router = new VueRouter({
     mode: 'history',
     routes
 })
+
+// Global function. Vue filter
+// Make text in capital letters
+// This function is accessable anywhere
+Vue.filter('upText', function(text){
+    return text.toUpperCase();
+});
+
+Vue.filter('myDate', function(created_at){
+    return moment(created_at).format('MMMM Do YYYY'); // MMMM Do YYYY, h:mm:ss a
+});
+
+// Global event components even listener objec
+window.Fire = new Vue();
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

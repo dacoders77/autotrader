@@ -12,7 +12,7 @@
                                 <i class="fas fa-plus-square"></i> Update quotes
                             </button>
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newSignal">
-                                <i class="fas fa-plus-square"></i> New signal
+                                <i class="fas fa-plus-square"></i> Create user
                             </button>
 
                         </div>
@@ -93,6 +93,30 @@
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
+
+
+                <!-- /.card-header TEST TABLE DELEE-->
+                <br><br>
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <th>Created</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                        </tr>
+                        <tr v-for="user in users"  :key="user.id" >
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.created_at | myDate}}</td> <!-- these functions stored in app.js -->
+                            <td>{{ user.name | upText }}</td>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        </tbody></table>
+                </div>
+                <!-- /.card-body -->
+
+
             </div>
         </div>
 
@@ -101,7 +125,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="newSignalLabel">Add new signal</h5>
+                        <h5 class="modal-title" id="newSignalLabel">Create new user</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -110,13 +134,13 @@
                         <div class="modal-body">
                         <div class="form-group">
                             <input v-model="form.name" type="text" name="name"
-                                   placeholder="Symbol"
+                                   placeholder="Name"
                                    class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
                             <has-error :form="form" field="name"></has-error>
                         </div>
                         <div class="form-group">
                             <input v-model="form.email" type="email" name="email"
-                                   placeholder="%"
+                                   placeholder="Email"
                                    class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
                             <has-error :form="form" field="email"></has-error>
                         </div>
@@ -131,7 +155,7 @@
                     </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Add</button>
+                            <button type="submit" class="btn btn-primary">Create user</button>
                         </div>
                     </form>
                 </div>
@@ -146,6 +170,7 @@
     export default {
         data(){
           return{
+              users: {},
               form: new Form({
                   name: '',
                   email: '',
@@ -158,12 +183,32 @@
           }
         },
         methods:{
+            loadUsers(){
+                axios.get('api/user').then(({data}) => (this.users = data.data));
+            },
             createUser(){
-                this.form.post('api/user');
+                this.$Progress.start(); // Progress bar
+                this.form.post('api/user'); // Post request to the controller
+                Fire.$emit('AfterCreate'); // Trigger an event of the global object which is declared in app.js
+
+                $('#newSignal').modal('hide'); // Modal hide
+
+                // Toast notification
+                toast({
+                    type: 'success',
+                    title: 'User created successfully'
+                });
+
+                this.$Progress.finish();
             }
         },
-        mounted() {
-            console.log('Component mounted.')
+        created() {
+            this.loadUsers();
+            //setInterval(() => this.loadUsers(), 3000); // Load users each 3 seconds
+            Fire.$on('AfterCreate', () => {
+                this.loadUsers();
+            });
+
         }
     }
 </script>
