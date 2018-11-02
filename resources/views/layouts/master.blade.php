@@ -134,7 +134,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <i class="nav-icon fas fa-tachometer-alt blue"></i> <!-- blue color is defuned in _variables.scss -->
                             <p>
                                 Signals
-                                {{--<span class="right badge badge-danger">New</span> new red tag on the right--}}
+                                <span class="right badge badge-danger">1</span> {{--new red tag on the right--}}
                             </p>
                         </router-link>
                     </li>
@@ -150,15 +150,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
+                                <router-link to="/clients" class="nav-link">
+                                    <i class="fa fa-circle-o nav-icon"></i> <!-- blue color is defuned in _variables.scss -->
+                                    <p>Clients</p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="fa fa-circle-o nav-icon"></i>
-                                    <p>Clients</p>
+                                    <p>Settings</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="fa fa-circle-o nav-icon"></i>
                                     <p>Logs</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-circle-o nav-icon"></i>
+                                    <p>Reports</p>
                                 </a>
                             </li>
                         </ul>

@@ -58,11 +58,13 @@ Vue.use(VueProgressBar, options)
 // https://router.vuejs.org/guide/#javascript
 let routes = [
     { path: '/signals', component: require('./components/Signals.vue') },
+    { path: '/clients', component: require('./components/Clients.vue') },
+
     { path: '/dashboard', component: require('./components/Dashboard.vue') },
     { path: '/profile', component: require('./components/Profile.vue') }
 ]
 
-// Delete
+// Link vue component without vue router
 //Vue.component('signals', require('./components/signals.vue'));
 
 // Link a new instance of vue router

@@ -32,8 +32,8 @@ class CreateSignalsTable extends Migration
             $table->decimal('stop_loss_price')->nullable();
             $table->decimal('stop_loss_percent')->nullable();
 
-            $table->string('info')->nullable();;
-            $table->boolean('is_deleted')->default('0');
+            $table->string('info')->nullable();
+            $table->boolean('is_deleted')->default(0);
         });
     }
 
