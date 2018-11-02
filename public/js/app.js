@@ -70491,12 +70491,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            users: {},
-            form: new Form({
+            editmode: false, // Variable
+            users: {}, // Object
+            form: new Form({ // Class instance
+                id: '',
                 name: '',
                 email: '',
                 password: '',
@@ -70509,37 +70519,96 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        loadUsers: function loadUsers() {
+        editModal: function editModal(user) {
+            this.editmode = true;
+            this.form.reset(); // Reset form function. https://github.com/cretueusebiu/vform
+            $('#newSignal').modal('show');
+            this.form.fill(user);
+            console.log(user);
+        },
+        newModal: function newModal() {
+            this.editmode = false;
+            this.form.reset();
+            $('#newSignal').modal('show');
+        },
+        updateUser: function updateUser() {
             var _this = this;
+
+            //console.log('function called');
+            this.$Progress.start();
+            this.form.put('api/user/' + this.form.id).then(function () {
+                $('#newSignal').modal('hide');
+                swal('Updated!', 'User has been updated', 'success');
+                _this.$Progress.finish();
+                Fire.$emit('AfterCreate');
+            }).catch(function () {
+                _this.$Progress.fail();
+            });
+        },
+        deleteUser: function deleteUser(id) {
+            var _this2 = this;
+
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+
+                // Ajax request
+                // Delete request type
+                if (result.value) {
+                    _this2.form.delete('api/user/' + id).then(function () {
+                        if (result.value) {
+                            swal('Deleted!', 'User has been deleted.', 'success');
+                            Fire.$emit('AfterCreate');
+                        }
+                    }).catch(function () {
+                        swal("Failed!", "Something bad happened..", "warning");
+                    });
+                }
+            });
+        },
+        loadUsers: function loadUsers() {
+            var _this3 = this;
 
             axios.get('api/user').then(function (_ref) {
                 var data = _ref.data;
-                return _this.users = data.data;
+                return _this3.users = data.data;
             });
         },
         createUser: function createUser() {
-            this.$Progress.start(); // Progress bar
-            this.form.post('api/user'); // Post request to the controller
-            Fire.$emit('AfterCreate'); // Trigger an event of the global object which is declared in app.js
+            var _this4 = this;
 
-            $('#newSignal').modal('hide'); // Modal hide
+            // Progress bar
+            this.$Progress.start();
+            // Post request to the controller
+            this.form.post('api/user').then(function () {
+                // Request successfull
+                Fire.$emit('AfterCreate'); // Trigger an event of the global object which is declared in app.js
+                $('#newSignal').modal('hide'); // Modal hide
+                // Toast notification
+                toast({
+                    type: 'success',
+                    title: 'User created successfully'
+                });
+                _this4.$Progress.finish();
+            }).catch(function () {
+                // Error
 
-            // Toast notification
-            toast({
-                type: 'success',
-                title: 'User created successfully'
             });
-
-            this.$Progress.finish();
         }
     },
     created: function created() {
-        var _this2 = this;
+        var _this5 = this;
 
         this.loadUsers();
         //setInterval(() => this.loadUsers(), 3000); // Load users each 3 seconds
         Fire.$on('AfterCreate', function () {
-            _this2.loadUsers();
+            _this5.loadUsers();
         });
     }
 });
@@ -70555,7 +70624,30 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row mt-3" }, [
       _c("div", { staticClass: "col-12" }, [
-        _vm._m(0),
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _c("h3", { staticClass: "card-title" }, [_vm._v("Signals table")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-tools" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success",
+                  attrs: { type: "button" },
+                  on: { click: _vm.newModal }
+                },
+                [
+                  _c("i", { staticClass: "fas fa-plus-square" }),
+                  _vm._v(" Create user\n                        ")
+                ]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(1)
+        ]),
         _vm._v(" "),
         _c("br"),
         _c("br"),
@@ -70565,7 +70657,7 @@ var render = function() {
             _c(
               "tbody",
               [
-                _vm._m(1),
+                _vm._m(2),
                 _vm._v(" "),
                 _vm._l(_vm.users, function(user) {
                   return _c("tr", { key: user.id }, [
@@ -70577,7 +70669,35 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(_vm._f("upText")(user.name)))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(user.email))])
+                    _c("td", [_vm._v(_vm._s(user.email))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.deleteUser(user.id)
+                            }
+                          }
+                        },
+                        [_vm._v("Delete")]
+                      ),
+                      _vm._v("/\n                            "),
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              _vm.editModal(user)
+                            }
+                          }
+                        },
+                        [_vm._v("Edit")]
+                      )
+                    ])
                   ])
                 })
               ],
@@ -70609,7 +70729,43 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(2),
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.editmode,
+                        expression: "!editmode"
+                      }
+                    ],
+                    staticClass: "modal-title",
+                    attrs: { id: "newSignalLabel" }
+                  },
+                  [_vm._v("Create new user")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h5",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.editmode,
+                        expression: "editmode"
+                      }
+                    ],
+                    staticClass: "modal-title",
+                    attrs: { id: "newSignalLabel" }
+                  },
+                  [_vm._v("Update user")]
+                ),
+                _vm._v(" "),
+                _vm._m(3)
+              ]),
               _vm._v(" "),
               _c(
                 "form",
@@ -70617,7 +70773,7 @@ var render = function() {
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
-                      return _vm.createUser($event)
+                      _vm.editmode ? _vm.updateUser() : _vm.createUser()
                     }
                   }
                 },
@@ -70762,7 +70918,50 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _vm._m(3)
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" }
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.editmode,
+                            expression: "editmode"
+                          }
+                        ],
+                        staticClass: "btn btn-success",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Update user")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.editmode,
+                            expression: "!editmode"
+                          }
+                        ],
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Create user")]
+                    )
+                  ])
                 ]
               )
             ])
@@ -70777,168 +70976,148 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _c("h3", { staticClass: "card-title" }, [_vm._v("Signals table")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-tools" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-success",
-              attrs: {
-                type: "button",
-                "data-toggle": "modal",
-                "data-target": "#newSignal"
-              }
-            },
-            [
-              _c("i", { staticClass: "fas fa-plus-square" }),
-              _vm._v(" Update quotes\n                        ")
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-success",
-              attrs: {
-                type: "button",
-                "data-toggle": "modal",
-                "data-target": "#newSignal"
-              }
-            },
-            [
-              _c("i", { staticClass: "fas fa-plus-square" }),
-              _vm._v(" Create user\n                        ")
-            ]
-          )
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body table-responsive p-0" }, [
-        _c("table", { staticClass: "table table-hover" }, [
-          _c("tbody", [
-            _c("tr", [
-              _c("th", [_vm._v("Created")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Symbol")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("%")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Lvrg")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Side")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Quote")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Status")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Open")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Price")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Close")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Price")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Action")])
-            ]),
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-success",
+        attrs: {
+          type: "button",
+          "data-toggle": "modal",
+          "data-target": "#newSignal"
+        }
+      },
+      [
+        _c("i", { staticClass: "fas fa-plus-square" }),
+        _vm._v(" Update quotes\n                        ")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-body table-responsive p-0" }, [
+      _c("table", { staticClass: "table table-hover" }, [
+        _c("tbody", [
+          _c("tr", [
+            _c("th", [_vm._v("Created")]),
             _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("10/29/18 5:46 AM")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("BTCUSD")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("38")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("10")]),
-              _vm._v(" "),
-              _c("td", { staticClass: "green" }, [_vm._v("Buy")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("7692.34")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Filled")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("10/29/18 5:47 AM")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("7562.21")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("10/29/18 5:47 AM")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("7562.21")]),
-              _vm._v(" "),
-              _c("td", [
-                _c("div", { staticClass: "btn-group" }, [
-                  _c("button", { staticClass: "btn btn-success" }, [
-                    _vm._v("Open")
-                  ]),
-                  _vm._v(" "),
-                  _c("button", { staticClass: "btn btn-danger" }, [
-                    _vm._v("Close")
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _c("div", { staticClass: "btn-group" }, [
-                  _c("button", { staticClass: "btn btn-success" }, [
-                    _c("i", { staticClass: "nav-icon fas fa-edit white" })
-                  ]),
-                  _vm._v(" "),
-                  _c("button", { staticClass: "btn btn-danger" }, [
-                    _c("i", { staticClass: "nav-icon fas fa-trash white" })
-                  ])
+            _c("th", [_vm._v("Symbol")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("%")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Lvrg")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Side")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Quote")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Status")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Open")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Price")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Close")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Price")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Action")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Action")])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("10/29/18 5:46 AM")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("BTCUSD")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("38")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("10")]),
+            _vm._v(" "),
+            _c("td", { staticClass: "green" }, [_vm._v("Buy")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("7692.34")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("Filled")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("10/29/18 5:47 AM")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("7562.21")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("10/29/18 5:47 AM")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("7562.21")]),
+            _vm._v(" "),
+            _c("td", [
+              _c("div", { staticClass: "btn-group" }, [
+                _c("button", { staticClass: "btn btn-success" }, [
+                  _vm._v("Open")
+                ]),
+                _vm._v(" "),
+                _c("button", { staticClass: "btn btn-danger" }, [
+                  _vm._v("Close")
                 ])
               ])
             ]),
             _vm._v(" "),
-            _c("tr", [
-              _c("td", [_vm._v("10/29/18 5:46 AM")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("BTCUSD")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("38")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("10")]),
-              _vm._v(" "),
-              _c("td", { staticClass: "red" }, [_vm._v("Sell")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("7692.34 ")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Filled")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("10/29/18 5:47 AM")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("7562.21")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("10/29/18 5:47 AM")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("7562.21")]),
-              _vm._v(" "),
-              _c("td", [
-                _c("div", { staticClass: "btn-group" }, [
-                  _c("button", { staticClass: "btn btn-success" }, [
-                    _vm._v("Open")
-                  ]),
-                  _vm._v(" "),
-                  _c("button", { staticClass: "btn btn-danger" }, [
-                    _vm._v("Close")
-                  ])
+            _c("td", [
+              _c("div", { staticClass: "btn-group" }, [
+                _c("button", { staticClass: "btn btn-success" }, [
+                  _c("i", { staticClass: "nav-icon fas fa-edit white" })
+                ]),
+                _vm._v(" "),
+                _c("button", { staticClass: "btn btn-danger" }, [
+                  _c("i", { staticClass: "nav-icon fas fa-trash white" })
                 ])
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _c("div", { staticClass: "btn-group" }, [
-                  _c("button", { staticClass: "btn btn-success" }, [
-                    _c("i", { staticClass: "nav-icon fas fa-edit white" })
-                  ]),
-                  _vm._v(" "),
-                  _c("button", { staticClass: "btn btn-danger" }, [
-                    _c("i", { staticClass: "nav-icon fas fa-trash white" })
-                  ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("10/29/18 5:46 AM")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("BTCUSD")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("38")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("10")]),
+            _vm._v(" "),
+            _c("td", { staticClass: "red" }, [_vm._v("Sell")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("7692.34 ")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("Filled")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("10/29/18 5:47 AM")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("7562.21")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("10/29/18 5:47 AM")]),
+            _vm._v(" "),
+            _c("td", [_vm._v("7562.21")]),
+            _vm._v(" "),
+            _c("td", [
+              _c("div", { staticClass: "btn-group" }, [
+                _c("button", { staticClass: "btn btn-success" }, [
+                  _vm._v("Open")
+                ]),
+                _vm._v(" "),
+                _c("button", { staticClass: "btn btn-danger" }, [
+                  _vm._v("Close")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("div", { staticClass: "btn-group" }, [
+                _c("button", { staticClass: "btn btn-success" }, [
+                  _c("i", { staticClass: "nav-icon fas fa-edit white" })
+                ]),
+                _vm._v(" "),
+                _c("button", { staticClass: "btn btn-danger" }, [
+                  _c("i", { staticClass: "nav-icon fas fa-trash white" })
                 ])
               ])
             ])
@@ -70958,54 +71137,27 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Name")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Email")])
+      _c("th", [_vm._v("Email")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Action")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "newSignalLabel" } },
-        [_vm._v("Create new user")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-        [_vm._v("Create user")]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true
