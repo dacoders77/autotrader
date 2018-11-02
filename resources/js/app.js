@@ -28,6 +28,10 @@ window.Form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
+// Pagination
+// https://github.com/gilbitron/laravel-vue-pagination
+Vue.component('pagination', require('laravel-vue-pagination'));
+
 // Vue router
 import VueRouter from 'vue-router';
 Vue.use(VueRouter)
@@ -53,9 +57,13 @@ Vue.use(VueProgressBar, options)
 // Define routes for vue routing
 // https://router.vuejs.org/guide/#javascript
 let routes = [
+    { path: '/signals', component: require('./components/Signals.vue') },
     { path: '/dashboard', component: require('./components/Dashboard.vue') },
     { path: '/profile', component: require('./components/Profile.vue') }
 ]
+
+// Delete
+//Vue.component('signals', require('./components/signals.vue'));
 
 // Link a new instance of vue router
 const router = new VueRouter({
@@ -70,6 +78,7 @@ Vue.filter('upText', function(text){
     return text.toUpperCase();
 });
 
+// Pretty date formatting
 Vue.filter('myDate', function(created_at){
     return moment(created_at).format('MMMM Do YYYY'); // MMMM Do YYYY, h:mm:ss a
 });
@@ -79,12 +88,13 @@ window.Fire = new Vue();
 
 
 
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
 const app = new Vue({

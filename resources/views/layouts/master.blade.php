@@ -129,7 +129,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                          with font-awesome or any other icon font library -->
 
                     <li class="nav-item">
-                        <router-link to="/dashboard" class="nav-link">
+                        {{--<router-link to="/dashboard" class="nav-link">--}}
+                        <router-link to="/signals" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt blue"></i> <!-- blue color is defuned in _variables.scss -->
                             <p>
                                 Signals
@@ -201,7 +202,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="container-fluid">
                 {{-- Vue components --}}
                 <router-view></router-view>
-
                 <vue-progress-bar></vue-progress-bar>
             </div><!-- /.container-fluid -->
         </div>

@@ -25,6 +25,7 @@ Route::get('/home', 'HomeController@index')->name('home');
  */
 Route::get('{zzz}', "HomeController@index")->where( 'path', '([A-z\d-\/_.]+)?' );
 
+
 // Delete
 Route::get('user/{name}', function ($name) {
     //return $name;

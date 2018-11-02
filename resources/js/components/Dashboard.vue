@@ -1,5 +1,8 @@
 <template>
     <div class="container">
+
+        <!--<signals></signals>-->
+
         <div class="row mt-3">
             <div class="col-12">
                 <div class="card">
@@ -15,83 +18,9 @@
                             <button type="button" class="btn btn-success" @click="newModal">
                                 <i class="fas fa-plus-square"></i> Create user
                             </button>
-
                         </div>
                     </div>
-                    <!-- /.card-header -->
-                    <div class="card-body table-responsive p-0">
-                        <table class="table table-hover">
-                            <tbody>
-                            <tr>
-                                <th>Created</th>
-                                <th>Symbol</th>
-                                <th>%</th>
-                                <th>Lvrg</th>
-                                <th>Side</th>
-                                <th>Quote</th>
-                                <th>Status</th>
-                                <th>Open</th>
-                                <th>Price</th>
-                                <th>Close</th>
-                                <th>Price</th>
-                                <th>Action</th>
-                                <th>Action</th>
-                            </tr>
-                            <tr>
-                                <td>10/29/18 5:46 AM</td>
-                                <td>BTCUSD</td>
-                                <td>38</td>
-                                <td>10</td>
-                                <td class="green">Buy</td>
-                                <td>7692.34</td>
-                                <td>Filled</td>
-                                <td>10/29/18 5:47 AM</td>
-                                <td>7562.21</td>
-                                <td>10/29/18 5:47 AM</td>
-                                <td>7562.21</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button class="btn btn-success">Open</button>
-                                        <button class="btn btn-danger">Close</button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button class="btn btn-success"><i class="nav-icon fas fa-edit white"></i></button>
-                                        <button class="btn btn-danger"><i class="nav-icon fas fa-trash white"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
 
-                            <tr>
-                                <td>10/29/18 5:46 AM</td>
-                                <td>BTCUSD</td>
-                                <td>38</td>
-                                <td>10</td>
-                                <td class="red">Sell</td>
-                                <td>7692.34 </td>
-                                <td>Filled</td>
-                                <td>10/29/18 5:47 AM</td>
-                                <td>7562.21</td>
-                                <td>10/29/18 5:47 AM</td>
-                                <td>7562.21</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button class="btn btn-success">Open</button>
-                                        <button class="btn btn-danger">Close</button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button class="btn btn-success"><i class="nav-icon fas fa-edit white"></i></button>
-                                        <button class="btn btn-danger"><i class="nav-icon fas fa-trash white"></i></button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            </tbody></table>
-                    </div>
-                    <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
 
@@ -281,6 +210,8 @@
         created() {
             this.loadUsers();
             //setInterval(() => this.loadUsers(), 3000); // Load users each 3 seconds
+
+            // Event listener
             Fire.$on('AfterCreate', () => {
                 this.loadUsers();
             });
