@@ -20,7 +20,10 @@
                                 <tbody>
                                 <tr>
                                     <th><i class="fas fa-info-circle blue"></i></th>
+                                    <th>Reload</th>
+                                    <th>Action</th>
                                     <th>Created</th>
+
                                     <th>Name</th>
                                     <th>LastName</th>
                                     <th>Telegram</th>
@@ -32,13 +35,27 @@
 
                                     <th>Funds</th>
                                     <th>Info</th>
-                                    <th>Action</th>
-                                    <th>Reload</th>
+
 
 
                                 </tr>
                                 <tr v-for="signal in clients.data" :key="signal.id">
                                     <td>{{ signal.id }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-warning"><i class="nav-icon fas fa-redo white"></i></button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-success" @click="deleteSignal(signal.id)">
+                                                <i class="nav-icon fas fa-trash white"></i>
+                                            </button>
+                                            <button class="btn btn-danger" @click="editModal(signal)">
+                                                <i class="nav-icon fas fa-edit white"></i>
+                                            </button>
+                                        </div>
+                                    </td>
                                     <td>{{ signal.created_at | myDate }}</td>
                                     <td>{{ signal.name }}</td>
                                     <td>{{ signal.last_name }}</td>
@@ -51,28 +68,6 @@
                                     <td>{{ signal.status }}</td>
                                     <td>{{ signal.funds }}</td>
                                     <td>{{ signal.info }}</td>
-
-
-                                    <td>
-                                        <div class="btn-group">
-                                            <button class="btn btn-warning"><i class="nav-icon fas fa-redo white"></i></button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group">
-
-                                            <button class="btn btn-success" @click="deleteSignal(signal.id)">
-                                                <i class="nav-icon fas fa-trash white"></i>
-                                            </button>
-                                            <button class="btn btn-danger" @click="editModal(signal)">
-                                                <i class="nav-icon fas fa-edit white"></i>
-                                            </button>
-
-                                            <!--
-                                            <button class="btn btn-success"><i class="nav-icon fas fa-edit white"></i></button>
-                                            <button class="btn btn-danger"><i class="nav-icon fas fa-trash white"></i></button>-->
-                                        </div>
-                                    </td>
                                 </tr>
                                 </tbody></table>
                         </div>
@@ -256,7 +251,7 @@
                     // Ajax request
                     // Delete request type
                     if (result.value){
-                        this.form.delete('api/signal/' + id).then(() => {
+                        this.form.delete('api/client/' + id).then(() => {
                             if (result.value) {
                                 swal(
                                     'Deleted!',

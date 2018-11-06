@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Client;
+use App\Client; // Model link
 
 class ClientController extends Controller
 {
@@ -106,6 +106,8 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $client = Client::findOrFail($id);
+        $client->delete();
+        return ['message' => 'Client deleted'];
     }
 }

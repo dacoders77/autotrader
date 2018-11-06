@@ -18,6 +18,7 @@ $yellow: #ffed4a;
 $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
+$grey: #ddddd0;
 
 // Menu icons color
 .blue{
@@ -49,5 +50,8 @@ $cyan: #6cb2eb;
 }
 .cyan{
   color: $cyan;
+}
+.grey{
+  color: $grey;
 }
 

@@ -71788,6 +71788,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -71805,6 +71816,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        // Symbol test execution. DELEE
+        executeSymbol: function executeSymbol(signal) {
+            swal({
+                title: 'Are you sure?',
+                text: "Signal will be executed!!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, execute it!'
+            }).then(function (result) {
+                // Ajax request
+                if (result.value) {
+                    axios.post('exec', signal).then(function (response) {
+                        swal('Executed!', 'Symbol has been executed.', 'success');
+                        Fire.$emit('AfterCreate');
+                    }).catch(function (error) {
+                        swal("Failed!", "Error: \n" + error.response.data, "warning");
+                        Fire.$emit('AfterCreate');
+                    });
+                    /*
+                    signal.post('exec').then(() => {
+                        if (result.value) {
+                            swal(
+                                'Executed!',
+                                'Symbol has been executed.',
+                                'success'
+                            )
+                            //Fire.$emit('AfterCreate');
+                        }
+                    }).catch(() => {
+                        swal("Failed!", "Something bad happened..", "warning");
+                    })
+                    */
+                }
+            });
+        },
+
         // Pagination. https://github.com/gilbitron/laravel-vue-pagination
         getResults: function getResults() {
             var _this = this;
@@ -71950,73 +71999,147 @@ var render = function() {
                     _vm._m(0),
                     _vm._v(" "),
                     _vm._l(_vm.signals.data, function(signal) {
-                      return _c("tr", { key: signal.id }, [
-                        _c("td", [_vm._v(_vm._s(signal.id))]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(_vm._s(_vm._f("myDate")(signal.created_at)))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.symbol))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.percent))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.leverage))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.direction))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.quote))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.status))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.open_date))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.open_price))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.close_date))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.close_price))]),
-                        _vm._v(" "),
-                        _vm._m(1, true),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c("div", { staticClass: "btn-group" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-success",
-                                on: {
-                                  click: function($event) {
-                                    _vm.deleteSignal(signal.id)
+                      return _c(
+                        "tr",
+                        {
+                          key: signal.id,
+                          class: signal.status == "executed" ? "grey" : ""
+                        },
+                        [
+                          _c("td", [_vm._v(_vm._s(signal.id))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("div", { staticClass: "btn-group" }, [
+                              signal.status == "new"
+                                ? _c("div", [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-success",
+                                        on: {
+                                          click: function($event) {
+                                            _vm.executeSymbol(signal)
+                                          }
+                                        }
+                                      },
+                                      [_c("i", { staticClass: "fas fa-play" })]
+                                    )
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              signal.status == "open"
+                                ? _c("div", [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-danger",
+                                        on: {
+                                          click: function($event) {
+                                            _vm.executeSymbol(signal)
+                                          }
+                                        }
+                                      },
+                                      [_c("i", { staticClass: "fas fa-stop" })]
+                                    )
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              signal.status == "error" ||
+                              signal.status == "executed"
+                                ? _c("div", [_vm._m(1, true)])
+                                : _vm._e()
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("div", { staticClass: "btn-group" }, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary",
+                                  on: {
+                                    click: function($event) {
+                                      _vm.deleteSignal(signal.id)
+                                    }
                                   }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "nav-icon fas fa-trash white"
-                                })
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-danger",
-                                on: {
-                                  click: function($event) {
-                                    _vm.editModal(signal)
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "nav-icon fas fa-edit white"
-                                })
-                              ]
-                            )
-                          ])
-                        ])
-                      ])
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "nav-icon fas fa-trash white"
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              signal.status == "new"
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-secondary",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.editModal(signal)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass:
+                                          "nav-icon fas fa-edit white"
+                                      })
+                                    ]
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              signal.status == "error" ||
+                              signal.status == "open" ||
+                              signal.status == "executed"
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-secondary",
+                                      attrs: { disabled: "" },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.editModal(signal)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass:
+                                          "nav-icon fas fa-edit white"
+                                      })
+                                    ]
+                                  )
+                                : _vm._e()
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(_vm._f("myDate")(signal.created_at)))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(signal.symbol))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(signal.status))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(signal.percent))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(signal.leverage))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(signal.direction))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(signal.quote))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(signal.open_date))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(signal.open_price))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(signal.close_date))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(signal.close_price))])
+                        ]
+                      )
                     })
                   ],
                   2
@@ -72324,7 +72447,7 @@ var render = function() {
                         staticClass: "btn btn-success",
                         attrs: { type: "submit" }
                       },
-                      [_vm._v("Update user")]
+                      [_vm._v("Update signal")]
                     ),
                     _vm._v(" "),
                     _c(
@@ -72341,7 +72464,7 @@ var render = function() {
                         staticClass: "btn btn-primary",
                         attrs: { type: "submit" }
                       },
-                      [_vm._v("Create user")]
+                      [_vm._v("Create signal")]
                     )
                   ])
                 ]
@@ -72361,9 +72484,15 @@ var staticRenderFns = [
     return _c("tr", [
       _c("th", [_c("i", { staticClass: "fas fa-info-circle blue" })]),
       _vm._v(" "),
+      _c("th", [_vm._v("Action")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Edit")]),
+      _vm._v(" "),
       _c("th", [_vm._v("Created")]),
       _vm._v(" "),
       _c("th", [_vm._v("Symbol")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Status")]),
       _vm._v(" "),
       _c("th", [_vm._v("%")]),
       _vm._v(" "),
@@ -72373,32 +72502,24 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Quote")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Status")]),
-      _vm._v(" "),
       _c("th", [_vm._v("Open")]),
       _vm._v(" "),
       _c("th", [_vm._v("Price")]),
       _vm._v(" "),
       _c("th", [_vm._v("Close")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Price")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Action")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Action")])
+      _c("th", [_vm._v("Price")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("div", { staticClass: "btn-group" }, [
-        _c("button", { staticClass: "btn btn-success" }, [_vm._v("Open")]),
-        _vm._v(" "),
-        _c("button", { staticClass: "btn btn-danger" }, [_vm._v("Close")])
-      ])
-    ])
+    return _c(
+      "button",
+      { staticClass: "btn btn-light", attrs: { disabled: "" } },
+      [_c("i", { staticClass: "fas fa-check" })]
+    )
   },
   function() {
     var _vm = this
@@ -72480,11 +72601,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
 //
 //
 //
@@ -72745,7 +72861,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Ajax request
                 // Delete request type
                 if (result.value) {
-                    _this5.form.delete('api/signal/' + id).then(function () {
+                    _this5.form.delete('api/client/' + id).then(function () {
                         if (result.value) {
                             swal('Deleted!', 'Signal has been deleted.', 'success');
                             Fire.$emit('AfterCreate');
@@ -72814,28 +72930,6 @@ var render = function() {
                       return _c("tr", { key: signal.id }, [
                         _c("td", [_vm._v(_vm._s(signal.id))]),
                         _vm._v(" "),
-                        _c("td", [
-                          _vm._v(_vm._s(_vm._f("myDate")(signal.created_at)))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.name))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.last_name))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.telegram))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.email))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.api))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.api_secret))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.status))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.funds))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.info))]),
-                        _vm._v(" "),
                         _vm._m(1, true),
                         _vm._v(" "),
                         _c("td", [
@@ -72874,7 +72968,29 @@ var render = function() {
                               ]
                             )
                           ])
-                        ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm._f("myDate")(signal.created_at)))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.last_name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.telegram))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.email))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.api))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.api_secret))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.status))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.funds))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.info))])
                       ])
                     })
                   ],
@@ -73318,6 +73434,10 @@ var staticRenderFns = [
     return _c("tr", [
       _c("th", [_c("i", { staticClass: "fas fa-info-circle blue" })]),
       _vm._v(" "),
+      _c("th", [_vm._v("Reload")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Action")]),
+      _vm._v(" "),
       _c("th", [_vm._v("Created")]),
       _vm._v(" "),
       _c("th", [_vm._v("Name")]),
@@ -73336,11 +73456,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Funds")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Info")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Action")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Reload")])
+      _c("th", [_vm._v("Info")])
     ])
   },
   function() {

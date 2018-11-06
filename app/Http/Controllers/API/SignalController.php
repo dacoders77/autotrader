@@ -36,12 +36,14 @@ class SignalController extends Controller
      */
     public function store(Request $request)
     {
+
         /* Validation rule */
+
         $this->validate($request,[
             'symbol' => 'required|string|max:6',
-            'percent' => 'required|numeric|max:3',
+            'percent' => 'required|string|max:3',
             'leverage' => 'required|numeric|max:3',
-            'direction' => 'required|string|max:4',
+            'direction' => 'required|string|max:6',
             //'password' => 'required|string|min:6'
         ]);
 
@@ -51,6 +53,7 @@ class SignalController extends Controller
             'leverage' => $request['leverage'],
             'direction' => $request['direction'],
         ]);
+
     }
 
     /**
@@ -91,7 +94,7 @@ class SignalController extends Controller
             'symbol' => 'required|string|max:6',
             'percent' => 'required|numeric|max:3',
             'leverage' => 'required|numeric|max:3',
-            'direction' => 'required|string|max:4',
+            'direction' => 'required|string|max:6',
             //'password' => 'required|string|min:6'
         ]);
 

@@ -20,60 +20,72 @@
                                 <tbody>
                                 <tr>
                                     <th><i class="fas fa-info-circle blue"></i></th>
+                                    <th>Action</th>
+                                    <th>Edit</th>
                                     <th>Created</th>
                                     <th>Symbol</th>
+                                    <th>Status</th>
                                     <th>%</th>
 
                                     <th>Lvrg</th>
                                     <th>Side</th>
                                     <th>Quote</th>
-                                    <th>Status</th>
+
 
                                     <th>Open</th>
                                     <th>Price</th>
                                     <th>Close</th>
                                     <th>Price</th>
 
-                                    <th>Action</th>
-                                    <th>Action</th>
+
+
                                 </tr>
-                                <tr v-for="signal in signals.data" :key="signal.id">
+                                <tr v-for="signal in signals.data" :key="signal.id" :class="signal.status == 'executed' ? 'grey' : '' ">
                                     <td>{{ signal.id }}</td>
+
+
+                                    <td>
+                                        <div class="btn-group">
+                                            <div v-if="signal.status == 'new'">
+                                                <button class="btn btn-success" @click="executeSymbol(signal)"><i class="fas fa-play"></i></button>
+                                            </div>
+                                            <div v-if="signal.status == 'open'">
+                                                <button class="btn btn-danger" @click="executeSymbol(signal)"><i class="fas fa-stop"></i></button>
+                                            </div>
+                                            <div v-if="signal.status == 'error' || signal.status == 'executed'">
+                                                <button class="btn btn-light" disabled><i class="fas fa-check"></i></button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+
+                                            <button class="btn btn-primary" @click="deleteSignal(signal.id)"><i class="nav-icon fas fa-trash white"></i></button>
+                                            <button v-if="signal.status == 'new'" class="btn btn-secondary" @click="editModal(signal)"><i class="nav-icon fas fa-edit white"></i></button>
+                                            <button v-if="signal.status == 'error' || signal.status == 'open' || signal.status == 'executed'" class="btn btn-secondary" disabled @click="editModal(signal) "><i class="nav-icon fas fa-edit white"></i></button>
+
+
+
+                                        </div>
+                                    </td>
+
+
                                     <td>{{ signal.created_at | myDate }}</td>
                                     <td>{{ signal.symbol }}</td>
+                                    <td>{{ signal.status }}</td>
                                     <td>{{ signal.percent }}</td>
 
                                     <td>{{ signal.leverage }}</td>
                                     <td>{{ signal.direction }}</td>
                                     <td>{{ signal.quote }}</td>
-                                    <td>{{ signal.status }}</td>
+
 
                                     <td>{{ signal.open_date }}</td>
                                     <td>{{ signal.open_price }}</td>
                                     <td>{{ signal.close_date }}</td>
                                     <td>{{ signal.close_price }}</td>
 
-                                    <td>
-                                        <div class="btn-group">
-                                            <button class="btn btn-success">Open</button>
-                                            <button class="btn btn-danger">Close</button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group">
 
-                                            <button class="btn btn-success" @click="deleteSignal(signal.id)">
-                                                <i class="nav-icon fas fa-trash white"></i>
-                                            </button>
-                                            <button class="btn btn-danger" @click="editModal(signal)">
-                                                <i class="nav-icon fas fa-edit white"></i>
-                                            </button>
-
-                                            <!--
-                                            <button class="btn btn-success"><i class="nav-icon fas fa-edit white"></i></button>
-                                            <button class="btn btn-danger"><i class="nav-icon fas fa-trash white"></i></button>-->
-                                        </div>
-                                    </td>
                                 </tr>
                                 </tbody></table>
                         </div>
@@ -84,7 +96,6 @@
                             <ul class="pagination justify-content-center">
                                 <pagination :data="signals" @pagination-change-page="getResults"></pagination>
                             </ul>
-
 
                         </div>
                     </div>
@@ -137,8 +148,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button v-show="editmode" type="submit" class="btn btn-success">Update user</button>
-                            <button v-show="!editmode" type="submit" class="btn btn-primary">Create user</button>
+                            <button v-show="editmode" type="submit" class="btn btn-success">Update signal</button>
+                            <button v-show="!editmode" type="submit" class="btn btn-primary">Create signal</button>
                         </div>
                     </form>
                 </div>
@@ -166,6 +177,50 @@
             }
         },
         methods:{
+            // Symbol test execution. DELEE
+            executeSymbol(signal){
+                swal({
+                    title: 'Are you sure?',
+                    text: "Signal will be executed!!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, execute it!'
+                }).then((result) => {
+                    // Ajax request
+                    if (result.value){
+                        axios.post('exec', signal)
+                            .then(response => {
+                                swal(
+                                    'Executed!',
+                                    'Symbol has been executed.',
+                                    'success'
+                                )
+                                Fire.$emit('AfterCreate');
+                            })
+                            .catch(error => {
+                                swal("Failed!", "Error: \n" + error.response.data, "warning");
+                                Fire.$emit('AfterCreate');
+                            });
+                        /*
+                        signal.post('exec').then(() => {
+                            if (result.value) {
+                                swal(
+                                    'Executed!',
+                                    'Symbol has been executed.',
+                                    'success'
+                                )
+                                //Fire.$emit('AfterCreate');
+                            }
+                        }).catch(() => {
+                            swal("Failed!", "Something bad happened..", "warning");
+                        })
+                        */
+                    }
+                })
+
+            },
             // Pagination. https://github.com/gilbitron/laravel-vue-pagination
             getResults(page = 1) {
                 axios.get('api/signal?page=' + page)
