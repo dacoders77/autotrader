@@ -20,6 +20,7 @@ class Client extends Model
         'telegram',
         'email',
         'api',
-        'api_secret'
+        'api_secret',
+        'info'
     ];
 }

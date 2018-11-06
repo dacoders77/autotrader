@@ -71833,7 +71833,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         swal('Executed!', 'Symbol has been executed.', 'success');
                         Fire.$emit('AfterCreate');
                     }).catch(function (error) {
-                        swal("Failed!", "Error: \n" + error.response.data, "warning");
+                        //swal("Failed!", "Error: \n" + error.response.data, "warning");
+                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+
+                        //console.log(error.response.data.message);
+                        /*
+                        for(var i in error){
+                            console.log(i, error[i]);
+                        }
+                        */
                         Fire.$emit('AfterCreate');
                     });
                     /*

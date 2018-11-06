@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use ccxt\Exchange;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Client; // Model link
+use App\Client;
+use Mockery\Exception; // Model link
 
 class ClientController extends Controller
 {
@@ -36,9 +38,18 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        /*
+        $error = \Illuminate\Validation\ValidationException::withMessages([
+            'field_name_1' => ['Validation Message #1'],
+            'field_name_2' => ['Validation Message #2'],
+        ]);
+        throw $error;
+        */
+
         /* Validation rule */
         $this->validate($request,[
             'name' => 'required|string|max:20',
+            'email' => 'sometimes|nullable|email',
             'api' => 'required|string|max:50',
             'api_secret' => 'required|string|max:50'
         ]);
@@ -47,6 +58,10 @@ class ClientController extends Controller
             'name' => $request['name'],
             'last_name' => $request['last_name'],
             'telegram' => $request['telegram'],
+            'email' => $request['email'],
+            'api' => $request['api'],
+            'api_secret' => $request['telegram'],
+            'info' => $request['info'],
             //'bio' => $request['bio'],
             //'photo' => $request['photo'],
             //'password' => Hash::make($request['password']),
@@ -90,6 +105,7 @@ class ClientController extends Controller
         /* Validation rule */
         $this->validate($request,[
             'name' => 'required|string|max:20',
+            'email' => 'sometimes|nullable|email',
             'api' => 'required|string|max:50',
             'api_secret' => 'required|string|max:50'
         ]);

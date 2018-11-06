@@ -200,7 +200,17 @@
                                 Fire.$emit('AfterCreate');
                             })
                             .catch(error => {
-                                swal("Failed!", "Error: \n" + error.response.data, "warning");
+                                //swal("Failed!", "Error: \n" + error.response.data, "warning");
+                                swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+
+
+
+                                //console.log(error.response.data.message);
+                                /*
+                                for(var i in error){
+                                    console.log(i, error[i]);
+                                }
+                                */
                                 Fire.$emit('AfterCreate');
                             });
                         /*
