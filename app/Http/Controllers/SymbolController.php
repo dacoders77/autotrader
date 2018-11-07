@@ -25,35 +25,71 @@ class SymbolController extends Controller
     // add: signal id, client id
     public function executeSymbol(Request $request){
 
+        LogToFile::createTextLogFile();
+
+        // Do it onlt for new signal
+        if ($request['status'] == "new"){
+            $this->fillExecutionsTable($request);
+            $this->getClientsFunds($request, $this->exchange);
+            $this->fillVolume($request, $this->exchange);
+        }
+
+        // Do for both: new and open signals
+        foreach (Execution::where('signal_id', $request['id'])
+                     ->where('client_volume', '!=', null)
+                     ->get() as $execution){
+
+            $this->exchange->apiKey = Client::where('id', $execution->client_id)->value('api');
+            //$exchange->apiKey = 123;
+            $this->exchange->secret = Client::where('id', $execution->client_id)->value('api_secret');
+
+            if($request['status'] == "new"){
+                if ($request['direction'] == "long"){
+                    $this->openPosition($this->exchange, $execution, "long");
+                }
+                else{
+                    $this->openPosition($this->exchange, $execution, "short");
+                }
+
+                //Signal::where('id', $request->id)->update(array(
+                //    'status' => 'open',
+                //));
+            }
+            else
+            {
+                if ($request['direction'] == "long"){
+                    $this->openPosition($this->exchange, $execution, "short");
+                }
+                else{
+                    $this->openPosition($this->exchange, $execution, "long");
+                }
+
+                //Signal::where('id', $request->id)->update(array(
+                //    'status' => 'executed',
+                //));
+            }
 
 
-        //LogToFile::createTextLogFile();
-        //LogToFile::add("SymbolController", "ggg");
 
-        /* executeSignal
-         * 1. Loop through all clients
-         * 2. Calculate volume for each client
-         * 3. Add this volume to exec table (and other values)
-         *
-         * 4. When table is prepared - run thrugh it
-         * 5. Add job
-         *
-         * When job is executed - write it's resut to exec table
-         *
-         */
+        }
 
 
 
-        // ** FETCH FUNDS AND ADD TO DB
-        // foreach
-        // executions
-        // where: signal_id = $request['id'] // 24
-        // fetch balance. where: api = client, api_secret = client[id]
-        // update -ADD CLIENT FUNDS TO EXECUTIONS?
+        //return "position closed";
 
-        $this->fillExecutionsTable($request);
-        $this->getClientsFunds($request, $this->exchange);
+        //return response('No symbol found', 412);
 
+
+
+    }
+
+    /**
+     * Calculate and fill volume for each client (each record in the table)
+     * @param Request $request
+     * @param bitmex $exchange
+     * @return string
+     */
+    public function fillVolume(Request $request, bitmex $exchange){
         // fill volume
         try {
             $symbolQuote = $this->exchange->fetch_ticker($request['symbol'])['last'];
@@ -62,117 +98,22 @@ class SymbolController extends Controller
         }
 
         foreach (Execution::where('signal_id', $request['id'])->get() as $execution){
-
-
-
             $balancePortionXBT = $execution->client_funds * $execution->percent / 100;
-            $clientVolume = $symbolQuote * $execution->multiplier;
-
+            $symbolInXBT = $symbolQuote * $execution->multiplier;
             Execution::where('signal_id', $request['id'])
                 ->where('client_funds', '!=', null)
                 ->where('client_id', $execution->client_id)
-                ->update(['client_volume' => $clientVolume, 'info' => 'Volume calculated']);
+                ->update(['client_volume' => round($balancePortionXBT / $symbolInXBT), 'status' => 'new', 'info' => 'Volume calculated']);
         }
-
-        // Execute
-
-
-
-
-/*
-        $exchange = new bitmex();
-        //dump(array_keys($exchange->load_markets())); // ETH/USD BTC/USD
-        //dump($exchange->fetch_ticker('BTC/USD'));
-        $exchange->apiKey = Client::where('id', '>', 0)->orderby('id', 'desc')->first()->api;
-        $exchange->secret = Client::where('id', '>', 0)->orderby('id', 'desc')->first()->api_secret;
-
-
-        if($request['status'] == "new"){
-
-            // Get XBT balance
-            // get ETH price
-            // express ETH in XBT - USE multiplier
-            // Calculate 30% of account
-            // ETH in XBT price / 30% account
-            // volume
-
-            $percent = 30; // 30%
-            $clientBalanceXBT = $exchange->fetchBalance()['BTC']['free'];
-            $symbolQuote = $exchange->fetch_ticker('ETH/USD')['last'];
-            $symbolXbtQuote = $symbolQuote * 0.000001; // ETH!
-            $balancePortionXBT = $clientBalanceXBT * $percent / 100;
-            $this->orderVolume = round($balancePortionXBT / $symbolXbtQuote);
-            // store this volume value in cache
-
-            Cache::put("12345", $this->orderVolume, 5);
-
-
-            if ($request['direction'] == "long"){
-                $this->openPosition($exchange, $request, "long", $this->orderVolume);
-            }
-            else{
-                $this->openPosition($exchange, $request, "short", $this->orderVolume);
-            }
-
-            Signal::where('id', $request->id)->update(array(
-                'status' => 'open',
-            ));
-        }
-        else
-        {
-            if ($request['direction'] == "long"){
-                $this->openPosition($exchange, $request, "short", Cache::get('12345'));
-            }
-            else{
-                $this->openPosition($exchange, $request, "long", Cache::get('12345'));
-            }
-
-            Cache::forget('12345');
-            Signal::where('id', $request->id)->update(array(
-                'status' => 'executed',
-            ));
-
-        }
-
-
-        // Write statuses to DB
-        if ($request['status'] == "new"){
-
-            Signal::where('id', $request->id)->update(array(
-                'status' => 'open',
-                //'open_date' => date("Y-m-d G:i:s", $response['timestamp'] / 1000),
-                //'open_price' => $response['price']
-            ));
-
-        }
-
-        if ($request['status'] == "open"){
-
-            //$response = ($exchange->createMarketSellOrder('ETH/USD', 1, []));
-
-            Signal::where('id', $request->id)->update(array(
-                'status' => 'executed',
-                //'close_date' => date("Y-m-d G:i:s", $response['timestamp'] / 1000),
-                //'close_price' => $response['price']
-            ));
-        }
-
-        return "position closed";
-
-        //return response('No symbol found', 412);
-
-*/
-
     }
 
     /**
-     * Run through job list (executions table) and get funds(free XBT balance for each client)
+     * Run through job list (executions table) and get funds(free XBT balance for each client).
      * @param Request $request
      * @param bitmex $exchange
      */
     public function getClientsFunds(Request $request, bitmex $exchange){
         foreach (Execution::where('signal_id', $request['id'])->get() as $execution){
-
 
             $exchange->apiKey = Client::where('id', $execution->client_id)->value('api');
             //$exchange->apiKey = 123;
@@ -182,13 +123,13 @@ class SymbolController extends Controller
                 $response = $exchange->fetchBalance()['BTC']['free'];
                 Execution::where('signal_id', $request['id'])
                     ->where('client_id', $execution->client_id)
-                    ->update(['client_funds' => $response, 'open_response' => 'ok', 'info' => 'Got balance ok']);
+                    ->update(['client_funds' => $response, 'open_response' => 'Got balance ok']);
                 //return $response;
             }
             catch (\Exception $e){
                 Execution::where('signal_id', $request['id'])
                     ->where('client_id', $execution->client_id)
-                    ->update(['open_response' => $e->getMessage(), 'info' => 'Error while getting client balance']);
+                    ->update(['open_response' => 'Error getting client balance', 'info' => $e->getMessage()]);
                 //return $e->getMessage();
             }
         }
@@ -217,23 +158,95 @@ class SymbolController extends Controller
         }
     }
 
-    private function openPosition(bitmex $exchange, Request $request, $direction, $orderVolume){
-        /* Position open */
+    /**
+     * Open positions.
+     * Performed for each client record in executions table.
+     * @param bitmex $exchange
+     * @param $direction
+     * @param $orderVolume
+     */
+    private function openPosition(bitmex $exchange, $execution, $direction){
+
         if ($direction == 'long'){
-            $response = ($exchange->createMarketBuyOrder('ETH/USD', $orderVolume, []));
+            try{
+                $response = ($exchange->createMarketBuyOrder($execution->symbol, $execution->client_volume, []));
+            }
+            catch (\Exception $e){
+                Execution::where('id', $execution->id)->update(array(
+                    'status' => 'error',
+                    'info' => $e->getMessage()
+                ));
+            }
         }
         else{
-            $response = ($exchange->createMarketSellOrder('ETH/USD', $orderVolume, []));
+            try{
+                $response = ($exchange->createMarketSellOrder($execution->symbol, $execution->client_volume, []));
+            }
+            catch (\Exception $e)
+            {
+                Execution::where('id', $execution->id)->update(array(
+                    'status' => 'error',
+                    'info' => $e->getMessage()
+                ));
+            }
         }
 
-        Signal::where('id', $request->id)->update(array(
-            'close_date' => date("Y-m-d G:i:s", $response['timestamp'] / 1000),
-            'close_price' => $response['price']
+        // Write statuses to DB
+        if ($execution->status == "new"){
+            Signal::where('id', $execution->signal_id)->update(array(
+                'status' => 'open',
+                'quote' => $response['price'],
+                'open_date' => date("Y-m-d G:i:s", $response['timestamp'] / 1000),
+                'open_price' => $response['price']
+            ));
+
+            Execution::where('id', $execution->id)->update(array(
+                'status' => 'open',
+                'open_status' => 'ok',
+                'open_response' => json_encode($response),
+                'open_price' => $response['price'],
+                'info' => 'Position opened ok'
+            ));
+        }
+
+        if ($execution->status == "open"){
+            Signal::where('id', $execution->signal_id)->update(array(
+                'status' => 'executed',
+                'close_date' => date("Y-m-d G:i:s", $response['timestamp'] / 1000),
+                'close_price' => $response['price']
+            ));
+            Execution::where('id', $execution->id)->update(array(
+                'status' => 'executed',
+                'close_status' => 'ok',
+                'close_response' => json_encode($response),
+                'close_price' => $response['price'],
+                'info' => 'Position closed ok'
+            ));
+        }
+
+        Execution::where('id', $execution->id)->update(array(
+            //'info' => json_encode($response)
+            //'close_date' => date("Y-m-d G:i:s", $response['timestamp'] / 1000),
+            //'close_price' => $response['price']
         ));
 
-        // Add info to orders log:
+        //Signal::where('id', $request->id)->update(array(
+        //    'close_date' => date("Y-m-d G:i:s", $response['timestamp'] / 1000),
+        //    'close_price' => $response['price']
+        //));
 
-        return $response;
+
+
+        //return $response;
     }
 
 }
+
+
+/*
+        $exchange = new bitmex();
+        //dump(array_keys($exchange->load_markets())); // ETH/USD BTC/USD
+        //dump($exchange->fetch_ticker('BTC/USD'));
+        $exchange->apiKey = Client::where('id', '>', 0)->orderby('id', 'desc')->first()->api;
+        $exchange->secret = Client::where('id', '>', 0)->orderby('id', 'desc')->first()->api_secret;
+*/

@@ -30455,7 +30455,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_4_vue_progressbar___default.a, options);
 
 // Define routes for vue routing
 // https://router.vuejs.org/guide/#javascript
-var routes = [{ path: '/signals', component: __webpack_require__(171) }, { path: '/clients', component: __webpack_require__(174) }, { path: '/dashboard', component: __webpack_require__(177) }, { path: '/profile', component: __webpack_require__(180) }];
+var routes = [{ path: '/signals', component: __webpack_require__(171) }, { path: '/clients', component: __webpack_require__(174) }, { path: '/executions', component: __webpack_require__(192) }, { path: '/dashboard', component: __webpack_require__(177) }, { path: '/profile', component: __webpack_require__(180) }];
 
 // Link vue component without vue router
 //Vue.component('signals', require('./components/signals.vue'));
@@ -74504,6 +74504,371 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(193)
+/* template */
+var __vue_template__ = __webpack_require__(194)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Executions.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-35085f86", Component.options)
+  } else {
+    hotAPI.reload("data-v-35085f86", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 193 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            editmode: false, // Modal edit record or create new flag
+            clients: {},
+            form: new Form({ // Class instance
+                id: '',
+                name: '',
+                last_name: '',
+                telegram: '',
+                email: '',
+                api: '',
+                api_secret: '',
+                info: ''
+            })
+        };
+    },
+
+    methods: {
+        // Pagination. https://github.com/gilbitron/laravel-vue-pagination
+        getResults: function getResults() {
+            var _this = this;
+
+            var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+
+            axios.get('api/execution?page=' + page).then(function (response) {
+                _this.clients = response.data;
+            });
+        },
+        loadClients: function loadClients() {
+            var _this2 = this;
+
+            axios.get('api/execution').then(function (_ref) {
+                var data = _ref.data;
+                return _this2.clients = data;
+            }); // Resource controllers are defined in api.php
+            //console.log(this.users);
+        }
+    },
+    created: function created() {
+        var _this3 = this;
+
+        this.loadClients();
+
+        //Event listener
+        Fire.$on('AfterCreate', function () {
+            _this3.loadClients();
+        });
+    }
+});
+
+/***/ }),
+/* 194 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row mt-3" }, [
+      _c("div", { staticStyle: { width: "100%" } }, [
+        _c("div", { staticClass: "card" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "card-body table-responsive p-0" }, [
+              _c("table", { staticClass: "table table-hover" }, [
+                _c(
+                  "tbody",
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _vm._l(_vm.clients.data, function(signal) {
+                      return _c("tr", { key: signal.id }, [
+                        _c("td", [_vm._v(_vm._s(signal.id))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm._f("myDate")(signal.created_at)))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.signal_id))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.client_id))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.client_name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.symbol))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.multiplier))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.direction))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.client_volume))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.percent))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.leverage))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.client_funds))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.status))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.open_status))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.close_status))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.open_price))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.close_price))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.open_response))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.close_response))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.info))])
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer" }, [
+              _c(
+                "ul",
+                { staticClass: "pagination justify-content-center" },
+                [
+                  _c("pagination", {
+                    attrs: { data: _vm.clients },
+                    on: { "pagination-change-page": _vm.getResults }
+                  })
+                ],
+                1
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("span", { staticStyle: { "font-size": "140%" } }, [
+        _vm._v("Executions")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_c("i", { staticClass: "fas fa-info-circle blue" })]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Created")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Signal id")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Client id")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Client name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Symbol")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Multiplier")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Direction")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Client volume")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Percent")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Leverage")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Client funds")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Open status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Close status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Open price")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Close price")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Open response")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Close response")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Info")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-35085f86", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

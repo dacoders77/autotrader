@@ -40,10 +40,10 @@ class SignalController extends Controller
         /* Validation rule */
 
         $this->validate($request,[
-            'symbol' => 'required|string|max:6',
+            'symbol' => 'required|string|max:8',
             'multiplier' => 'required|string|max:10',
-            'percent' => 'required|string|max:3',
-            'leverage' => 'required|string|max:3',
+            'percent' => 'required|string|max:4',
+            'leverage' => 'required|string|max:4',
             'direction' => 'required|string|max:6',
             //'password' => 'required|string|min:6'
         ]);
@@ -95,8 +95,8 @@ class SignalController extends Controller
         $this->validate($request,[
             'symbol' => 'required|string|max:8',
             'multiplier' => 'required|numeric|max:10',
-            'percent' => 'required|numeric|max:3',
-            'leverage' => 'required|numeric|max:3',
+            'percent' => 'required|string|max:4',
+            'leverage' => 'required|string|max:4',
             'direction' => 'required|string|max:6',
             //'password' => 'required|string|min:6'
         ]);

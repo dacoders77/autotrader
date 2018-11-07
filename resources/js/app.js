@@ -59,6 +59,7 @@ Vue.use(VueProgressBar, options)
 let routes = [
     { path: '/signals', component: require('./components/Signals.vue') },
     { path: '/clients', component: require('./components/Clients.vue') },
+    { path: '/executions', component: require('./components/Executions.vue') },
 
     { path: '/dashboard', component: require('./components/Dashboard.vue') },
     { path: '/profile', component: require('./components/Profile.vue') }

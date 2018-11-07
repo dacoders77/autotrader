@@ -22,23 +22,23 @@ class CreateExecutionsTable extends Migration
             $table->string('client_name')->nullable();
 
             $table->string('symbol')->nullable();
-            $table->decimal('multiplier', 7)->nullable();
+            $table->decimal('multiplier', 12,6)->nullable();
             $table->string('direction')->nullable();
-            $table->decimal('client_volume', 5)->nullable();
+            $table->decimal('client_volume', 12,6)->nullable();
             $table->decimal('percent')->nullable();
             $table->decimal('leverage')->nullable();
 
-            $table->decimal('client_funds', 3)->nullable();
+            $table->decimal('client_funds', 12,6)->nullable();
 
 
-
+            $table->string('status')->nullable();
             $table->string('open_status')->nullable();
             $table->string('close_status')->nullable();
             $table->decimal('open_price')->nullable();
             $table->decimal('close_price')->nullable();
-            $table->string('open_response')->nullable();
-            $table->string('close_response')->nullable();
-            $table->string('info')->nullable();
+            $table->string('open_response', 1000)->nullable();
+            $table->string('close_response', 1000)->nullable();
+            $table->string('info', 10000)->nullable();
 
             // open_status (take from response)
             // close_status
