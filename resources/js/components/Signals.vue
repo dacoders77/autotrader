@@ -73,7 +73,7 @@
 
                                     <td>{{ signal.created_at | myDate }}</td>
                                     <td>{{ signal.symbol }}</td>
-                                    <td> -- </td>
+                                    <td>{{ signal.multiplier }} </td>
                                     <td>{{ signal.status }}</td>
                                     <td>{{ signal.percent }}</td>
 
@@ -190,7 +190,7 @@
         methods:{
             // Symbol test execution. DELEE
             executeSymbol(signal){
-                
+
                 swal({
                     title: 'Are you sure?',
                     text: "Signal will be executed!!",
@@ -209,7 +209,7 @@
                                     'Symbol has been executed.',
                                     'success'
                                 )
-                                Fire.$emit('AfterCreate');
+                                Fire.$emit('AfterCreateSignal');
                             })
                             .catch(error => {
                                 //swal("Failed!", "Error: \n" + error.response.data, "warning");
@@ -221,7 +221,7 @@
                                     console.log(i, error[i]);
                                 }
                                 */
-                                Fire.$emit('AfterCreate');
+                                Fire.$emit('AfterCreateSignal');
                             });
                         /*
                         signal.post('exec').then(() => {
@@ -231,7 +231,7 @@
                                     'Symbol has been executed.',
                                     'success'
                                 )
-                                //Fire.$emit('AfterCreate');
+                                //Fire.$emit('AfterCreateSignal');
                             }
                         }).catch(() => {
                             swal("Failed!", "Something bad happened..", "warning");
@@ -272,7 +272,7 @@
                 this.form.post('api/signal')
                     .then(() => {
                         // Request successful
-                        Fire.$emit('AfterCreate'); // Trigger an event of the global object which is declared in app.js
+                        Fire.$emit('AfterCreateSignal'); // Trigger an event of the global object which is declared in app.js
                         $('#addNewSignalModal').modal('hide'); // Modal hide
                         // Toast notification
                         toast({
@@ -296,7 +296,7 @@
                             'success'
                         )
                         this.$Progress.finish();
-                        Fire.$emit('AfterCreate');
+                        Fire.$emit('AfterCreateSignal');
                     })
                     .catch(() => {
                         this.$Progress.fail();
@@ -322,7 +322,7 @@
                                     'Signal has been deleted.',
                                     'success'
                                 )
-                                Fire.$emit('AfterCreate');
+                                Fire.$emit('AfterCreateSignal');
                             }
                         }).catch(() => {
                             swal("Failed!", "Something bad happened..", "warning");
@@ -335,7 +335,7 @@
             this.loadUsers();
 
             // Event listener
-            Fire.$on('AfterCreate', () => {
+            Fire.$on('AfterCreateSignal', () => {
                 this.loadUsers();
             });
         }

@@ -22,13 +22,13 @@ class CreateExecutionsTable extends Migration
             $table->string('client_name')->nullable();
 
             $table->string('symbol')->nullable();
-            $table->decimal('multiplier')->nullable();
+            $table->decimal('multiplier', 7)->nullable();
             $table->string('direction')->nullable();
-            $table->decimal('client_volume')->nullable();
+            $table->decimal('client_volume', 5)->nullable();
             $table->decimal('percent')->nullable();
             $table->decimal('leverage')->nullable();
 
-            $table->decimal('client_funds')->nullable();
+            $table->decimal('client_funds', 3)->nullable();
 
 
 

@@ -71843,7 +71843,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (result.value) {
                     axios.post('exec', signal).then(function (response) {
                         swal('Executed!', 'Symbol has been executed.', 'success');
-                        Fire.$emit('AfterCreate');
+                        Fire.$emit('AfterCreateSignal');
                     }).catch(function (error) {
                         //swal("Failed!", "Error: \n" + error.response.data, "warning");
                         swal("Failed!", "Error: \n" + error.response.data.message, "warning");
@@ -71854,7 +71854,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             console.log(i, error[i]);
                         }
                         */
-                        Fire.$emit('AfterCreate');
+                        Fire.$emit('AfterCreateSignal');
                     });
                     /*
                     signal.post('exec').then(() => {
@@ -71864,7 +71864,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                                 'Symbol has been executed.',
                                 'success'
                             )
-                            //Fire.$emit('AfterCreate');
+                            //Fire.$emit('AfterCreateSignal');
                         }
                     }).catch(() => {
                         swal("Failed!", "Something bad happened..", "warning");
@@ -71913,7 +71913,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // Post request to the controller
             this.form.post('api/signal').then(function () {
                 // Request successful
-                Fire.$emit('AfterCreate'); // Trigger an event of the global object which is declared in app.js
+                Fire.$emit('AfterCreateSignal'); // Trigger an event of the global object which is declared in app.js
                 $('#addNewSignalModal').modal('hide'); // Modal hide
                 // Toast notification
                 toast({
@@ -71933,7 +71933,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 $('#addNewSignalModal').modal('hide');
                 swal('Updated!', 'Signal has been updated', 'success');
                 _this4.$Progress.finish();
-                Fire.$emit('AfterCreate');
+                Fire.$emit('AfterCreateSignal');
             }).catch(function () {
                 _this4.$Progress.fail();
             });
@@ -71956,7 +71956,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this5.form.delete('api/signal/' + id).then(function () {
                         if (result.value) {
                             swal('Deleted!', 'Signal has been deleted.', 'success');
-                            Fire.$emit('AfterCreate');
+                            Fire.$emit('AfterCreateSignal');
                         }
                     }).catch(function () {
                         swal("Failed!", "Something bad happened..", "warning");
@@ -71971,7 +71971,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.loadUsers();
 
         // Event listener
-        Fire.$on('AfterCreate', function () {
+        Fire.$on('AfterCreateSignal', function () {
             _this6.loadUsers();
         });
     }
@@ -72141,7 +72141,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(signal.symbol))]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(" -- ")]),
+                          _c("td", [_vm._v(_vm._s(signal.multiplier) + " ")]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(signal.status))]),
                           _vm._v(" "),

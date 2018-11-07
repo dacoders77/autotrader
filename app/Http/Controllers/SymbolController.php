@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\LogToFile;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Signal; // Link model
@@ -9,13 +10,25 @@ use App\Client; // Link model
 use App\Execution; // Link model
 use ccxt\bitmex;
 use Illuminate\Support\Facades\Cache;
+use Mockery\Exception;
 
 class SymbolController extends Controller
 {
     private $orderVolume;
+    private $exchange;
+
+    public function __construct()
+    {
+        $this->exchange = new bitmex();
+    }
 
     // add: signal id, client id
     public function executeSymbol(Request $request){
+
+
+
+        //LogToFile::createTextLogFile();
+        //LogToFile::add("SymbolController", "ggg");
 
         /* executeSignal
          * 1. Loop through all clients
@@ -29,21 +42,7 @@ class SymbolController extends Controller
          *
          */
 
-        foreach (Client::all() as $client){
-            Execution::create([
-                'signal_id' => $request['id'],
-                'client_id' => $client->id,
-                'client_name' => $client->name,
-                'symbol' => $request['symbol'],
-                'multiplier' => $request['multiplier'],
-                'direction' => $request['direction'],
-                'percent' => $request['percent'],
-                'leverage' => $request['leverage'],
-                //'symbol' => $request['percent'],
-                //'leverage' => $request['leverage'],
 
-            ]);
-        }
 
         // ** FETCH FUNDS AND ADD TO DB
         // foreach
@@ -51,6 +50,32 @@ class SymbolController extends Controller
         // where: signal_id = $request['id'] // 24
         // fetch balance. where: api = client, api_secret = client[id]
         // update -ADD CLIENT FUNDS TO EXECUTIONS?
+
+        $this->fillExecutionsTable($request);
+        $this->getClientsFunds($request, $this->exchange);
+
+        // fill volume
+        try {
+            $symbolQuote = $this->exchange->fetch_ticker($request['symbol'])['last'];
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+        foreach (Execution::where('signal_id', $request['id'])->get() as $execution){
+
+
+
+            $balancePortionXBT = $execution->client_funds * $execution->percent / 100;
+            $clientVolume = $symbolQuote * $execution->multiplier;
+
+            Execution::where('signal_id', $request['id'])
+                ->where('client_funds', '!=', null)
+                ->where('client_id', $execution->client_id)
+                ->update(['client_volume' => $clientVolume, 'info' => 'Volume calculated']);
+        }
+
+        // Execute
+
 
 
 
@@ -138,7 +163,58 @@ class SymbolController extends Controller
 
 */
 
+    }
 
+    /**
+     * Run through job list (executions table) and get funds(free XBT balance for each client)
+     * @param Request $request
+     * @param bitmex $exchange
+     */
+    public function getClientsFunds(Request $request, bitmex $exchange){
+        foreach (Execution::where('signal_id', $request['id'])->get() as $execution){
+
+
+            $exchange->apiKey = Client::where('id', $execution->client_id)->value('api');
+            //$exchange->apiKey = 123;
+            $exchange->secret = Client::where('id', $execution->client_id)->value('api_secret');
+
+            try{
+                $response = $exchange->fetchBalance()['BTC']['free'];
+                Execution::where('signal_id', $request['id'])
+                    ->where('client_id', $execution->client_id)
+                    ->update(['client_funds' => $response, 'open_response' => 'ok', 'info' => 'Got balance ok']);
+                //return $response;
+            }
+            catch (\Exception $e){
+                Execution::where('signal_id', $request['id'])
+                    ->where('client_id', $execution->client_id)
+                    ->update(['open_response' => $e->getMessage(), 'info' => 'Error while getting client balance']);
+                //return $e->getMessage();
+            }
+        }
+    }
+
+    /**
+     * Fill executions table with a job.
+     * Clone signal to all clients.
+     * Quantity of records = quantity of clients
+     * @param Request $request
+     */
+    private function fillExecutionsTable(Request $request){
+        foreach (Client::all() as $client){
+            Execution::create([
+                'signal_id' => $request['id'],
+                'client_id' => $client->id,
+                'client_name' => $client->name,
+                'symbol' => $request['symbol'],
+                'multiplier' => $request['multiplier'],
+                'direction' => $request['direction'],
+                'percent' => $request['percent'],
+                'leverage' => $request['leverage'],
+                //'symbol' => $request['percent'],
+                //'leverage' => $request['leverage'],
+            ]);
+        }
     }
 
     private function openPosition(bitmex $exchange, Request $request, $direction, $orderVolume){
@@ -156,7 +232,6 @@ class SymbolController extends Controller
         ));
 
         // Add info to orders log:
-
 
         return $response;
     }

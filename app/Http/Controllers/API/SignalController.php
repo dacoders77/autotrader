@@ -93,7 +93,7 @@ class SignalController extends Controller
 
         /* Validation rule */
         $this->validate($request,[
-            'symbol' => 'required|string|max:6',
+            'symbol' => 'required|string|max:8',
             'multiplier' => 'required|numeric|max:10',
             'percent' => 'required|numeric|max:3',
             'leverage' => 'required|numeric|max:3',
