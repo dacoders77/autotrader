@@ -71799,6 +71799,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -71808,6 +71818,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             form: new Form({ // Class instance
                 id: '',
                 symbol: '',
+                multiplier: '',
                 percent: '',
                 leverage: '',
                 direction: ''
@@ -71818,6 +71829,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         // Symbol test execution. DELEE
         executeSymbol: function executeSymbol(signal) {
+
             swal({
                 title: 'Are you sure?',
                 text: "Signal will be executed!!",
@@ -72129,6 +72141,8 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(signal.symbol))]),
                           _vm._v(" "),
+                          _c("td", [_vm._v(" -- ")]),
+                          _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(signal.status))]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(signal.percent))]),
@@ -72279,6 +72293,51 @@ var render = function() {
                         _vm._v(" "),
                         _c("has-error", {
                           attrs: { form: _vm.form, field: "symbol" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.multiplier,
+                              expression: "form.multiplier"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("multiplier")
+                          },
+                          attrs: {
+                            type: "number",
+                            step: "0.00000001",
+                            name: "multiplier",
+                            placeholder: "Multiplier (ETH: 0.000001)"
+                          },
+                          domProps: { value: _vm.form.multiplier },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "multiplier",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "multiplier" }
                         })
                       ],
                       1
@@ -72499,6 +72558,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Created")]),
       _vm._v(" "),
       _c("th", [_vm._v("Symbol")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Multiplier")]),
       _vm._v(" "),
       _c("th", [_vm._v("Status")]),
       _vm._v(" "),

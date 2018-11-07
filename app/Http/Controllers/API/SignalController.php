@@ -41,14 +41,16 @@ class SignalController extends Controller
 
         $this->validate($request,[
             'symbol' => 'required|string|max:6',
+            'multiplier' => 'required|string|max:10',
             'percent' => 'required|string|max:3',
-            'leverage' => 'required|numeric|max:3',
+            'leverage' => 'required|string|max:3',
             'direction' => 'required|string|max:6',
             //'password' => 'required|string|min:6'
         ]);
 
         return Signal::create([
             'symbol' => $request['symbol'],
+            'multiplier' => $request['multiplier'],
             'percent' => $request['percent'],
             'leverage' => $request['leverage'],
             'direction' => $request['direction'],
@@ -92,6 +94,7 @@ class SignalController extends Controller
         /* Validation rule */
         $this->validate($request,[
             'symbol' => 'required|string|max:6',
+            'multiplier' => 'required|numeric|max:10',
             'percent' => 'required|numeric|max:3',
             'leverage' => 'required|numeric|max:3',
             'direction' => 'required|string|max:6',

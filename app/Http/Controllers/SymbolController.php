@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Signal; // Link model
 use App\Client; // Link model
+use App\Execution; // Link model
 use ccxt\bitmex;
 use Illuminate\Support\Facades\Cache;
 
@@ -28,8 +29,32 @@ class SymbolController extends Controller
          *
          */
 
+        foreach (Client::all() as $client){
+            Execution::create([
+                'signal_id' => $request['id'],
+                'client_id' => $client->id,
+                'client_name' => $client->name,
+                'symbol' => $request['symbol'],
+                'multiplier' => $request['multiplier'],
+                'direction' => $request['direction'],
+                'percent' => $request['percent'],
+                'leverage' => $request['leverage'],
+                //'symbol' => $request['percent'],
+                //'leverage' => $request['leverage'],
+
+            ]);
+        }
+
+        // ** FETCH FUNDS AND ADD TO DB
+        // foreach
+        // executions
+        // where: signal_id = $request['id'] // 24
+        // fetch balance. where: api = client, api_secret = client[id]
+        // update -ADD CLIENT FUNDS TO EXECUTIONS?
 
 
+
+/*
         $exchange = new bitmex();
         //dump(array_keys($exchange->load_markets())); // ETH/USD BTC/USD
         //dump($exchange->fetch_ticker('BTC/USD'));
@@ -85,7 +110,7 @@ class SymbolController extends Controller
         }
 
 
-        /* Write statuses to DB */
+        // Write statuses to DB
         if ($request['status'] == "new"){
 
             Signal::where('id', $request->id)->update(array(
@@ -110,6 +135,10 @@ class SymbolController extends Controller
         return "position closed";
 
         //return response('No symbol found', 412);
+
+*/
+
+
     }
 
     private function openPosition(bitmex $exchange, Request $request, $direction, $orderVolume){

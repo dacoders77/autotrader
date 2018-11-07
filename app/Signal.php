@@ -15,6 +15,10 @@ class Signal extends Model
      * @var array
      */
     protected $fillable = [
-        'symbol', 'percent', 'leverage', 'direction',
+        'symbol',
+        'multiplier',
+        'percent',
+        'leverage',
+        'direction',
     ];
 }

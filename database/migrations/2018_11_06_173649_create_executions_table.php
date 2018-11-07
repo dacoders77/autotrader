@@ -17,7 +17,29 @@ class CreateExecutionsTable extends Migration
             $table->increments('id');
             $table->timestamps();
 
-            // execution date
+            $table->string('signal_id')->nullable();
+            $table->string('client_id')->nullable();
+            $table->string('client_name')->nullable();
+
+            $table->string('symbol')->nullable();
+            $table->decimal('multiplier')->nullable();
+            $table->string('direction')->nullable();
+            $table->decimal('client_volume')->nullable();
+            $table->decimal('percent')->nullable();
+            $table->decimal('leverage')->nullable();
+
+            $table->decimal('client_funds')->nullable();
+
+
+
+            $table->string('open_status')->nullable();
+            $table->string('close_status')->nullable();
+            $table->decimal('open_price')->nullable();
+            $table->decimal('close_price')->nullable();
+            $table->string('open_response')->nullable();
+            $table->string('close_response')->nullable();
+            $table->string('info')->nullable();
+
             // open_status (take from response)
             // close_status
             // signal id
@@ -33,7 +55,8 @@ class CreateExecutionsTable extends Migration
             // open_response (full)
             // close_response (full)
             // info
-            
+
+
         });
     }
 

@@ -18,6 +18,7 @@ class CreateSignalsTable extends Migration
             $table->timestamps();
 
             $table->string('symbol')->nullable();
+            $table->decimal('multiplier')->nullable();
             $table->decimal('percent')->nullable();
             $table->decimal('leverage')->nullable();
             $table->string('direction')->nullable();

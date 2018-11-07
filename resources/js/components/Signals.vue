@@ -24,6 +24,7 @@
                                     <th>Edit</th>
                                     <th>Created</th>
                                     <th>Symbol</th>
+                                    <th>Multiplier</th>
                                     <th>Status</th>
                                     <th>%</th>
 
@@ -72,6 +73,7 @@
 
                                     <td>{{ signal.created_at | myDate }}</td>
                                     <td>{{ signal.symbol }}</td>
+                                    <td> -- </td>
                                     <td>{{ signal.status }}</td>
                                     <td>{{ signal.percent }}</td>
 
@@ -124,6 +126,14 @@
                                        class="form-control" :class="{ 'is-invalid': form.errors.has('symbol') }">
                                 <has-error :form="form" field="symbol"></has-error>
                             </div>
+
+                            <div class="form-group">
+                                <input v-model="form.multiplier" type="number" step="0.00000001" name="multiplier"
+                                       placeholder="Multiplier (ETH: 0.000001)"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('multiplier') }">
+                                <has-error :form="form" field="multiplier"></has-error>
+                            </div>
+
                             <div class="form-group">
                                 <input v-model="form.percent" type="number" name="percent"
                                        placeholder="%"
@@ -170,6 +180,7 @@
                 form: new Form({ // Class instance
                     id: '',
                     symbol: '',
+                    multiplier: '',
                     percent: '',
                     leverage: '',
                     direction: '',
@@ -179,6 +190,7 @@
         methods:{
             // Symbol test execution. DELEE
             executeSymbol(signal){
+                
                 swal({
                     title: 'Are you sure?',
                     text: "Signal will be executed!!",
@@ -202,8 +214,6 @@
                             .catch(error => {
                                 //swal("Failed!", "Error: \n" + error.response.data, "warning");
                                 swal("Failed!", "Error: \n" + error.response.data.message, "warning");
-
-
 
                                 //console.log(error.response.data.message);
                                 /*
@@ -229,6 +239,7 @@
                         */
                     }
                 })
+
 
             },
             // Pagination. https://github.com/gilbitron/laravel-vue-pagination
