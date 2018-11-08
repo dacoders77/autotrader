@@ -16,6 +16,7 @@ class SymbolController extends Controller
 {
     private $orderVolume;
     private $exchange;
+    private $openPositionResponse;
 
     public function __construct()
     {
@@ -50,10 +51,6 @@ class SymbolController extends Controller
                 else{
                     $this->openPosition($this->exchange, $execution, "short");
                 }
-
-                //Signal::where('id', $request->id)->update(array(
-                //    'status' => 'open',
-                //));
             }
             else
             {
@@ -63,16 +60,8 @@ class SymbolController extends Controller
                 else{
                     $this->openPosition($this->exchange, $execution, "long");
                 }
-
-                //Signal::where('id', $request->id)->update(array(
-                //    'status' => 'executed',
-                //));
             }
-
-
-
         }
-
 
 
         //return "position closed";
@@ -167,9 +156,14 @@ class SymbolController extends Controller
      */
     private function openPosition(bitmex $exchange, $execution, $direction){
 
+        LogToFile::add("SymbolController.php 195", "--" . $direction);
+
+
         if ($direction == 'long'){
+            LogToFile::add("SymbolController.php 195", "if dir = long");
             try{
-                $response = ($exchange->createMarketBuyOrder($execution->symbol, $execution->client_volume, []));
+                $this->openPositionResponse = ($exchange->createMarketBuyOrder($execution->symbol, $execution->client_volume, []));
+                LogToFile::add("SymbolController.php 195", "v long zaiti " . json_encode($this->openPositionResponse));
             }
             catch (\Exception $e){
                 Execution::where('id', $execution->id)->update(array(
@@ -179,8 +173,10 @@ class SymbolController extends Controller
             }
         }
         else{
+            LogToFile::add("SymbolController.php 195", "if dir = short");
             try{
-                $response = ($exchange->createMarketSellOrder($execution->symbol, $execution->client_volume, []));
+                $this->openPositionResponse = ($exchange->createMarketSellOrder($execution->symbol, $execution->client_volume, []));
+                LogToFile::add("SymbolController.php 195", "v shot " . json_encode($this->openPositionResponse));
             }
             catch (\Exception $e)
             {
@@ -191,48 +187,50 @@ class SymbolController extends Controller
             }
         }
 
+
+
         // Write statuses to DB
         if ($execution->status == "new"){
             Signal::where('id', $execution->signal_id)->update(array(
                 'status' => 'open',
-                'quote' => $response['price'],
-                'open_date' => date("Y-m-d G:i:s", $response['timestamp'] / 1000),
-                'open_price' => $response['price']
+                'quote' => $this->openPositionResponse['price'],
+                'open_date' => date("Y-m-d G:i:s", $this->openPositionResponse['timestamp'] / 1000),
+                'open_price' => $this->openPositionResponse['price']
             ));
 
             Execution::where('id', $execution->id)->update(array(
                 'status' => 'open',
                 'open_status' => 'ok',
-                'open_response' => json_encode($response),
-                'open_price' => $response['price'],
-                'info' => 'Position opened ok'
+                'open_response' => json_encode($this->openPositionResponse),
+                'open_price' => $this->openPositionResponse['price'],
+                'info' => 'Position suppose to open'
             ));
         }
 
         if ($execution->status == "open"){
             Signal::where('id', $execution->signal_id)->update(array(
                 'status' => 'executed',
-                'close_date' => date("Y-m-d G:i:s", $response['timestamp'] / 1000),
-                'close_price' => $response['price']
+                'close_date' => date("Y-m-d G:i:s", $this->openPositionResponse['timestamp'] / 1000),
+                'close_price' => $this->openPositionResponse['price']
             ));
             Execution::where('id', $execution->id)->update(array(
                 'status' => 'executed',
                 'close_status' => 'ok',
-                'close_response' => json_encode($response),
-                'close_price' => $response['price'],
-                'info' => 'Position closed ok'
+                'close_response' => json_encode($this->openPositionResponse),
+                'close_price' => $this->openPositionResponse['price'],
+                'info' => 'Position suppose to close'
             ));
         }
 
         Execution::where('id', $execution->id)->update(array(
-            //'info' => json_encode($response)
-            //'close_date' => date("Y-m-d G:i:s", $response['timestamp'] / 1000),
-            //'close_price' => $response['price']
+            //'info' => json_encode($this->openPositionResponse)
+            //'close_date' => date("Y-m-d G:i:s", $this->openPositionResponse['timestamp'] / 1000),
+            //'close_price' => $this->openPositionResponse['price']
         ));
 
         //Signal::where('id', $request->id)->update(array(
-        //    'close_date' => date("Y-m-d G:i:s", $response['timestamp'] / 1000),
-        //    'close_price' => $response['price']
+        //    'close_date' => date("Y-m-d G:i:s", $this->openPositionResponse['timestamp'] / 1000),
+        //    'close_price' => $this->openPositionResponse['price']
         //));
 
 
