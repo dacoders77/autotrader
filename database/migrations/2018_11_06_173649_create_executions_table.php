@@ -34,8 +34,8 @@ class CreateExecutionsTable extends Migration
             $table->string('status')->nullable();
             $table->string('open_status')->nullable();
             $table->string('close_status')->nullable();
-            $table->decimal('open_price')->nullable();
-            $table->decimal('close_price')->nullable();
+            $table->decimal('open_price', 16,8)->nullable();
+            $table->decimal('close_price', 16, 8)->nullable();
             $table->string('open_response', 1000)->nullable();
             $table->string('close_response', 1000)->nullable();
             $table->string('info', 10000)->nullable();

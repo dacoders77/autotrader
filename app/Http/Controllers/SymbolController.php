@@ -78,13 +78,13 @@ class SymbolController extends Controller
      */
     public function fillVolume(Request $request, bitmex $exchange){
 
-
         // Get quote
         try {
             $this->symbolQuote = $this->exchange->fetch_ticker($request['symbol'])['last'];
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+
 
 
         /**
@@ -100,32 +100,28 @@ class SymbolController extends Controller
             $balancePortionXBT = $execution->client_funds * $execution->percent / 100;
             // Contract formula
 
-            if ($execution->symbol == "ETH/USD")
-            {
-                // $symbolInXBT = $symbolQuote * $execution->multiplier;
-                $this->symbolInXBT = $this->symbolQuote * 0.000001;
-            }
+            if ($execution->symbol == "BTC/USD") $this->symbolInXBT = 1 / $this->symbolQuote;
+            if ($execution->symbol == "ETH/USD") $this->symbolInXBT = $this->symbolQuote * 0.000001;
+            if ($execution->symbol == "ADAZ18") $this->symbolInXBT = $this->symbolQuote;
 
-            if ($execution->symbol == "BTC/USD")
-            {
-                $this->symbolInXBT = 1 / $this->symbolQuote;
-            }
+            if ($execution->symbol == "BCHZ18") $this->symbolInXBT = $this->symbolQuote;
+            if ($execution->symbol == "EOSZ18") $this->symbolInXBT = $this->symbolQuote;
+
+            /*<option value="LTCZ18">LTCZ18</option>
+                                    <option value="TRXZ18">TRXZ18</option>
+                                    <option value="XRPZ18">XRPZ18</option>*/
+
+            if ($execution->symbol == "LTCZ18") $this->symbolInXBT = $this->symbolQuote;
+            if ($execution->symbol == "TRXZ18") $this->symbolInXBT = $this->symbolQuote;
+            if ($execution->symbol == "XRPZ18") $this->symbolInXBT = $this->symbolQuote;
 
 
+            LogToFile::add(__FILE__ . __LINE__, $balancePortionXBT . " :" . $this->symbolInXBT . " round: " . round($balancePortionXBT / $this->symbolInXBT));
 
-            // if symbol = XBT/USD
-            // $symbolInXBT = 1 / $symbolQuote;
-
-            // Update calculated volume only for records where client funds != null
-            // If == null - API key did not work
 
             Execution::where('signal_id', $request['id'])
-                //->where('client_funds', '!=', null)
                 ->where('client_id', $execution->client_id)
-                // REMOVE ROUND??
                 ->update(['client_volume' => round($balancePortionXBT / $this->symbolInXBT), 'status' => 'new', 'info' => 'Volume calculated']);
-
-
         }
     }
 
@@ -146,8 +142,6 @@ class SymbolController extends Controller
                 Execution::where('signal_id', $request['id'])
                     ->where('client_id', $execution->client_id)
                     ->update(['client_funds' => $response, 'open_response' => 'Got balance ok']);
-
-                LogToFile::add(__FILE__ . __LINE__, $execution->client_id . " :" . $response);
 
                 Client::where('id', $execution->client_id)
                     ->update(['funds' => $response]);
@@ -215,11 +209,11 @@ class SymbolController extends Controller
         // CHECK WHETHER SUCCESS OR NOT!
         if (gettype($this->placeOrderResponse) == 'array'){
             // Success
-            LogToFile::add(__FILE__ . __LINE__, "ORDER PLACED SUCCESS: " . gettype($this->placeOrderResponse));
+            //LogToFile::add(__FILE__ . __LINE__, "ORDER PLACED SUCCESS: " . gettype($this->placeOrderResponse));
         }
         else{
             // Error
-            LogToFile::add(__FILE__ . __LINE__, "ORDER ERROR: " . gettype($this->placeOrderResponse));
+            //LogToFile::add(__FILE__ . __LINE__, "ORDER ERROR: " . gettype($this->placeOrderResponse));
         }
 
         // CATCH BITMEX ERROR INSUFFICIENT FUNDS

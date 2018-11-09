@@ -52,7 +52,7 @@ class btmx extends Command
 
         $exchange = new bitmex();
         //dump(array_keys($exchange->load_markets())); // ETH/USD BTC/USD
-        dump($exchange->fetch_ticker('ETH/USD'));
+        dump($exchange->fetch_ticker('BCHZ18'));
         $exchange->apiKey = 'WkrVX4BG6aj4Y1rVGfZfB9CG';
         $exchange->secret = 'IFnTQcesYzCy3c8Srs5ULB8qZGpnHAOBvrfOwmnsHDJLLsFi';
         //dump($exchange->fetchBalance()['BTC']['free']); // BTC balance

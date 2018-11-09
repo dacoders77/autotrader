@@ -137,6 +137,12 @@
                                     <option value="">Symbol</option>
                                     <option value="ETH/USD">ETH/USD</option>
                                     <option value="BTC/USD">BTC/USD</option>
+                                    <option value="ADAZ18">ADAZ18</option>
+                                    <option value="BCHZ18">BCHZ18</option>
+                                    <option value="EOSZ18">EOSZ18</option>
+                                    <option value="LTCZ18">LTCZ18</option>
+                                    <option value="TRXZ18">TRXZ18</option>
+                                    <option value="XRPZ18">XRPZ18</option>
                                 </select>
                                 <has-error :form="form" field="symbol"></has-error>
                             </div>

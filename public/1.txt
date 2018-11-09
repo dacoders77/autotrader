@@ -1,4 +1,0 @@
-2018-11-09 10:32:52 W:\domains\autotrader\app\Http\Controllers\SymbolController.php150 3 :0.00225141
-2018-11-09 10:32:52 W:\domains\autotrader\app\Http\Controllers\SymbolController.php150 5 :0.00225141
-2018-11-09 10:32:52 W:\domains\autotrader\app\Http\Controllers\SymbolController.php218 ORDER PLACED SUCCESS: array
-2018-11-09 10:32:52 W:\domains\autotrader\app\Http\Controllers\SymbolController.php218 ORDER PLACED SUCCESS: array

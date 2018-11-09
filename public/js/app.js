@@ -71816,6 +71816,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -72316,6 +72322,30 @@ var render = function() {
                             _vm._v(" "),
                             _c("option", { attrs: { value: "BTC/USD" } }, [
                               _vm._v("BTC/USD")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "ADAZ18" } }, [
+                              _vm._v("ADAZ18")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "BCHZ18" } }, [
+                              _vm._v("BCHZ18")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "EOSZ18" } }, [
+                              _vm._v("EOSZ18")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "LTCZ18" } }, [
+                              _vm._v("LTCZ18")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "TRXZ18" } }, [
+                              _vm._v("TRXZ18")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "XRPZ18" } }, [
+                              _vm._v("XRPZ18")
                             ])
                           ]
                         ),
