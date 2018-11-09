@@ -60,7 +60,7 @@ class ClientController extends Controller
             'telegram' => $request['telegram'],
             'email' => $request['email'],
             'api' => $request['api'],
-            'api_secret' => $request['telegram'],
+            'api_secret' => $request['api_secret'],
             'info' => $request['info'],
             //'bio' => $request['bio'],
             //'photo' => $request['photo'],

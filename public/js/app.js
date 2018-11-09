@@ -71809,6 +71809,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -71832,17 +71839,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             swal({
                 title: 'Are you sure?',
-                text: "Signal will be executed!!",
+                text: "Signal will be proceeded!!",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, execute it!'
+                confirmButtonText: 'Yes, proceed it!'
             }).then(function (result) {
                 // Ajax request
                 if (result.value) {
                     axios.post('exec', signal).then(function (response) {
-                        swal('Executed!', 'Symbol has been executed.', 'success');
+                        swal('Proceeded!', 'Signal has been proceeded', 'success');
                         Fire.$emit('AfterCreateSignal');
                     }).catch(function (error) {
                         //swal("Failed!", "Error: \n" + error.response.data, "warning");
@@ -72023,7 +72030,7 @@ var render = function() {
                         "tr",
                         {
                           key: signal.id,
-                          class: signal.status == "executed" ? "grey" : ""
+                          class: signal.status == "finished" ? "grey" : ""
                         },
                         [
                           _c("td", [_vm._v(_vm._s(signal.id))]),
@@ -72047,7 +72054,7 @@ var render = function() {
                                   ])
                                 : _vm._e(),
                               _vm._v(" "),
-                              signal.status == "open"
+                              signal.status == "proceeded"
                                 ? _c("div", [
                                     _c(
                                       "button",
@@ -72065,7 +72072,7 @@ var render = function() {
                                 : _vm._e(),
                               _vm._v(" "),
                               signal.status == "error" ||
-                              signal.status == "executed"
+                              signal.status == "finished"
                                 ? _c("div", [_vm._m(1, true)])
                                 : _vm._e()
                             ])
@@ -72111,8 +72118,8 @@ var render = function() {
                                 : _vm._e(),
                               _vm._v(" "),
                               signal.status == "error" ||
-                              signal.status == "open" ||
-                              signal.status == "executed"
+                              signal.status == "proceeded" ||
+                              signal.status == "finished"
                                 ? _c(
                                     "button",
                                     {
@@ -72262,82 +72269,59 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.symbol,
-                              expression: "form.symbol"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: {
-                            "is-invalid": _vm.form.errors.has("symbol")
-                          },
-                          attrs: {
-                            type: "text",
-                            name: "symbol",
-                            placeholder: "Symbol"
-                          },
-                          domProps: { value: _vm.form.symbol },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.symbol,
+                                expression: "form.symbol"
                               }
-                              _vm.$set(_vm.form, "symbol", $event.target.value)
+                            ],
+                            staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.form.errors.has("symbol")
+                            },
+                            attrs: { name: "symbol", id: "symbol" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.form,
+                                  "symbol",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              }
                             }
-                          }
-                        }),
+                          },
+                          [
+                            _c("option", { attrs: { value: "" } }, [
+                              _vm._v("Symbol")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "ETH/USD" } }, [
+                              _vm._v("ETH/USD")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "BTC/USD" } }, [
+                              _vm._v("BTC/USD")
+                            ])
+                          ]
+                        ),
                         _vm._v(" "),
                         _c("has-error", {
                           attrs: { form: _vm.form, field: "symbol" }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "form-group" },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.multiplier,
-                              expression: "form.multiplier"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: {
-                            "is-invalid": _vm.form.errors.has("multiplier")
-                          },
-                          attrs: {
-                            type: "number",
-                            step: "0.00000001",
-                            name: "multiplier",
-                            placeholder: "Multiplier (ETH: 0.000001)"
-                          },
-                          domProps: { value: _vm.form.multiplier },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form,
-                                "multiplier",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("has-error", {
-                          attrs: { form: _vm.form, field: "multiplier" }
                         })
                       ],
                       1

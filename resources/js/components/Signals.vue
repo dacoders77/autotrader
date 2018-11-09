@@ -41,7 +41,7 @@
 
 
                                 </tr>
-                                <tr v-for="signal in signals.data" :key="signal.id" :class="signal.status == 'executed' ? 'grey' : '' ">
+                                <tr v-for="signal in signals.data" :key="signal.id" :class="signal.status == 'finished' ? 'grey' : '' ">
                                     <td>{{ signal.id }}</td>
 
 
@@ -50,23 +50,19 @@
                                             <div v-if="signal.status == 'new'">
                                                 <button class="btn btn-success" @click="executeSymbol(signal)"><i class="fas fa-play"></i></button>
                                             </div>
-                                            <div v-if="signal.status == 'open'">
+                                            <div v-if="signal.status == 'proceeded'">
                                                 <button class="btn btn-danger" @click="executeSymbol(signal)"><i class="fas fa-stop"></i></button>
                                             </div>
-                                            <div v-if="signal.status == 'error' || signal.status == 'executed'">
+                                            <div v-if="signal.status == 'error' || signal.status == 'finished'">
                                                 <button class="btn btn-light" disabled><i class="fas fa-check"></i></button>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="btn-group">
-
                                             <button class="btn btn-primary" @click="deleteSignal(signal.id)"><i class="nav-icon fas fa-trash white"></i></button>
                                             <button v-if="signal.status == 'new'" class="btn btn-secondary" @click="editModal(signal)"><i class="nav-icon fas fa-edit white"></i></button>
-                                            <button v-if="signal.status == 'error' || signal.status == 'open' || signal.status == 'executed'" class="btn btn-secondary" disabled @click="editModal(signal) "><i class="nav-icon fas fa-edit white"></i></button>
-
-
-
+                                            <button v-if="signal.status == 'error' || signal.status == 'proceeded' || signal.status == 'finished'" class="btn btn-secondary" disabled @click="editModal(signal) "><i class="nav-icon fas fa-edit white"></i></button>
                                         </div>
                                     </td>
 
@@ -120,6 +116,7 @@
 
                     <form @submit.prevent="editmode ? updateSignal() : createSignal()">
                         <div class="modal-body">
+                            <!--
                             <div class="form-group">
                                 <input v-model="form.symbol" type="text" name="symbol"
                                        placeholder="Symbol"
@@ -132,6 +129,16 @@
                                        placeholder="Multiplier (ETH: 0.000001)"
                                        class="form-control" :class="{ 'is-invalid': form.errors.has('multiplier') }">
                                 <has-error :form="form" field="multiplier"></has-error>
+                            </div>
+                            -->
+
+                            <div class="form-group">
+                                <select name="symbol" v-model="form.symbol" id="symbol" class="form-control" :class="{ 'is-invalid': form.errors.has('symbol') }">
+                                    <option value="">Symbol</option>
+                                    <option value="ETH/USD">ETH/USD</option>
+                                    <option value="BTC/USD">BTC/USD</option>
+                                </select>
+                                <has-error :form="form" field="symbol"></has-error>
                             </div>
 
                             <div class="form-group">
@@ -193,20 +200,20 @@
 
                 swal({
                     title: 'Are you sure?',
-                    text: "Signal will be executed!!",
+                    text: "Signal will be proceeded!!",
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, execute it!'
+                    confirmButtonText: 'Yes, proceed it!'
                 }).then((result) => {
                     // Ajax request
                     if (result.value){
                         axios.post('exec', signal)
                             .then(response => {
                                 swal(
-                                    'Executed!',
-                                    'Symbol has been executed.',
+                                    'Proceeded!',
+                                    'Signal has been proceeded',
                                     'success'
                                 )
                                 Fire.$emit('AfterCreateSignal');
