@@ -146,7 +146,11 @@ class SymbolController extends Controller
                 Execution::where('signal_id', $request['id'])
                     ->where('client_id', $execution->client_id)
                     ->update(['client_funds' => $response, 'open_response' => 'Got balance ok']);
-                //return $response;
+
+                LogToFile::add(__FILE__ . __LINE__, $execution->client_id . " :" . $response);
+
+                Client::where('id', $execution->client_id)
+                    ->update(['funds' => $response]);
             }
             catch (\Exception $e){
                 Execution::where('signal_id', $request['id'])
@@ -238,7 +242,7 @@ class SymbolController extends Controller
             'close_price' => (gettype($this->placeOrderResponse) == 'array' ? $this->placeOrderResponse['price'] : null),
             'info' => ''
         ];
-        
+
         // Write statuses to DB
         // Open
         Signal::where('id', $execution->signal_id)->update($updateSignalStatuses);
@@ -249,7 +253,6 @@ class SymbolController extends Controller
                 'open_price' => (gettype($this->placeOrderResponse) == 'array' ? $this->placeOrderResponse['price'] : null),
                 'quote' => (gettype($this->placeOrderResponse) == 'array' ? $this->placeOrderResponse['price'] : null),
             ]);
-
         }
 
         // Close

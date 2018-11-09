@@ -24,7 +24,7 @@ class CreateClientsTable extends Migration
             $table->string('api')->nullable();
             $table->string('api_secret')->nullable();
             $table->string('status')->default('new');
-            $table->decimal('funds')->nullable();
+            $table->decimal('funds', 8, 4)->nullable();
             $table->string('info')->nullable();
             $table->boolean('is_deleted')->default(0);
         });
