@@ -193,7 +193,7 @@ class SymbolController extends Controller
         /* Place order */
         if ($direction == 'long'){
             try{
-                $this->placeOrderResponse = $exchange->createMarketBuyOrder($execution->symbol, $execution->client_volume, []);
+                $this->placeOrderResponse = $exchange->createMarketBuyOrder($execution->symbol, $execution->client_volume * $execution->leverage, []);
             }
             catch (\Exception $e){
                 $this->placeOrderResponse = $e->getMessage();
@@ -201,7 +201,7 @@ class SymbolController extends Controller
         }
         else{
             try{
-                $this->placeOrderResponse = $exchange->createMarketSellOrder($execution->symbol, $execution->client_volume, []);
+                $this->placeOrderResponse = $exchange->createMarketSellOrder($execution->symbol, $execution->client_volume * $execution->leverage, []);
             }
             catch (\Exception $e)
             {

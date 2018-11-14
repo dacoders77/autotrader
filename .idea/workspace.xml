@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="122d7a5d-d4c1-468d-81ee-8464a15c8350" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Console/Commands/btmx.php" afterPath="$PROJECT_DIR$/app/Console/Commands/btmx.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/SymbolController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/SymbolController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/migrations/2018_11_06_173649_create_executions_table.php" afterPath="$PROJECT_DIR$/database/migrations/2018_11_06_173649_create_executions_table.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/1.txt" afterPath="$PROJECT_DIR$/public/1.txt" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,8 +17,8 @@
       <file leaf-file-name="SymbolController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/SymbolController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="190" column="137" lean-forward="false" selection-start-line="190" selection-start-column="137" selection-end-line="190" selection-end-column="137" />
+            <state relative-caret-position="418">
+              <caret line="203" column="145" lean-forward="false" selection-start-line="203" selection-start-column="145" selection-end-line="203" selection-end-column="145" />
               <folding>
                 <element signature="e#40#66#0#PHP" expanded="true" />
               </folding>
@@ -398,7 +396,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="287609000" />
+    <option name="totallyTimeSpent" value="288229000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -841,8 +839,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/SymbolController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="190" column="137" lean-forward="false" selection-start-line="190" selection-start-column="137" selection-end-line="190" selection-end-column="137" />
+        <state relative-caret-position="418">
+          <caret line="203" column="145" lean-forward="false" selection-start-line="203" selection-start-column="145" selection-end-line="203" selection-end-column="145" />
           <folding>
             <element signature="e#40#66#0#PHP" expanded="true" />
           </folding>
