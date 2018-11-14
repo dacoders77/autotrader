@@ -64,9 +64,6 @@ class btmx extends Command
 
         //dump($exchange->privatePostPositionLeverage(array('symbol' => 'ETHUSD', 'leverage' => 10))); // privatePostPositionLeverage
 
-        //echo $response['timestamp'] . "\n";
-        //echo date("Y-m-d G:i:s", $response['timestamp'] / 1000);
-
     }
 
 }

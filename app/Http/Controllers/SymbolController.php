@@ -187,6 +187,9 @@ class SymbolController extends Controller
      */
     private function openPosition(bitmex $exchange, $execution, $direction){
 
+        /* Set leverage */
+        $setLeverageResponse = dump($exchange->privatePostPositionLeverage(array('symbol' => 'ETHUSD', 'leverage' => $execution->leverage)));
+
         /* Place order */
         if ($direction == 'long'){
             try{
@@ -258,23 +261,7 @@ class SymbolController extends Controller
                 'close_price' => (gettype($this->placeOrderResponse) == 'array' ? $this->placeOrderResponse['price'] : null),
                 ]);
         }
-
-
-
-        /*
-        Execution::where('id', $execution->id)->update(array(
-            'info' => json_encode($this->placeOrderResponse)
-            'close_date' => date("Y-m-d G:i:s", $this->placeOrderResponse['timestamp'] / 1000),
-            'close_price' => $this->placeOrderResponse['price']
-        ));
-        */
-
-
-
-
-
     }
-
 }
 
 
