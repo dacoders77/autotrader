@@ -48,7 +48,7 @@
                                     </td>
                                     <td>
                                         <div class="btn-group">
-                                            <button class="btn btn-success" @click="deleteSignal(signal.id)">
+                                            <button class="btn btn-primary" @click="deleteSignal(signal.id)">
                                                 <i class="nav-icon fas fa-trash white"></i>
                                             </button>
                                             <button class="btn btn-danger" @click="editModal(signal)">

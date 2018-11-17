@@ -57,8 +57,8 @@ class btmx extends Command
 
         //dump(array_keys($exchange->load_markets())); // ETH/USD BTC/USD
         try{
-            //$r = $exchange->fetch_ticker('ETHUSD'); // BCHZ18 works good
-            $r = $exchange->privatePostPositionLeverage(array('symbol' => 'ETH/USD', 'leverage' => 10));
+            //$r = $exchange->fetch_ticker('BTC/USD'); // BCHZ18 works good
+            $r = $exchange->privatePostPositionLeverage(array('symbol' => 'XBTUSD', 'leverage' => 10));
             dump($r);
         }
         catch (ExchangeError $e)
@@ -70,7 +70,7 @@ class btmx extends Command
 
         //dump($exchange->fetchBalance()['BTC']['free']); // BTC balance
 
-        //$response = $exchange->createMarketBuyOrder('ETHUSD', 1, []);
+        //$response = $exchange->createMarketBuyOrder('BTC/USD', 1, []);
         //dump($response);
 
         //$response = $exchange->createMarketSellOrder('ETHUSD', 1, []);

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
 class Symbol extends Model
@@ -14,15 +15,9 @@ class Symbol extends Model
      * @var array
      */
     protected $fillable = [
-        'execution_name', 'leverage_name', 'info',
+        'execution_name',
+        'leverage_name',
+        'info',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        //'password', 'remember_token',
-    ];
 }

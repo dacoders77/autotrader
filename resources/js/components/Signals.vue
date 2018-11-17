@@ -43,8 +43,6 @@
                                 </tr>
                                 <tr v-for="signal in signals.data" :key="signal.id" :class="signal.status == 'finished' ? 'grey' : '' ">
                                     <td>{{ signal.id }}</td>
-
-
                                     <td>
                                         <div class="btn-group">
                                             <div v-if="signal.status == 'new'">
@@ -135,6 +133,17 @@
                             <div class="form-group">
                                 <select name="symbol" v-model="form.symbol" id="symbol" class="form-control" :class="{ 'is-invalid': form.errors.has('symbol') }">
                                     <option value="">Symbol</option>
+
+
+                                        <option v-for="symbol in symbols.data">
+                                            {{ symbol.execution_name }}
+                                        </option>
+
+
+                                    <!--
+                                    <option v-for="symbol in symbols.data" :key="symbol.id">
+
+
                                     <option value="ETH/USD">ETH/USD</option>
                                     <option value="BTC/USD">BTC/USD</option>
                                     <option value="ADAZ18">ADAZ18</option>
@@ -143,6 +152,7 @@
                                     <option value="LTCZ18">LTCZ18</option>
                                     <option value="TRXZ18">TRXZ18</option>
                                     <option value="XRPZ18">XRPZ18</option>
+                                    -->
                                 </select>
                                 <has-error :form="form" field="symbol"></has-error>
                             </div>
@@ -190,6 +200,7 @@
             return{
                 editmode: false, // Modal edit record or create new flag
                 signals: {},
+                symbols: {}, // Symbols for drop down menu in create/update modal
                 form: new Form({ // Class instance
                     id: '',
                     symbol: '',
@@ -236,20 +247,6 @@
                                 */
                                 Fire.$emit('AfterCreateSignal');
                             });
-                        /*
-                        signal.post('exec').then(() => {
-                            if (result.value) {
-                                swal(
-                                    'Executed!',
-                                    'Symbol has been executed.',
-                                    'success'
-                                )
-                                //Fire.$emit('AfterCreateSignal');
-                            }
-                        }).catch(() => {
-                            swal("Failed!", "Something bad happened..", "warning");
-                        })
-                        */
                     }
                 })
 
@@ -277,6 +274,7 @@
             loadUsers(){
                 axios.get('api/signal').then(({data}) => (this.signals = data)); // Resource controllers are defined in api.php
                 //console.log(this.users);
+                axios.get('api/symbol').then(({data}) => (this.symbols = data));
             },
             createSignal(){
                 // Progress bar

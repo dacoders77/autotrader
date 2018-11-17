@@ -21,22 +21,24 @@
                                 <tr>
                                     <th><i class="fas fa-info-circle blue"></i></th>
                                     <th>Created</th>
-
                                     <th>Execution name</th>
                                     <th>Leverage name</th>
                                     <th>Info</th>
-
-
-
-
                                 </tr>
-                                <tr v-for="signal in clients.data" :key="signal.id">
-                                    <td>{{ signal.id }}</td>
 
-                                    <td>{{ signal.created_at | myDate }}</td>
-                                    <td>{{ signal.name }}</td>
-                                    <td>{{ signal.last_name }}</td>
-
+                                <tr v-for="symbol in symbols.data" :key="symbol.id">
+                                    <td>{{ symbol.id }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-primary" @click="deleteSymbol(symbol.id)">
+                                                <i class="nav-icon fas fa-trash white"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td>{{ symbol.created_at | myDate }}</td>
+                                    <td>{{ symbol.execution_name }}</td>
+                                    <td>{{ symbol.leverage_name }}</td>
+                                    <td>{{ symbol.info }}</td>
                                 </tr>
                                 </tbody></table>
                         </div>
@@ -45,7 +47,7 @@
                         <div class="card-footer">
 
                             <ul class="pagination justify-content-center">
-                                <pagination :data="clients" @pagination-change-page="getResults"></pagination>
+                                <pagination :data="symbols" @pagination-change-page="getResults"></pagination>
                             </ul>
 
 
@@ -61,7 +63,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" v-show="!editmode" id="newSignalLabel">Add new client</h5>
+                        <h5 class="modal-title" v-show="!editmode" id="newSignalLabel">Add new symbol</h5>
                         <h5 class="modal-title" v-show="editmode" id="newSignalLabel">Update client</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -71,40 +73,16 @@
                     <form @submit.prevent="editmode ? updateClient() : createClient()">
                         <div class="modal-body">
                             <div class="form-group">
-                                <input v-model="form.name" type="text" name="name"
-                                       placeholder="Name"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
-                                <has-error :form="form" field="name"></has-error>
+                                <input v-model="form.execution_name" type="text" name="execution_name"
+                                       placeholder="Execution symbol name"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('execution_name') }">
+                                <has-error :form="form" field="execution_name"></has-error>
                             </div>
                             <div class="form-group">
-                                <input v-model="form.last_name" type="text" name="last_name"
-                                       placeholder="Last Name"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('last_name') }">
-                                <has-error :form="form" field="last_name"></has-error>
-                            </div>
-                            <div class="form-group">
-                                <input v-model="form.telegram" type="text" name="telegram"
-                                       placeholder="Telegram"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('telegram') }">
-                                <has-error :form="form" field="telegram"></has-error>
-                            </div>
-                            <div class="form-group">
-                                <input v-model="form.email" type="text" name="email"
-                                       placeholder="Email"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-                                <has-error :form="form" field="email"></has-error>
-                            </div>
-                            <div class="form-group">
-                                <input v-model="form.api" type="text" name="api"
-                                       placeholder="Api"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('api') }">
-                                <has-error :form="form" field="api"></has-error>
-                            </div>
-                            <div class="form-group">
-                                <input v-model="form.api_secret" type="text" name="api_secret"
-                                       placeholder="Api secret"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('api_secret') }">
-                                <has-error :form="form" field="api_secret"></has-error>
+                                <input v-model="form.leverage_name" type="text" name="leverage_name"
+                                       placeholder="Leverage symbol name"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('leverage_name') }">
+                                <has-error :form="form" field="leverage_name"></has-error>
                             </div>
                             <div class="form-group">
                                 <input v-model="form.info" type="text" name="info"
@@ -116,7 +94,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button v-show="editmode" type="submit" class="btn btn-success">Update client</button>
-                            <button v-show="!editmode" type="submit" class="btn btn-primary">Create client</button>
+                            <button v-show="!editmode" type="submit" class="btn btn-primary">Create symbol</button>
                         </div>
                     </form>
                 </div>
@@ -133,15 +111,10 @@
         data(){
             return{
                 editmode: false, // Modal edit record or create new flag
-                clients: {},
+                symbols: {},
                 form: new Form({ // Class instance
-                    id: '',
-                    name: '',
-                    last_name: '',
-                    telegram: '',
-                    email: '',
-                    api: '',
-                    api_secret: '',
+                    execution_name: '',
+                    leverage_name: '',
                     info: ''
                 })
             }
@@ -151,30 +124,22 @@
             getResults(page = 1) {
                 axios.get('api/client?page=' + page)
                     .then(response => {
-                        this.clients = response.data;
+                        this.symbols = response.data;
                     });
-            },
-            editModal(signal){
-                this.editmode = true;
-                this.form.reset(); // Reset form function. https://github.com/cretueusebiu/vform
-                $('#addNewSignalModal').modal('show');
-                this.form.fill(signal);
-                console.log(signal);
             },
             newModal(){
                 this.editmode = false;
                 this.form.reset();
                 $('#addNewSignalModal').modal('show');
             },
-            loadClients(){
-                axios.get('api/client').then(({data}) => (this.clients = data)); // Resource controllers are defined in api.php
-                //console.log(this.users);
+            loadSymbols(){
+                axios.get('api/symbol').then(({data}) => (this.symbols = data)); // Resource controllers are defined in api.php
             },
             createClient(){
                 // Progress bar
                 this.$Progress.start();
                 // Post request to the controller
-                this.form.post('api/client')
+                this.form.post('api/symbol')
                     .then(() => {
                         // Request successful
                         Fire.$emit('AfterCreate'); // Trigger an event of the global object which is declared in app.js
@@ -207,7 +172,7 @@
                         this.$Progress.fail();
                     });
             },
-            deleteSignal(id){
+            deleteSymbol(id){
                 swal({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -220,11 +185,11 @@
                     // Ajax request
                     // Delete request type
                     if (result.value){
-                        this.form.delete('api/client/' + id).then(() => {
+                        this.form.delete('api/symbol/' + id).then(() => {
                             if (result.value) {
                                 swal(
                                     'Deleted!',
-                                    'Client has been deleted.',
+                                    'Symbol has been deleted.',
                                     'success'
                                 )
                                 Fire.$emit('AfterCreate');
@@ -237,11 +202,10 @@
             }
         },
         created() {
-            this.loadClients();
-
+            this.loadSymbols();
             // Event listener
             Fire.$on('AfterCreate', () => {
-                this.loadClients();
+                this.loadSymbols();
             });
         }
     }

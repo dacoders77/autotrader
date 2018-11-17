@@ -1,1 +1,1 @@
-2018-11-15 7:52:21 W:\domains\autotrader\app\Http\Controllers\SymbolController.php196 SET LEVERAGE RESPONSE: ETHUSD
+2018-11-17 17:40:16 W:\domains\autotrader\app\Http\Controllers\API\ExecutionController.php200 SET LEVERAGE RESPONSE: XBTUSD

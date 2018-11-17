@@ -26,4 +26,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('{zzz}', "HomeController@index")->where( 'path', '([A-z\d-\/_.]+)?' );
 
 // Symbol execution. Called from signal.vue
-Route::post('/exec', 'SymbolController@executeSymbol');
+Route::post('/exec', 'API\ExecutionController@executeSymbol');

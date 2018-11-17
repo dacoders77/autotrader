@@ -71822,12 +71822,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             editmode: false, // Modal edit record or create new flag
             signals: {},
+            symbols: {}, // Symbols for drop down menu in create/update modal
             form: new Form({ // Class instance
                 id: '',
                 symbol: '',
@@ -71869,20 +71880,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         */
                         Fire.$emit('AfterCreateSignal');
                     });
-                    /*
-                    signal.post('exec').then(() => {
-                        if (result.value) {
-                            swal(
-                                'Executed!',
-                                'Symbol has been executed.',
-                                'success'
-                            )
-                            //Fire.$emit('AfterCreateSignal');
-                        }
-                    }).catch(() => {
-                        swal("Failed!", "Something bad happened..", "warning");
-                    })
-                    */
                 }
             });
         },
@@ -71917,6 +71914,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return _this2.signals = data;
             }); // Resource controllers are defined in api.php
             //console.log(this.users);
+            axios.get('api/symbol').then(function (_ref2) {
+                var data = _ref2.data;
+                return _this2.symbols = data;
+            });
         },
         createSignal: function createSignal() {
             var _this3 = this;
@@ -72316,38 +72317,17 @@ var render = function() {
                               _vm._v("Symbol")
                             ]),
                             _vm._v(" "),
-                            _c("option", { attrs: { value: "ETH/USD" } }, [
-                              _vm._v("ETH/USD")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "BTC/USD" } }, [
-                              _vm._v("BTC/USD")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "ADAZ18" } }, [
-                              _vm._v("ADAZ18")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "BCHZ18" } }, [
-                              _vm._v("BCHZ18")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "EOSZ18" } }, [
-                              _vm._v("EOSZ18")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "LTCZ18" } }, [
-                              _vm._v("LTCZ18")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "TRXZ18" } }, [
-                              _vm._v("TRXZ18")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "XRPZ18" } }, [
-                              _vm._v("XRPZ18")
-                            ])
-                          ]
+                            _vm._l(_vm.symbols.data, function(symbol) {
+                              return _c("option", [
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(symbol.execution_name) +
+                                    "\n                                    "
+                                )
+                              ])
+                            })
+                          ],
+                          2
                         ),
                         _vm._v(" "),
                         _c("has-error", {
@@ -73020,7 +73000,7 @@ var render = function() {
                             _c(
                               "button",
                               {
-                                staticClass: "btn btn-success",
+                                staticClass: "btn btn-primary",
                                 on: {
                                   click: function($event) {
                                     _vm.deleteSignal(signal.id)
@@ -75061,42 +75041,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             editmode: false, // Modal edit record or create new flag
-            clients: {},
+            symbols: {},
             form: new Form({ // Class instance
-                id: '',
-                name: '',
-                last_name: '',
-                telegram: '',
-                email: '',
-                api: '',
-                api_secret: '',
+                execution_name: '',
+                leverage_name: '',
                 info: ''
             })
         };
@@ -75110,29 +75063,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
             axios.get('api/client?page=' + page).then(function (response) {
-                _this.clients = response.data;
+                _this.symbols = response.data;
             });
-        },
-        editModal: function editModal(signal) {
-            this.editmode = true;
-            this.form.reset(); // Reset form function. https://github.com/cretueusebiu/vform
-            $('#addNewSignalModal').modal('show');
-            this.form.fill(signal);
-            console.log(signal);
         },
         newModal: function newModal() {
             this.editmode = false;
             this.form.reset();
             $('#addNewSignalModal').modal('show');
         },
-        loadClients: function loadClients() {
+        loadSymbols: function loadSymbols() {
             var _this2 = this;
 
-            axios.get('api/client').then(function (_ref) {
+            axios.get('api/symbol').then(function (_ref) {
                 var data = _ref.data;
-                return _this2.clients = data;
+                return _this2.symbols = data;
             }); // Resource controllers are defined in api.php
-            //console.log(this.users);
         },
         createClient: function createClient() {
             var _this3 = this;
@@ -75140,7 +75085,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // Progress bar
             this.$Progress.start();
             // Post request to the controller
-            this.form.post('api/client').then(function () {
+            this.form.post('api/symbol').then(function () {
                 // Request successful
                 Fire.$emit('AfterCreate'); // Trigger an event of the global object which is declared in app.js
                 $('#addNewSignalModal').modal('hide'); // Modal hide
@@ -75167,7 +75112,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this4.$Progress.fail();
             });
         },
-        deleteSignal: function deleteSignal(id) {
+        deleteSymbol: function deleteSymbol(id) {
             var _this5 = this;
 
             swal({
@@ -75182,9 +75127,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Ajax request
                 // Delete request type
                 if (result.value) {
-                    _this5.form.delete('api/client/' + id).then(function () {
+                    _this5.form.delete('api/symbol/' + id).then(function () {
                         if (result.value) {
-                            swal('Deleted!', 'Client has been deleted.', 'success');
+                            swal('Deleted!', 'Symbol has been deleted.', 'success');
                             Fire.$emit('AfterCreate');
                         }
                     }).catch(function () {
@@ -75197,11 +75142,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this6 = this;
 
-        this.loadClients();
-
+        this.loadSymbols();
         // Event listener
         Fire.$on('AfterCreate', function () {
-            _this6.loadClients();
+            _this6.loadSymbols();
         });
     }
 });
@@ -75247,17 +75191,40 @@ var render = function() {
                   [
                     _vm._m(0),
                     _vm._v(" "),
-                    _vm._l(_vm.clients.data, function(signal) {
-                      return _c("tr", { key: signal.id }, [
-                        _c("td", [_vm._v(_vm._s(signal.id))]),
+                    _vm._l(_vm.symbols.data, function(symbol) {
+                      return _c("tr", { key: symbol.id }, [
+                        _c("td", [_vm._v(_vm._s(symbol.id))]),
                         _vm._v(" "),
                         _c("td", [
-                          _vm._v(_vm._s(_vm._f("myDate")(signal.created_at)))
+                          _c("div", { staticClass: "btn-group" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-primary",
+                                on: {
+                                  click: function($event) {
+                                    _vm.deleteSymbol(symbol.id)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "nav-icon fas fa-trash white"
+                                })
+                              ]
+                            )
+                          ])
                         ]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.name))]),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm._f("myDate")(symbol.created_at)))
+                        ]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.last_name))])
+                        _c("td", [_vm._v(_vm._s(symbol.execution_name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(symbol.leverage_name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(symbol.info))])
                       ])
                     })
                   ],
@@ -75272,7 +75239,7 @@ var render = function() {
                 { staticClass: "pagination justify-content-center" },
                 [
                   _c("pagination", {
-                    attrs: { data: _vm.clients },
+                    attrs: { data: _vm.symbols },
                     on: { "pagination-change-page": _vm.getResults }
                   })
                 ],
@@ -75320,7 +75287,7 @@ var render = function() {
                     staticClass: "modal-title",
                     attrs: { id: "newSignalLabel" }
                   },
-                  [_vm._v("Add new client")]
+                  [_vm._v("Add new symbol")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -75364,58 +75331,20 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.name,
-                              expression: "form.name"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: { "is-invalid": _vm.form.errors.has("name") },
-                          attrs: {
-                            type: "text",
-                            name: "name",
-                            placeholder: "Name"
-                          },
-                          domProps: { value: _vm.form.name },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(_vm.form, "name", $event.target.value)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("has-error", {
-                          attrs: { form: _vm.form, field: "name" }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "form-group" },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.last_name,
-                              expression: "form.last_name"
+                              value: _vm.form.execution_name,
+                              expression: "form.execution_name"
                             }
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("last_name")
+                            "is-invalid": _vm.form.errors.has("execution_name")
                           },
                           attrs: {
                             type: "text",
-                            name: "last_name",
-                            placeholder: "Last Name"
+                            name: "execution_name",
+                            placeholder: "Execution symbol name"
                           },
-                          domProps: { value: _vm.form.last_name },
+                          domProps: { value: _vm.form.execution_name },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -75423,7 +75352,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.form,
-                                "last_name",
+                                "execution_name",
                                 $event.target.value
                               )
                             }
@@ -75431,7 +75360,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "last_name" }
+                          attrs: { form: _vm.form, field: "execution_name" }
                         })
                       ],
                       1
@@ -75446,20 +75375,20 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.telegram,
-                              expression: "form.telegram"
+                              value: _vm.form.leverage_name,
+                              expression: "form.leverage_name"
                             }
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("telegram")
+                            "is-invalid": _vm.form.errors.has("leverage_name")
                           },
                           attrs: {
                             type: "text",
-                            name: "telegram",
-                            placeholder: "Telegram"
+                            name: "leverage_name",
+                            placeholder: "Leverage symbol name"
                           },
-                          domProps: { value: _vm.form.telegram },
+                          domProps: { value: _vm.form.leverage_name },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -75467,7 +75396,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.form,
-                                "telegram",
+                                "leverage_name",
                                 $event.target.value
                               )
                             }
@@ -75475,127 +75404,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "telegram" }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "form-group" },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.email,
-                              expression: "form.email"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: { "is-invalid": _vm.form.errors.has("email") },
-                          attrs: {
-                            type: "text",
-                            name: "email",
-                            placeholder: "Email"
-                          },
-                          domProps: { value: _vm.form.email },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(_vm.form, "email", $event.target.value)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("has-error", {
-                          attrs: { form: _vm.form, field: "email" }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "form-group" },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.api,
-                              expression: "form.api"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: { "is-invalid": _vm.form.errors.has("api") },
-                          attrs: {
-                            type: "text",
-                            name: "api",
-                            placeholder: "Api"
-                          },
-                          domProps: { value: _vm.form.api },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(_vm.form, "api", $event.target.value)
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("has-error", {
-                          attrs: { form: _vm.form, field: "api" }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "form-group" },
-                      [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.form.api_secret,
-                              expression: "form.api_secret"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          class: {
-                            "is-invalid": _vm.form.errors.has("api_secret")
-                          },
-                          attrs: {
-                            type: "text",
-                            name: "api_secret",
-                            placeholder: "Api secret"
-                          },
-                          domProps: { value: _vm.form.api_secret },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.form,
-                                "api_secret",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("has-error", {
-                          attrs: { form: _vm.form, field: "api_secret" }
+                          attrs: { form: _vm.form, field: "leverage_name" }
                         })
                       ],
                       1
@@ -75681,7 +75490,7 @@ var render = function() {
                         staticClass: "btn btn-primary",
                         attrs: { type: "submit" }
                       },
-                      [_vm._v("Create client")]
+                      [_vm._v("Create symbol")]
                     )
                   ])
                 ]

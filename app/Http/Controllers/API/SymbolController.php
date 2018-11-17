@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use ccxt\Exchange;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Client; // Model link
-use Mockery\Exception;
+use App\Symbol;
 
-class ClientController extends Controller
+class SymbolController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +15,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return Client::latest()->paginate(5);
+        return Symbol::latest()->paginate(5);
     }
 
     /**
@@ -48,25 +46,19 @@ class ClientController extends Controller
 
         /* Validation rule */
         $this->validate($request,[
-            'name' => 'required|string|max:20',
-            'email' => 'sometimes|nullable|email',
-            'api' => 'required|string|max:50',
-            'api_secret' => 'required|string|max:50'
+            'execution_name' => 'required|string|unique:symbols|max:10',
+            'leverage_name' => 'required|string|unique:symbols|max:10',
+            'info' => 'sometimes|nullable|string|max:50'
         ]);
 
-        return Client::create([
-            'name' => $request['name'],
-            'last_name' => $request['last_name'],
-            'telegram' => $request['telegram'],
-            'email' => $request['email'],
-            'api' => $request['api'],
-            'api_secret' => $request['api_secret'],
+
+        return Symbol::create([
+            'execution_name' => $request['execution_name'],
+            'leverage_name' => $request['leverage_name'],
             'info' => $request['info'],
-            //'bio' => $request['bio'],
-            //'photo' => $request['photo'],
-            //'password' => Hash::make($request['password']),
-            //'password' => '12356',
         ]);
+
+        return $request;
     }
 
     /**
@@ -100,18 +92,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $client = Client::findOrFail($id);
-
-        /* Validation rule */
-        $this->validate($request,[
-            'name' => 'required|string|max:20',
-            'email' => 'sometimes|nullable|email',
-            'api' => 'required|string|max:50',
-            'api_secret' => 'required|string|max:50'
-        ]);
-
-        $client->update($request->all());
-        return ['message' => 'Updated client info'];
+        //
     }
 
     /**
@@ -122,8 +103,8 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        $client = Client::findOrFail($id);
-        $client->delete();
-        return ['message' => 'Client deleted'];
+        $symbol = Symbol::findOrFail($id);
+        $symbol->delete();
+        return ['message' => 'Symbol deleted'];
     }
 }
