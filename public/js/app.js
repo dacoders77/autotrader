@@ -71817,21 +71817,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -72320,9 +72305,9 @@ var render = function() {
                             _vm._l(_vm.symbols.data, function(symbol) {
                               return _c("option", [
                                 _vm._v(
-                                  "\n                                        " +
+                                  "\n                                    " +
                                     _vm._s(symbol.execution_name) +
-                                    "\n                                    "
+                                    "\n                                "
                                 )
                               ])
                             })
@@ -75041,6 +75026,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -75511,6 +75497,8 @@ var staticRenderFns = [
       _c("th", [_c("i", { staticClass: "fas fa-info-circle blue" })]),
       _vm._v(" "),
       _c("th", [_vm._v("Created")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Action")]),
       _vm._v(" "),
       _c("th", [_vm._v("Execution name")]),
       _vm._v(" "),

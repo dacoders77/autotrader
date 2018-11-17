@@ -2,21 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="122d7a5d-d4c1-468d-81ee-8464a15c8350" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/Http/Controllers/SymbolController_old.php" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/Http/Controllers/API/ExecutionController.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/Http/Controllers/SymbolController.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/1.txt" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Console/Commands/btmx.php" afterPath="$PROJECT_DIR$/app/Console/Commands/btmx.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/API/ClientController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/ClientController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Symbol.php" afterPath="$PROJECT_DIR$/app/Symbol.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/app.js" afterPath="$PROJECT_DIR$/public/js/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/js/components/Clients.vue" afterPath="$PROJECT_DIR$/resources/js/components/Clients.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/js/components/Signals.vue" afterPath="$PROJECT_DIR$/resources/js/components/Signals.vue" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/js/components/Symbols.vue" afterPath="$PROJECT_DIR$/resources/js/components/Symbols.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/api.php" afterPath="$PROJECT_DIR$/routes/api.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -37,11 +25,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Symbols.vue" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Symbols.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/js/components/Symbols.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1264">
-              <caret line="133" column="14" lean-forward="true" selection-start-line="133" selection-start-column="14" selection-end-line="133" selection-end-column="14" />
+            <state relative-caret-position="227">
+              <caret line="23" column="46" lean-forward="false" selection-start-line="23" selection-start-column="46" selection-end-line="23" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -59,11 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LogToFile.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Classes/LogToFile.php">
+      <file leaf-file-name="Executions.vue" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/js/components/Executions.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="14" column="27" lean-forward="false" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+            <state relative-caret-position="-1285">
+              <caret line="23" column="46" lean-forward="false" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -79,7 +67,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="btmx.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="btmx.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Console/Commands/btmx.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="182">
@@ -116,8 +104,8 @@
       <file leaf-file-name="Signals.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/js/components/Signals.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1242">
-              <caret line="60" column="59" lean-forward="false" selection-start-line="60" selection-start-column="59" selection-end-line="60" selection-end-column="74" />
+            <state relative-caret-position="237">
+              <caret line="82" column="0" lean-forward="true" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -155,8 +143,8 @@
       <find>signal</find>
       <find>deletesymbol</find>
       <find>delete</find>
-      <find>where</find>
       <find>console</find>
+      <find>where</find>
     </findStrings>
     <replaceStrings>
       <replace>clients</replace>
@@ -208,14 +196,14 @@
         <option value="$PROJECT_DIR$/routes/api.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/API/ClientController.php" />
         <option value="$PROJECT_DIR$/app/Symbol.php" />
-        <option value="$PROJECT_DIR$/resources/js/components/Signals.vue" />
         <option value="$PROJECT_DIR$/resources/js/components/Clients.vue" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/API/SymbolController.php" />
-        <option value="$PROJECT_DIR$/resources/js/components/Symbols.vue" />
         <option value="$PROJECT_DIR$/app/Classes/LogToFile.php" />
         <option value="$PROJECT_DIR$/public/1.txt" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/API/ExecutionController.php" />
         <option value="$PROJECT_DIR$/app/Console/Commands/btmx.php" />
+        <option value="$PROJECT_DIR$/resources/js/components/Signals.vue" />
+        <option value="$PROJECT_DIR$/resources/js/components/Symbols.vue" />
       </list>
     </option>
   </component>
@@ -429,12 +417,12 @@
       <workItem from="1540562046230" duration="3152000" />
       <workItem from="1540624576675" duration="73226000" />
       <workItem from="1542281894412" duration="141000" />
-      <workItem from="1542308948108" duration="27902000" />
+      <workItem from="1542308948108" duration="28985000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="327246000" />
+    <option name="totallyTimeSpent" value="328329000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -693,14 +681,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/Executions.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="23" column="46" lean-forward="false" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/storage/logs/laravel.log">
       <provider selected="true" editor-type-id="LogFileEditorProvider">
         <state relative-caret-position="221">
@@ -818,30 +798,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Classes/LogToFile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="14" column="27" lean-forward="false" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/SymbolController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
           <caret line="96" column="0" lean-forward="true" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
           <folding>
             <element signature="e#44#72#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/ExecutionController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="198" column="163" lean-forward="false" selection-start-line="198" selection-start-column="163" selection-end-line="198" selection-end-column="163" />
-          <folding>
-            <element signature="e#44#70#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -862,26 +824,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/js/components/Symbols.vue">
+    <entry file="file://$PROJECT_DIR$/app/Console/Commands/btmx.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1264">
-          <caret line="133" column="14" lean-forward="true" selection-start-line="133" selection-start-column="14" selection-end-line="133" selection-end-column="14" />
+        <state relative-caret-position="182">
+          <caret line="60" column="81" lean-forward="false" selection-start-line="60" selection-start-column="75" selection-end-line="60" selection-end-column="81" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Classes/LogToFile.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="14" column="27" lean-forward="false" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/ExecutionController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="331">
+          <caret line="198" column="163" lean-forward="false" selection-start-line="198" selection-start-column="163" selection-end-line="198" selection-end-column="163" />
+          <folding>
+            <element signature="e#44#70#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Executions.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1285">
+          <caret line="23" column="46" lean-forward="false" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="46" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/js/components/Signals.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1242">
-          <caret line="60" column="59" lean-forward="false" selection-start-line="60" selection-start-column="59" selection-end-line="60" selection-end-column="74" />
+        <state relative-caret-position="237">
+          <caret line="82" column="0" lean-forward="true" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Console/Commands/btmx.php">
+    <entry file="file://$PROJECT_DIR$/resources/js/components/Symbols.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="60" column="81" lean-forward="false" selection-start-line="60" selection-start-column="75" selection-end-line="60" selection-end-column="81" />
+        <state relative-caret-position="227">
+          <caret line="23" column="46" lean-forward="false" selection-start-line="23" selection-start-column="46" selection-end-line="23" selection-end-column="46" />
           <folding />
         </state>
       </provider>

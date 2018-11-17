@@ -21,6 +21,7 @@
                                 <tr>
                                     <th><i class="fas fa-info-circle blue"></i></th>
                                     <th>Created</th>
+                                    <th>Action</th>
                                     <th>Execution name</th>
                                     <th>Leverage name</th>
                                     <th>Info</th>
