@@ -1,0 +1,1 @@
+2018-11-15 7:52:21 W:\domains\autotrader\app\Http\Controllers\SymbolController.php196 SET LEVERAGE RESPONSE: ETHUSD

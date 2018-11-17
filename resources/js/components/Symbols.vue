@@ -3,12 +3,12 @@
         <div class="row mt-3">
             <div style="width: 100%">
                 <div class="card">
-                    <div class="card-header"><span style="font-size:140%">Clients & APIs</span>
+                    <div class="card-header"><span style="font-size:140%">Symbols</span>
                         <div class="card-tools">
                             <!-- Button trigger modal -->
                         </div>
                         <button type="button" class="btn btn-success float-right" @click="newModal">
-                            <i class="fas fa-plus-square"></i> Client
+                            <i class="fas fa-plus-square"></i> Symbol
                         </button>
 
                     </div>
@@ -20,54 +20,23 @@
                                 <tbody>
                                 <tr>
                                     <th><i class="fas fa-info-circle blue"></i></th>
-                                    <th>Reload</th>
-                                    <th>Action</th>
                                     <th>Created</th>
 
-                                    <th>Name</th>
-                                    <th>LastName</th>
-                                    <th>Telegram</th>
-
-                                    <th>Email</th>
-                                    <th>Api</th>
-                                    <th>Secret</th>
-                                    <th>Status</th>
-
-                                    <th>Funds</th>
+                                    <th>Execution name</th>
+                                    <th>Leverage name</th>
                                     <th>Info</th>
+
 
 
 
                                 </tr>
                                 <tr v-for="signal in clients.data" :key="signal.id">
                                     <td>{{ signal.id }}</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button class="btn btn-warning"><i class="nav-icon fas fa-redo white"></i></button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button class="btn btn-success" @click="deleteSignal(signal.id)">
-                                                <i class="nav-icon fas fa-trash white"></i>
-                                            </button>
-                                            <button class="btn btn-danger" @click="editModal(signal)">
-                                                <i class="nav-icon fas fa-edit white"></i>
-                                            </button>
-                                        </div>
-                                    </td>
+
                                     <td>{{ signal.created_at | myDate }}</td>
                                     <td>{{ signal.name }}</td>
                                     <td>{{ signal.last_name }}</td>
 
-                                    <td>{{ signal.telegram }}</td>
-                                    <td>{{ signal.email }}</td>
-                                    <td>{{ signal.api }}</td>
-                                    <td>{{ signal.api_secret }}</td>
-
-                                    <td>{{ signal.status }}</td>
-                                    <td>{{ signal.funds }}</td>
-                                    <td>{{ signal.info }}</td>
                                 </tr>
                                 </tbody></table>
                         </div>

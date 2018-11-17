@@ -11,7 +11,17 @@ use App\Execution; // Link model
 use ccxt\bitmex;
 use Illuminate\Support\Facades\Cache;
 use Mockery\Exception;
+use Illuminate\Support\Facades\DB;
 
+/**
+ * Class SymbolController.
+ * Fill execution table with signal info.
+ * Fill funds.
+ * Calculate and fill volume.
+ * Place and execute orders.
+ *
+ * @package App\Http\Controllers
+ */
 class SymbolController extends Controller
 {
     private $orderVolume;
@@ -64,7 +74,6 @@ class SymbolController extends Controller
             }
         }
 
-
         //return "position closed";
         //return response('No symbol found', 412);
 
@@ -81,11 +90,11 @@ class SymbolController extends Controller
         // Get quote
         try {
             $this->symbolQuote = $this->exchange->fetch_ticker($request['symbol'])['last'];
+            LogToFile::add(__FILE__ . __LINE__, $this->symbolQuote);
         } catch (\Exception $e) {
+            LogToFile::add(__FILE__ . __LINE__, $e->getMessage());
             return $e->getMessage();
         }
-
-
 
         /**
          * Run through all records in executions table
@@ -114,9 +123,6 @@ class SymbolController extends Controller
             if ($execution->symbol == "LTCZ18") $this->symbolInXBT = $this->symbolQuote;
             if ($execution->symbol == "TRXZ18") $this->symbolInXBT = $this->symbolQuote;
             if ($execution->symbol == "XRPZ18") $this->symbolInXBT = $this->symbolQuote;
-
-
-            LogToFile::add(__FILE__ . __LINE__, $balancePortionXBT . " :" . $this->symbolInXBT . " round: " . round($balancePortionXBT / $this->symbolInXBT));
 
 
             Execution::where('signal_id', $request['id'])
@@ -188,7 +194,10 @@ class SymbolController extends Controller
     private function openPosition(bitmex $exchange, $execution, $direction){
 
         /* Set leverage */
-        $setLeverageResponse = dump($exchange->privatePostPositionLeverage(array('symbol' => 'ETHUSD', 'leverage' => $execution->leverage)));
+        $symbol = str_replace("/", '', $execution->symbol);
+        LogToFile::add(__FILE__ . __LINE__, "SET LEVERAGE RESPONSE: " . $symbol);
+        $setLeverageResponse = $exchange->privatePostPositionLeverage(array('symbol' => 'XBTUSD', 'leverage' => $execution->leverage));
+        //LogToFile::add(__FILE__ . __LINE__, "SET LEVERAGE RESPONSE: " . json_encode($setLeverageResponse));
 
         /* Place order */
         if ($direction == 'long'){

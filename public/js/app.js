@@ -4890,33 +4890,6 @@ module.exports = {
 /* 2 */
 /***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file.
@@ -5020,6 +4993,33 @@ module.exports = function normalizeComponent (
     options: options
   }
 }
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
@@ -7693,7 +7693,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
 /* 7 */
@@ -30380,7 +30380,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(139);
-module.exports = __webpack_require__(186);
+module.exports = __webpack_require__(189);
 
 
 /***/ }),
@@ -30455,7 +30455,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_4_vue_progressbar___default.a, options);
 
 // Define routes for vue routing
 // https://router.vuejs.org/guide/#javascript
-var routes = [{ path: '/signals', component: __webpack_require__(171) }, { path: '/clients', component: __webpack_require__(174) }, { path: '/executions', component: __webpack_require__(192) }, { path: '/dashboard', component: __webpack_require__(177) }, { path: '/profile', component: __webpack_require__(180) }];
+var routes = [{ path: '/signals', component: __webpack_require__(171) }, { path: '/clients', component: __webpack_require__(174) }, { path: '/executions', component: __webpack_require__(177) }, { path: '/symbols', component: __webpack_require__(211) }, { path: '/dashboard', component: __webpack_require__(180) }, { path: '/profile', component: __webpack_require__(183) }];
 
 // Link vue component without vue router
 //Vue.component('signals', require('./components/signals.vue'));
@@ -30486,7 +30486,7 @@ window.Fire = new Vue();
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-Vue.component('example-component', __webpack_require__(183));
+Vue.component('example-component', __webpack_require__(186));
 
 var app = new Vue({
     el: '#app',
@@ -47667,7 +47667,7 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(5)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(5)(module)))
 
 /***/ }),
 /* 142 */
@@ -63477,7 +63477,7 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(163).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(163).setImmediate))
 
 /***/ }),
 /* 163 */
@@ -63547,7 +63547,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
 /* 164 */
@@ -63740,7 +63740,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(10)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(10)))
 
 /***/ }),
 /* 165 */
@@ -71588,7 +71588,7 @@ if (inBrowser && window.Vue) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(172)
 /* template */
@@ -72636,7 +72636,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(175)
 /* template */
@@ -72909,7 +72909,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Toast notification
                 toast({
                     type: 'success',
-                    title: 'Signal created successfully'
+                    title: 'Client created successfully'
                 });
                 _this3.$Progress.finish();
             }).catch(function () {
@@ -72946,7 +72946,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (result.value) {
                     _this5.form.delete('api/client/' + id).then(function () {
                         if (result.value) {
-                            swal('Deleted!', 'Signal has been deleted.', 'success');
+                            swal('Deleted!', 'Client has been deleted.', 'success');
                             Fire.$emit('AfterCreate');
                         }
                     }).catch(function () {
@@ -73586,11 +73586,371 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(178)
 /* template */
 var __vue_template__ = __webpack_require__(179)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Executions.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-35085f86", Component.options)
+  } else {
+    hotAPI.reload("data-v-35085f86", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 178 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            editmode: false, // Modal edit record or create new flag
+            clients: {},
+            form: new Form({ // Class instance
+                id: '',
+                name: '',
+                last_name: '',
+                telegram: '',
+                email: '',
+                api: '',
+                api_secret: '',
+                info: ''
+            })
+        };
+    },
+
+    methods: {
+        // Pagination. https://github.com/gilbitron/laravel-vue-pagination
+        getResults: function getResults() {
+            var _this = this;
+
+            var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+
+            axios.get('api/execution?page=' + page).then(function (response) {
+                _this.clients = response.data;
+            });
+        },
+        loadClients: function loadClients() {
+            var _this2 = this;
+
+            axios.get('api/execution').then(function (_ref) {
+                var data = _ref.data;
+                return _this2.clients = data;
+            }); // Resource controllers are defined in api.php
+            //console.log(this.users);
+        }
+    },
+    created: function created() {
+        var _this3 = this;
+
+        this.loadClients();
+
+        //Event listener
+        Fire.$on('AfterCreate', function () {
+            _this3.loadClients();
+        });
+    }
+});
+
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row mt-3" }, [
+      _c("div", { staticStyle: { width: "100%" } }, [
+        _c("div", { staticClass: "card" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "card-body table-responsive p-0" }, [
+              _c("table", { staticClass: "table table-hover" }, [
+                _c(
+                  "tbody",
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _vm._l(_vm.clients.data, function(signal) {
+                      return _c("tr", { key: signal.id }, [
+                        _c("td", [_vm._v(_vm._s(signal.id))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm._f("myDate")(signal.created_at)))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.signal_id))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.client_id))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.client_name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.symbol))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.multiplier))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.direction))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.client_volume))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.percent))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.leverage))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.client_funds))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.status))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.open_status))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.close_status))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.open_price))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.close_price))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.open_response))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.close_response))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.info))])
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer" }, [
+              _c(
+                "ul",
+                { staticClass: "pagination justify-content-center" },
+                [
+                  _c("pagination", {
+                    attrs: { data: _vm.clients },
+                    on: { "pagination-change-page": _vm.getResults }
+                  })
+                ],
+                1
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("span", { staticStyle: { "font-size": "140%" } }, [
+        _vm._v("Executions")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_c("i", { staticClass: "fas fa-info-circle blue" })]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Created")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Signal id")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Client id")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Client name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Symbol")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Multiplier")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Direction")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Client volume")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Percent")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Leverage")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Client funds")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Open status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Close status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Open price")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Close price")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Open response")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Close response")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Info")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-35085f86", module.exports)
+  }
+}
+
+/***/ }),
+/* 180 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(181)
+/* template */
+var __vue_template__ = __webpack_require__(182)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -73629,7 +73989,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 178 */
+/* 181 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73856,7 +74216,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 179 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -74276,15 +74636,15 @@ if (false) {
 }
 
 /***/ }),
-/* 180 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(181)
+var __vue_script__ = __webpack_require__(184)
 /* template */
-var __vue_template__ = __webpack_require__(182)
+var __vue_template__ = __webpack_require__(185)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -74313,125 +74673,6 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-3bd692e4", Component.options)
   } else {
     hotAPI.reload("data-v-3bd692e4", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 181 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
-    }
-});
-
-/***/ }),
-/* 182 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card card-default" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Profile Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
-              )
-            ])
-          ])
-        ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3bd692e4", module.exports)
-  }
-}
-
-/***/ }),
-/* 183 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(184)
-/* template */
-var __vue_template__ = __webpack_require__(185)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/ExampleComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-299e239e", Component.options)
-  } else {
-    hotAPI.reload("data-v-299e239e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -74490,6 +74731,125 @@ var staticRenderFns = [
         _c("div", { staticClass: "col-md-8" }, [
           _c("div", { staticClass: "card card-default" }, [
             _c("div", { staticClass: "card-header" }, [
+              _vm._v("Profile Component")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _vm._v(
+                "\n                    I'm an example component.\n                "
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3bd692e4", module.exports)
+  }
+}
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(187)
+/* template */
+var __vue_template__ = __webpack_require__(188)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/ExampleComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-299e239e", Component.options)
+  } else {
+    hotAPI.reload("data-v-299e239e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 187 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {
+        console.log('Component mounted.');
+    }
+});
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row justify-content-center" }, [
+        _c("div", { staticClass: "col-md-8" }, [
+          _c("div", { staticClass: "card card-default" }, [
+            _c("div", { staticClass: "card-header" }, [
               _vm._v("Example Component")
             ]),
             _vm._v(" "),
@@ -74514,26 +74874,42 @@ if (false) {
 }
 
 /***/ }),
-/* 186 */
+/* 189 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 187 */,
-/* 188 */,
-/* 189 */,
 /* 190 */,
 /* 191 */,
-/* 192 */
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(193)
+var __vue_script__ = __webpack_require__(212)
 /* template */
-var __vue_template__ = __webpack_require__(194)
+var __vue_template__ = __webpack_require__(213)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -74550,7 +74926,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/Executions.vue"
+Component.options.__file = "resources/js/components/Symbols.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -74559,9 +74935,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-35085f86", Component.options)
+    hotAPI.createRecord("data-v-763bfc80", Component.options)
   } else {
-    hotAPI.reload("data-v-35085f86", Component.options)
+    hotAPI.reload("data-v-763bfc80", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -74572,11 +74948,47 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 193 */
+/* 212 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -74697,34 +75109,105 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
-            axios.get('api/execution?page=' + page).then(function (response) {
+            axios.get('api/client?page=' + page).then(function (response) {
                 _this.clients = response.data;
             });
+        },
+        editModal: function editModal(signal) {
+            this.editmode = true;
+            this.form.reset(); // Reset form function. https://github.com/cretueusebiu/vform
+            $('#addNewSignalModal').modal('show');
+            this.form.fill(signal);
+            console.log(signal);
+        },
+        newModal: function newModal() {
+            this.editmode = false;
+            this.form.reset();
+            $('#addNewSignalModal').modal('show');
         },
         loadClients: function loadClients() {
             var _this2 = this;
 
-            axios.get('api/execution').then(function (_ref) {
+            axios.get('api/client').then(function (_ref) {
                 var data = _ref.data;
                 return _this2.clients = data;
             }); // Resource controllers are defined in api.php
             //console.log(this.users);
+        },
+        createClient: function createClient() {
+            var _this3 = this;
+
+            // Progress bar
+            this.$Progress.start();
+            // Post request to the controller
+            this.form.post('api/client').then(function () {
+                // Request successful
+                Fire.$emit('AfterCreate'); // Trigger an event of the global object which is declared in app.js
+                $('#addNewSignalModal').modal('hide'); // Modal hide
+                // Toast notification
+                toast({
+                    type: 'success',
+                    title: 'Client created successfully'
+                });
+                _this3.$Progress.finish();
+            }).catch(function () {
+                // Error
+            });
+        },
+        updateClient: function updateClient() {
+            var _this4 = this;
+
+            this.$Progress.start();
+            this.form.put('api/client/' + this.form.id).then(function () {
+                $('#addNewSignalModal').modal('hide');
+                swal('Updated!', 'Client has been updated', 'success');
+                _this4.$Progress.finish();
+                Fire.$emit('AfterCreate');
+            }).catch(function () {
+                _this4.$Progress.fail();
+            });
+        },
+        deleteSignal: function deleteSignal(id) {
+            var _this5 = this;
+
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+                // Ajax request
+                // Delete request type
+                if (result.value) {
+                    _this5.form.delete('api/client/' + id).then(function () {
+                        if (result.value) {
+                            swal('Deleted!', 'Client has been deleted.', 'success');
+                            Fire.$emit('AfterCreate');
+                        }
+                    }).catch(function () {
+                        swal("Failed!", "Something bad happened..", "warning");
+                    });
+                }
+            });
         }
     },
     created: function created() {
-        var _this3 = this;
+        var _this6 = this;
 
         this.loadClients();
 
-        //Event listener
+        // Event listener
         Fire.$on('AfterCreate', function () {
-            _this3.loadClients();
+            _this6.loadClients();
         });
     }
 });
 
 /***/ }),
-/* 194 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -74735,7 +75218,26 @@ var render = function() {
     _c("div", { staticClass: "row mt-3" }, [
       _c("div", { staticStyle: { width: "100%" } }, [
         _c("div", { staticClass: "card" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "card-header" }, [
+            _c("span", { staticStyle: { "font-size": "140%" } }, [
+              _vm._v("Symbols")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-tools" }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-success float-right",
+                attrs: { type: "button" },
+                on: { click: _vm.newModal }
+              },
+              [
+                _c("i", { staticClass: "fas fa-plus-square" }),
+                _vm._v(" Symbol\n                    ")
+              ]
+            )
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c("div", { staticClass: "card-body table-responsive p-0" }, [
@@ -74743,7 +75245,7 @@ var render = function() {
                 _c(
                   "tbody",
                   [
-                    _vm._m(1),
+                    _vm._m(0),
                     _vm._v(" "),
                     _vm._l(_vm.clients.data, function(signal) {
                       return _c("tr", { key: signal.id }, [
@@ -74753,41 +75255,9 @@ var render = function() {
                           _vm._v(_vm._s(_vm._f("myDate")(signal.created_at)))
                         ]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.signal_id))]),
+                        _c("td", [_vm._v(_vm._s(signal.name))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.client_id))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.client_name))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.symbol))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.multiplier))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.direction))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.client_volume))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.percent))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.leverage))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.client_funds))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.status))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.open_status))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.close_status))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.open_price))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.close_price))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.open_response))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.close_response))]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.info))])
+                        _c("td", [_vm._v(_vm._s(signal.last_name))])
                       ])
                     })
                   ],
@@ -74812,22 +75282,418 @@ var render = function() {
           ])
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addNewSignalModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "newSignalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.editmode,
+                        expression: "!editmode"
+                      }
+                    ],
+                    staticClass: "modal-title",
+                    attrs: { id: "newSignalLabel" }
+                  },
+                  [_vm._v("Add new client")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h5",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.editmode,
+                        expression: "editmode"
+                      }
+                    ],
+                    staticClass: "modal-title",
+                    attrs: { id: "newSignalLabel" }
+                  },
+                  [_vm._v("Update client")]
+                ),
+                _vm._v(" "),
+                _vm._m(1)
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      _vm.editmode ? _vm.updateClient() : _vm.createClient()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.name,
+                              expression: "form.name"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: { "is-invalid": _vm.form.errors.has("name") },
+                          attrs: {
+                            type: "text",
+                            name: "name",
+                            placeholder: "Name"
+                          },
+                          domProps: { value: _vm.form.name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "name", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "name" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.last_name,
+                              expression: "form.last_name"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("last_name")
+                          },
+                          attrs: {
+                            type: "text",
+                            name: "last_name",
+                            placeholder: "Last Name"
+                          },
+                          domProps: { value: _vm.form.last_name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "last_name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "last_name" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.telegram,
+                              expression: "form.telegram"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("telegram")
+                          },
+                          attrs: {
+                            type: "text",
+                            name: "telegram",
+                            placeholder: "Telegram"
+                          },
+                          domProps: { value: _vm.form.telegram },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "telegram",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "telegram" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.email,
+                              expression: "form.email"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: { "is-invalid": _vm.form.errors.has("email") },
+                          attrs: {
+                            type: "text",
+                            name: "email",
+                            placeholder: "Email"
+                          },
+                          domProps: { value: _vm.form.email },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "email", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "email" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.api,
+                              expression: "form.api"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: { "is-invalid": _vm.form.errors.has("api") },
+                          attrs: {
+                            type: "text",
+                            name: "api",
+                            placeholder: "Api"
+                          },
+                          domProps: { value: _vm.form.api },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "api", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "api" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.api_secret,
+                              expression: "form.api_secret"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("api_secret")
+                          },
+                          attrs: {
+                            type: "text",
+                            name: "api_secret",
+                            placeholder: "Api secret"
+                          },
+                          domProps: { value: _vm.form.api_secret },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "api_secret",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "api_secret" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.info,
+                              expression: "form.info"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: { "is-invalid": _vm.form.errors.has("info") },
+                          attrs: {
+                            type: "text",
+                            name: "info",
+                            placeholder: "Info"
+                          },
+                          domProps: { value: _vm.form.info },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.form, "info", $event.target.value)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "info" }
+                        })
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" }
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.editmode,
+                            expression: "editmode"
+                          }
+                        ],
+                        staticClass: "btn btn-success",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Update client")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.editmode,
+                            expression: "!editmode"
+                          }
+                        ],
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Create client")]
+                    )
+                  ])
+                ]
+              )
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("span", { staticStyle: { "font-size": "140%" } }, [
-        _vm._v("Executions")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-tools" })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -74837,42 +75703,29 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Created")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Signal id")]),
+      _c("th", [_vm._v("Execution name")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Client id")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Client name")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Symbol")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Multiplier")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Direction")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Client volume")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Percent")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Leverage")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Client funds")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Status")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Open status")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Close status")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Open price")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Close price")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Open response")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Close response")]),
+      _c("th", [_vm._v("Leverage name")]),
       _vm._v(" "),
       _c("th", [_vm._v("Info")])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true
@@ -74880,7 +75733,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-35085f86", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-763bfc80", module.exports)
   }
 }
 

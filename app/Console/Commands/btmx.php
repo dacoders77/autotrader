@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use ccxt\bitfinex;
+use ccxt\ExchangeError;
 use Illuminate\Console\Command;
 use ccxt\bitmex;
 use Mockery\Exception;
@@ -51,18 +52,30 @@ class btmx extends Command
         //dd($exchange->urls);
 
         $exchange = new bitmex();
-        //dump(array_keys($exchange->load_markets())); // ETH/USD BTC/USD
-        dump($exchange->fetch_ticker('BCHZ18'));
         $exchange->apiKey = 'WkrVX4BG6aj4Y1rVGfZfB9CG';
         $exchange->secret = 'IFnTQcesYzCy3c8Srs5ULB8qZGpnHAOBvrfOwmnsHDJLLsFi';
+
+        //dump(array_keys($exchange->load_markets())); // ETH/USD BTC/USD
+        try{
+            //$r = $exchange->fetch_ticker('ETHUSD'); // BCHZ18 works good
+            $r = $exchange->privatePostPositionLeverage(array('symbol' => 'ETH/USD', 'leverage' => 10));
+            dump($r);
+        }
+        catch (ExchangeError $e)
+        {
+            echo $e->getMessage();
+        }
+
+
+
         //dump($exchange->fetchBalance()['BTC']['free']); // BTC balance
 
-        //$response = $exchange->createMarketBuyOrder('ETH/USD', 1, []);
+        //$response = $exchange->createMarketBuyOrder('ETHUSD', 1, []);
         //dump($response);
 
-        //$response = $exchange->createMarketSellOrder('ETH/USD', 1, []);
+        //$response = $exchange->createMarketSellOrder('ETHUSD', 1, []);
 
-        //dump($exchange->privatePostPositionLeverage(array('symbol' => 'ETHUSD', 'leverage' => 10))); // privatePostPositionLeverage
+        //dump($exchange->privatePostPositionLeverage(array('symbol' => 'ETHUSD', 'leverage' => 10))); // privatePostPositionLeverage ADAZ18
 
     }
 

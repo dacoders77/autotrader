@@ -22,13 +22,13 @@ class CreateSignalsTable extends Migration
             $table->decimal('percent')->nullable();
             $table->decimal('leverage')->nullable();
             $table->string('direction')->nullable();
-            $table->decimal('quote')->nullable();
+            $table->decimal('quote', 16, 8)->nullable();
             $table->string('status')->default('new');
 
             $table->dateTime('open_date')->nullable();
-            $table->decimal('open_price')->nullable();
+            $table->decimal('open_price', 16, 8)->nullable();
             $table->dateTime('close_date')->nullable();
-            $table->decimal('close_price')->nullable();
+            $table->decimal('close_price', 16, 8)->nullable();
 
             $table->decimal('stop_loss_price')->nullable();
             $table->decimal('stop_loss_percent')->nullable();
