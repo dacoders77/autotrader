@@ -15,7 +15,7 @@ class SymbolController extends Controller
      */
     public function index()
     {
-        return Symbol::latest()->paginate(5);
+        return Symbol::paginate();
     }
 
     /**
