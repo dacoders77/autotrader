@@ -87,7 +87,7 @@ Vue.filter('myDate', function(created_at){
     return moment(created_at).format('MMMM Do YYYY'); // MMMM Do YYYY, h:mm:ss a
 });
 
-// Global event components even listener objec
+// Global event components even listener object
 window.Fire = new Vue();
 
 

@@ -30478,7 +30478,7 @@ Vue.filter('myDate', function (created_at) {
     return __WEBPACK_IMPORTED_MODULE_0_moment___default()(created_at).format('MMMM Do YYYY'); // MMMM Do YYYY, h:mm:ss a
 });
 
-// Global event components even listener objec
+// Global event components even listener object
 window.Fire = new Vue();
 
 /**
@@ -74918,9 +74918,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
 //
 //
 //

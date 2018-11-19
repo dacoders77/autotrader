@@ -26,7 +26,6 @@
                                     <th>Leverage name</th>
                                     <th>Info</th>
                                 </tr>
-
                                 <tr v-for="symbol in symbols.data" :key="symbol.id">
                                     <td>{{ symbol.id }}</td>
                                     <td>
@@ -50,8 +49,6 @@
                             <ul class="pagination justify-content-center">
                                 <pagination :data="symbols" @pagination-change-page="getResults"></pagination>
                             </ul>
-
-
                         </div>
                     </div>
                 </div>
