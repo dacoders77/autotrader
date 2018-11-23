@@ -33,7 +33,7 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -46,13 +46,44 @@ class ClientController extends Controller
         throw $error;
         */
 
-        /* Validation rule */
-        $this->validate($request,[
+        /** Validation rule
+         * @see https://laravel-news.com/custom-validation-rule-objects
+         */
+        $this->validate($request, [
             'name' => 'required|string|max:20',
             'email' => 'sometimes|nullable|email',
-            'api' => 'required|string|max:50',
-            'api_secret' => 'required|string|max:50'
+            'api' =>
+                [function ($attributes, $value, $fail) {
+                    if (gettype(\App\Classes\Client::checkBalance()) != "double") {
+                        $fail("Can't get account balance! Wrong API keys or no privileges.");
+                    }
+                },
+                function ($attributes, $value, $fail) {
+                    if (\App\Classes\Client::checkSmallOrderExecution()) {
+                        $fail("Can't execute order on provided account! Wrong API keys or no privileges.");
+                    }
+                },
+                'api' => 'max:20'],
+            'api_secret' => 'required|unique:clients|string|max:50',
+
         ]);
+
+
+        /*
+        if (\App\Classes\Client::checkBalance($request['api'], $request['api_secret'])){
+            //
+        }else{
+            $error = \Illuminate\Validation\ValidationException::withMessages([
+                'field_name_1' => ["Can't access client's account with given API key pair"],
+                'field_name_2' => ['Validation Message #2'],
+            ]);
+            //throw $error;
+            //throw (new Exception('Cant create client. ClientController.php'));
+        }
+        */
+
+
+        // Small order check. executeSmallOrderCheck
 
         return Client::create([
             'name' => $request['name'],
@@ -72,7 +103,7 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -83,7 +114,7 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -94,8 +125,8 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -103,11 +134,11 @@ class ClientController extends Controller
         $client = Client::findOrFail($id);
 
         /* Validation rule */
-        $this->validate($request,[
+        $this->validate($request, [
             'name' => 'required|string|max:20',
             'email' => 'sometimes|nullable|email',
-            'api' => 'required|string|max:50',
-            'api_secret' => 'required|string|max:50'
+            'api' => 'required|string|unique:clients|max:50',
+            'api_secret' => 'required|string|unique:clients|max:50'
         ]);
 
         $client->update($request->all());
@@ -117,7 +148,7 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

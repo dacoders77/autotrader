@@ -217,8 +217,10 @@
                         });
                         this.$Progress.finish();
                     })
-                    .catch(() => {
+                    .catch((error) => {
                         // Error
+                        //alert(error.response.data.message);
+                        //console.log(error.response.data);
                     })
             },
             updateClient(){

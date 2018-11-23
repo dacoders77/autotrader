@@ -25,12 +25,10 @@ class Execution extends Model
         'volume',
         'percent',
         'leverage',
+        'leverage_response',
         'client_funds',
-
         'client_volume',
-
         'multiplier',
-
         'open_status',
         'close_status',
 

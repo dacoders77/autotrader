@@ -24,6 +24,8 @@
                                     <th>Action</th>
                                     <th>Execution name</th>
                                     <th>Leverage name</th>
+                                    <th>Min quant.</th>
+                                    <th>Formula</th>
                                     <th>Info</th>
                                 </tr>
                                 <tr v-for="symbol in symbols.data" :key="symbol.id">
@@ -38,6 +40,9 @@
                                     <td>{{ symbol.created_at | myDate }}</td>
                                     <td>{{ symbol.execution_name }}</td>
                                     <td>{{ symbol.leverage_name }}</td>
+                                    <td>{{ symbol.min_exec_quantity }}</td>
+                                    <td>{{ symbol.formula }}</td>
+
                                     <td>{{ symbol.info }}</td>
                                 </tr>
                                 </tbody></table>
@@ -83,6 +88,21 @@
                                 <has-error :form="form" field="leverage_name"></has-error>
                             </div>
                             <div class="form-group">
+                                <select name="type" v-model="form.formula" id="type2" class="form-control" :class="{ 'is-invalid': form.errors.has('formula') }">
+                                    <option value="">Formula</option>
+                                    <option value="=1/symbolQuote(BTC)">=1/symbolQuote(BTC)</option>
+                                    <option value="=symbolQuote*multp(ETH)">=symbolQuote*multp(ETH)</option>
+                                    <option value="=symbolQuote">=symbolQuote</option>
+                                </select>
+                                <has-error :form="form" field="formula"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <input v-model="form.min_exec_quantity" type="number" name="min_exec_quantity"
+                                       placeholder="Minimum execution quantity"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('min_exec_quantity') }">
+                                <has-error :form="form" field="min_exec_quantity"></has-error>
+                            </div>
+                            <div class="form-group">
                                 <input v-model="form.info" type="text" name="info"
                                        placeholder="Info"
                                        class="form-control" :class="{ 'is-invalid': form.errors.has('info') }">
@@ -113,6 +133,8 @@
                 form: new Form({ // Class instance
                     execution_name: '',
                     leverage_name: '',
+                    formula: '',
+                    min_exec_quantity: '',
                     info: ''
                 })
             }

@@ -89,13 +89,14 @@ class ExecutionController extends Controller
      */
     public function fillVolume(Request $request, bitmex $exchange){
 
-        // Get quote
+        /* Get quote */
         try {
             $this->symbolQuote = $this->exchange->fetch_ticker($request['symbol'])['last'];
-            LogToFile::add(__FILE__ . __LINE__, $this->symbolQuote);
+            //LogToFile::add(__FILE__ . __LINE__, $this->symbolQuote);
         } catch (\Exception $e) {
-            LogToFile::add(__FILE__ . __LINE__, $e->getMessage());
-            return $e->getMessage();
+            //LogToFile::add(__FILE__ . __LINE__, $e->getMessage());
+            throw (new Exception($e->getMessage()));
+            //return $e->getMessage();
         }
 
         /**
@@ -109,27 +110,32 @@ class ExecutionController extends Controller
 
             // Balance share calculation
             $balancePortionXBT = $execution->client_funds * $execution->percent / 100;
-            // Contract formula
 
+            // Contract formula
+            /*
             if ($execution->symbol == "BTC/USD") $this->symbolInXBT = 1 / $this->symbolQuote;
             if ($execution->symbol == "ETH/USD") $this->symbolInXBT = $this->symbolQuote * 0.000001;
-            if ($execution->symbol == "ADAZ18") $this->symbolInXBT = $this->symbolQuote;
 
+            if ($execution->symbol == "ADAZ18") $this->symbolInXBT = $this->symbolQuote;
             if ($execution->symbol == "BCHZ18") $this->symbolInXBT = $this->symbolQuote;
             if ($execution->symbol == "EOSZ18") $this->symbolInXBT = $this->symbolQuote;
-
-            /*<option value="LTCZ18">LTCZ18</option>
-                                    <option value="TRXZ18">TRXZ18</option>
-                                    <option value="XRPZ18">XRPZ18</option>*/
-
             if ($execution->symbol == "LTCZ18") $this->symbolInXBT = $this->symbolQuote;
             if ($execution->symbol == "TRXZ18") $this->symbolInXBT = $this->symbolQuote;
             if ($execution->symbol == "XRPZ18") $this->symbolInXBT = $this->symbolQuote;
+            */
 
+            // Formulas are set in Symbols.vue
+            // Get the formula. Use symbol as the key
+            $formula = Symbol::where('execution_name', $execution->symbol)->value('formula');
+            if ($formula == "=1/symbolQuote(BTC)") $this->symbolInXBT = 1 / $this->symbolQuote;
+            if ($formula == "=symbolQuote*multp(ETH)") $this->symbolInXBT = $this->symbolQuote * 0.000001;
+            if ($formula == "=symbolQuote")$this->symbolInXBT = $this->symbolQuote;
 
             Execution::where('signal_id', $request['id'])
                 ->where('client_id', $execution->client_id)
-                ->update(['client_volume' => round($balancePortionXBT / $this->symbolInXBT), 'status' => 'new', 'info' => 'Volume calculated']);
+                ->update(['client_volume' => round($balancePortionXBT / $this->symbolInXBT),
+                    'status' => 'new',
+                    'info' => 'volume calculated']);
         }
     }
 
@@ -158,7 +164,7 @@ class ExecutionController extends Controller
                 Execution::where('signal_id', $request['id'])
                     ->where('client_id', $execution->client_id)
                     ->update(['open_response' => 'Error getting client balance', 'info' => $e->getMessage()]);
-                //return $e->getMessage();
+                throw (new Exception('Can\'t get client funds. Client id: ' . $execution->client_id . " " . $e->getMessage()));
             }
         }
     }
@@ -196,8 +202,14 @@ class ExecutionController extends Controller
     private function openPosition(bitmex $exchange, $execution, $direction){
 
         /* Set leverage */
-        $setLeverageResponse = $exchange->privatePostPositionLeverage(array('symbol' => Symbol::where('execution_name', $execution->symbol)->value('leverage_name'), 'leverage' => $execution->leverage));
-        LogToFile::add(__FILE__ . __LINE__, "SET LEVERAGE RESPONSE: " . Symbol::where('execution_name', $execution->symbol)->value('leverage_name'));
+        try{
+            //$setLeverageResponse = $exchange->privatePostPositionLeverage(array('symbol' => Symbol::where('execution_name', $execution->symbol)->value('leverage_name'), 'leverage' => $execution->leverage));
+            $setLeverageResponse = $exchange->privatePostPositionLeverage(array('symbol' => 'ETHUSD_ddd', 'leverage' => $execution->leverage));
+            //LogToFile::add(__FILE__ . __LINE__, "SET LEVERAGE RESPONSE: " . Symbol::where('execution_name', $execution->symbol)->value('leverage_name'));
+        }
+        catch (\Exception $e){
+            throw (New Exception('Leverage set error. ' . $e->getMessage()));
+        }
 
         /* Place order */
         if ($direction == 'long'){
@@ -238,7 +250,7 @@ class ExecutionController extends Controller
             'open_status' => (gettype($this->placeOrderResponse) == 'array' ? 'ok' : 'error'),
             'open_response' => json_encode($this->placeOrderResponse),
             'open_price' => (gettype($this->placeOrderResponse) == 'array' ? $this->placeOrderResponse['price'] : null),
-            'info' => ''
+            'leverage_response' => json_encode($setLeverageResponse),
         ];
 
         $updateExecutionCloseStatuses = [
@@ -246,7 +258,6 @@ class ExecutionController extends Controller
             'close_status' => (gettype($this->placeOrderResponse) == 'array' ? 'ok' : 'error'),
             'close_response' => json_encode($this->placeOrderResponse),
             'close_price' => (gettype($this->placeOrderResponse) == 'array' ? $this->placeOrderResponse['price'] : null),
-            'info' => ''
         ];
 
         // Write statuses to DB

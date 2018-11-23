@@ -48,13 +48,16 @@ class SymbolController extends Controller
         $this->validate($request,[
             'execution_name' => 'required|string|unique:symbols|max:10',
             'leverage_name' => 'required|string|unique:symbols|max:10',
+            'formula' => 'required|string|max:40',
+            'min_exec_quantity' => 'required|string|max:8',
             'info' => 'sometimes|nullable|string|max:50'
         ]);
-
 
         return Symbol::create([
             'execution_name' => $request['execution_name'],
             'leverage_name' => $request['leverage_name'],
+            'formula' => $request['formula'],
+            'min_exec_quantity' => $request['min_exec_quantity'],
             'info' => $request['info'],
         ]);
 

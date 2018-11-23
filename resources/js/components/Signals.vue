@@ -154,6 +154,7 @@
                                        class="form-control" :class="{ 'is-invalid': form.errors.has('leverage') }">
                                 <has-error :form="form" field="leverage"></has-error>
                             </div>
+
                             <div class="form-group">
                                 <select name="type" v-model="form.direction" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('direction') }">
                                     <option value="">Side(direction)</option>

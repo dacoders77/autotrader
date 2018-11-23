@@ -15,6 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+// Delete
+Route::get('/bal', function () {
+    dump(\App\Classes\Client::checkBalance());
+    //dump (gettype(\App\Classes\Client::checkSmallOrderExecution()));
+});
+
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -27,3 +35,4 @@ Route::get('{zzz}', "HomeController@index")->where( 'path', '([A-z\d-\/_.]+)?' )
 
 // Symbol execution. Called from signal.vue
 Route::post('/exec', 'API\ExecutionController@executeSymbol');
+

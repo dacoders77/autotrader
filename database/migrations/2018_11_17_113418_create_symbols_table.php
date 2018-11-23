@@ -18,6 +18,8 @@ class CreateSymbolsTable extends Migration
             $table->timestamps();
             $table->string('execution_name')->nullable();
             $table->string('leverage_name')->nullable();
+            $table->string('min_exec_quantity')->nullable();
+            $table->string('formula')->nullable();
             $table->text('info')->nullable();
         });
     }

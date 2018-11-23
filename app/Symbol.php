@@ -17,6 +17,8 @@ class Symbol extends Model
     protected $fillable = [
         'execution_name',
         'leverage_name',
+        'formula',
+        'min_exec_quantity',
         'info',
     ];
 

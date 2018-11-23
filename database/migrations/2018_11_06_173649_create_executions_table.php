@@ -27,6 +27,7 @@ class CreateExecutionsTable extends Migration
             $table->decimal('client_volume', 12,6)->nullable();
             $table->decimal('percent')->nullable();
             $table->decimal('leverage')->nullable();
+            $table->text('leverage_response')->nullable();
 
             $table->decimal('client_funds', 12,6)->nullable();
 
