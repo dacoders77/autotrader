@@ -55,8 +55,6 @@ class ClientController extends Controller
         $this->api = $request['api'];
         $this->apiSecret = $request['api_secret'];
 
-
-
         $this->validate($request, [
             'name' => 'required|string|max:20',
             'email' => 'sometimes|nullable|email',
@@ -97,6 +95,8 @@ class ClientController extends Controller
 
         return Client::create([
             'name' => $request['name'],
+            'active' => true,
+            'valid' => true,
             'last_name' => $request['last_name'],
             'telegram' => $request['telegram'],
             'email' => $request['email'],
@@ -143,12 +143,28 @@ class ClientController extends Controller
     {
         $client = Client::findOrFail($id);
 
+        $this->api = $request['api'];
+        $this->apiSecret = $request['api_secret'];
+
         /* Validation rule */
         $this->validate($request, [
             'name' => 'required|string|max:20',
             'email' => 'sometimes|nullable|email',
-            'api' => 'required|string|max:50',
-            'api_secret' => 'required|string|max:50'
+            'api' =>
+                [function ($attributes, $value, $fail) {
+                    $response = \App\Classes\Client::checkBalance($this->api, $this->apiSecret);
+                    if (gettype($response) != "double") {
+                        $fail($response);
+                    }
+                },
+                    function ($attributes, $value, $fail) {
+                        $response = \App\Classes\Client::checkSmallOrderExecution($this->api, $this->apiSecret);
+                        if (gettype($response) != "array") {
+                            $fail($response);
+                        }
+                    },
+                    'api' => 'max:50'],
+            'api_secret' => 'required|string|max:50',
         ]);
 
         $client->update($request->all());

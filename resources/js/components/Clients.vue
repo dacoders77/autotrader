@@ -1,5 +1,5 @@
 <template>
-    <div class="container" >
+    <div class="container">
         <div class="row mt-3">
             <div style="width: 100%">
                 <div class="card">
@@ -21,10 +21,10 @@
                                 <tr>
                                     <th><i class="fas fa-info-circle blue"></i></th>
                                     <th>Active</th>
+                                    <th>Action</th>
                                     <th>Validate</th>
                                     <th>Valid</th>
-                                    <th>Action</th>
-                                    <th>Created</th>
+                                    <th>Created&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
 
                                     <th>Name</th>
                                     <th>LastName</th>
@@ -43,27 +43,15 @@
                                 <tr v-for="signal in clients.data" :key="signal.id">
                                     <td>{{ signal.id }}</td>
                                     <td>
-
-
                                         <div v-if="signal.active == '1'">
                                             <button class="btn btn-default" @click="activateClient(signal)">
                                                 <i class="fas fa-check-square"></i></button>
                                         </div>
-
                                         <div v-if="signal.active == '0'">
                                             <button class="btn btn-default" @click="activateClient(signal)">
                                                 <i class="far fa-square"></i></button>
                                         </div>
-
-
                                     </td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button class="btn btn-warning" @click="validateClient(signal)">
-                                            <i class="nav-icon fas fa-redo white"></i></button>
-                                        </div>
-                                    </td>
-                                    <td>True</td>
                                     <td>
                                         <div class="btn-group">
                                             <button class="btn btn-primary" @click="deleteSignal(signal.id)">
@@ -72,6 +60,20 @@
                                             <button class="btn btn-danger" @click="editModal(signal)">
                                                 <i class="nav-icon fas fa-edit white"></i>
                                             </button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-warning" @click="validateClient(signal)">
+                                                <i class="nav-icon fas fa-redo white"></i></button>
+                                        </div>
+                                    </td>
+                                    <td style="text-align: center">
+                                        <div v-if="signal.valid == '1'" style="padding-top: 7px">
+                                            <i class="far fa-thumbs-up fa-lg text-success"></i>
+                                        </div>
+                                        <div v-if="signal.valid == '0'" style="padding-top: 7px">
+                                            <i class="far fa-angry fa-lg text-danger"></i>
                                         </div>
                                     </td>
                                     <td>{{ signal.created_at | myDate }}</td>
@@ -87,7 +89,8 @@
                                     <td>{{ signal.funds }}</td>
                                     <td>{{ signal.info }}</td>
                                 </tr>
-                                </tbody></table>
+                                </tbody>
+                            </table>
                         </div>
                         <!-- /.card-body -->
                         <!-- Pagination -->
@@ -106,7 +109,8 @@
 
 
         <!-- Modal -->
-        <div class="modal fade" id="addNewSignalModal" tabindex="-1" role="dialog" aria-labelledby="newSignalLabel" aria-hidden="true">
+        <div class="modal fade" id="addNewSignalModal" tabindex="-1" role="dialog" aria-labelledby="newSignalLabel"
+             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -173,14 +177,13 @@
         </div>
 
 
-
     </div>
 </template>
 
 <script>
     export default {
-        data(){
-            return{
+        data() {
+            return {
                 editmode: false, // Modal edit record or create new flag
                 clients: {},
                 form: new Form({ // Class instance
@@ -195,8 +198,8 @@
                 })
             }
         },
-        methods:{
-            activateClient(client){
+        methods: {
+            activateClient(client) {
                 axios.post('activateclient', client)
                     .then(response => {
                         Fire.$emit('AfterCreate');
@@ -205,30 +208,21 @@
                         swal("Failed!", "Error: \n" + error.response.data.message, "warning");
                         Fire.$emit('AfterCreate');
                     });
-                },
-            validateClient(client){
-            axios.post('validateclient', client)
-                .then(response => {
-                    swal(
-                        'Proceeded!',
-                        response.data.message, // Response from ClientController.php
-                        'success'
-                    )
-                    console.log(response);
-                    Fire.$emit('AfterCreateSignal');
-                })
-                .catch(error => {
-                    swal("Failed!", "Error: \n" + error.response.data.message, "warning");
-
-                    //console.log(error.response.data.message);
-                    /*
-                    for(var i in error){
-                        console.log(i, error[i]);
-                    }
-                    */
-                    Fire.$emit('AfterCreateSignal');
-                });
-
+            },
+            validateClient(client) {
+                axios.post('validateclient', client)
+                    .then(response => {
+                        swal(
+                            'Proceeded!',
+                            response.data.message, // Response from ClientController.php
+                            'success'
+                        )
+                        Fire.$emit('AfterCreate');
+                    })
+                    .catch(error => {
+                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+                        Fire.$emit('AfterCreate');
+                    });
 
 
             },
@@ -239,23 +233,23 @@
                         this.clients = response.data;
                     });
             },
-            editModal(signal){
+            editModal(signal) {
                 this.editmode = true;
                 this.form.reset(); // Reset form function. https://github.com/cretueusebiu/vform
                 $('#addNewSignalModal').modal('show');
                 this.form.fill(signal);
                 console.log(signal);
             },
-            newModal(){
+            newModal() {
                 this.editmode = false;
                 this.form.reset();
                 $('#addNewSignalModal').modal('show');
             },
-            loadClients(){
+            loadClients() {
                 axios.get('api/client').then(({data}) => (this.clients = data)); // Resource controllers are defined in api.php
                 //console.log(this.users);
             },
-            createClient(){
+            createClient() {
                 // Progress bar
                 this.$Progress.start();
                 // Post request to the controller
@@ -277,7 +271,7 @@
                         //console.log(error.response.data);
                     })
             },
-            updateClient(){
+            updateClient() {
                 this.$Progress.start();
                 this.form.put('api/client/' + this.form.id)
                     .then(() => {
@@ -294,7 +288,7 @@
                         this.$Progress.fail();
                     });
             },
-            deleteSignal(id){
+            deleteSignal(id) {
                 swal({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -306,7 +300,7 @@
                 }).then((result) => {
                     // Ajax request
                     // Delete request type
-                    if (result.value){
+                    if (result.value) {
                         this.form.delete('api/client/' + id).then(() => {
                             if (result.value) {
                                 swal(

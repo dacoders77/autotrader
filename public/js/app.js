@@ -30475,7 +30475,7 @@ Vue.filter('upText', function (text) {
 
 // Pretty date formatting
 Vue.filter('myDate', function (created_at) {
-    return __WEBPACK_IMPORTED_MODULE_0_moment___default()(created_at).format('MMMM Do YYYY'); // MMMM Do YYYY, h:mm:ss a
+    return __WEBPACK_IMPORTED_MODULE_0_moment___default()(created_at).format('MM.DD h:mm'); // MMMM Do YYYY, h:mm:ss a
 });
 
 // Global event components even listener object
@@ -72825,6 +72825,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -72857,18 +72860,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.post('validateclient', client).then(function (response) {
                 swal('Proceeded!', response.data.message, // Response from ClientController.php
                 'success');
-                console.log(response);
-                Fire.$emit('AfterCreateSignal');
+                Fire.$emit('AfterCreate');
             }).catch(function (error) {
                 swal("Failed!", "Error: \n" + error.response.data.message, "warning");
-
-                //console.log(error.response.data.message);
-                /*
-                for(var i in error){
-                    console.log(i, error[i]);
-                }
-                */
-                Fire.$emit('AfterCreateSignal');
+                Fire.$emit('AfterCreate');
             });
         },
 
@@ -73067,29 +73062,6 @@ var render = function() {
                             _c(
                               "button",
                               {
-                                staticClass: "btn btn-warning",
-                                on: {
-                                  click: function($event) {
-                                    _vm.validateClient(signal)
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "nav-icon fas fa-redo white"
-                                })
-                              ]
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v("True")]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c("div", { staticClass: "btn-group" }, [
-                            _c(
-                              "button",
-                              {
                                 staticClass: "btn btn-primary",
                                 on: {
                                   click: function($event) {
@@ -73121,6 +73093,55 @@ var render = function() {
                               ]
                             )
                           ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("div", { staticClass: "btn-group" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-warning",
+                                on: {
+                                  click: function($event) {
+                                    _vm.validateClient(signal)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "nav-icon fas fa-redo white"
+                                })
+                              ]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticStyle: { "text-align": "center" } }, [
+                          signal.valid == "1"
+                            ? _c(
+                                "div",
+                                { staticStyle: { "padding-top": "7px" } },
+                                [
+                                  _c("i", {
+                                    staticClass:
+                                      "far fa-thumbs-up fa-lg text-success"
+                                  })
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          signal.valid == "0"
+                            ? _c(
+                                "div",
+                                { staticStyle: { "padding-top": "7px" } },
+                                [
+                                  _c("i", {
+                                    staticClass:
+                                      "far fa-angry fa-lg text-danger"
+                                  })
+                                ]
+                              )
+                            : _vm._e()
                         ]),
                         _vm._v(" "),
                         _c("td", [
@@ -73589,13 +73610,13 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Active")]),
       _vm._v(" "),
+      _c("th", [_vm._v("Action")]),
+      _vm._v(" "),
       _c("th", [_vm._v("Validate")]),
       _vm._v(" "),
       _c("th", [_vm._v("Valid")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Action")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Created")]),
+      _c("th", [_vm._v("Created       ")]),
       _vm._v(" "),
       _c("th", [_vm._v("Name")]),
       _vm._v(" "),
