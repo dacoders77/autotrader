@@ -22,46 +22,32 @@ class Client
 
     public static function bitmex($api = '', $apiSecret = '') {
         if (!self::$exchange) self::$exchange = new bitmex();
-        self::$exchange->apiKey = 'WkrVX4BG6aj4Y1rVGfZfB9CG';
-        self::$exchange->secret = 'IFnTQcesYzCy3c8Srs5ULB8qZGpnHAOBvrfOwmnsHDJLLsFi';
-        //self::$exchange->apiKey = $api;
-        //self::$exchange->secret = $apiSecret;
+        self::$exchange->apiKey = $api;
+        self::$exchange->secret = $apiSecret;
         return self::$exchange;
     }
 
-    public static function checkBalance($api = 'sdf', $apiSecret = 'sdf'){
-
+    public static function checkBalance($api = '', $apiSecret = ''){
         try{
             $response = self::bitmex($api, $apiSecret)->fetchBalance()['BTC']['free'];
             return $response;
         }
         catch (\Exception $e){
             $var =  preg_replace('~^bitmex ~', '', $e->getMessage());
-            $var = json_decode($var, 1);
-            //return json_encode($var, true);
-            return $var;
+            return json_decode($var, 1);
         }
     }
 
-    public static function checkSmallOrderExecution(){
-
-        Self::$exchange = new bitmex();
-
-        Self::$exchange->apiKey = 'WkrVX4BG6aj4Y1rVGfZfB9CG';
-        Self::$exchange->secret = 'IFnTQcesYzCy3c8Srs5ULB8qZGpnHAOBvrfOwmnsHDJLLsFi';
-
+    public static function checkSmallOrderExecution($api = '', $apiSecret = ''){
+        self::$exchange = new bitmex();
         try{
-            $quantity = 100;
-            $response = Self::$exchange->createMarketBuyOrder('BTC/USD', $quantity, []);
-            Self::$exchange->createMarketSellOrder('BTC/USD', $quantity, []);
+            $quantity = 1;
+            $response = self::bitmex($api, $apiSecret)->createMarketBuyOrder('BTC/USD', $quantity, []);
+            self::bitmex($api, $apiSecret)->createMarketSellOrder('BTC/USD', $quantity, []);
             return $response;
         }
         catch (\Exception $e){
             return $e->getMessage();
         }
-
-
-        return true;
-
     }
 }

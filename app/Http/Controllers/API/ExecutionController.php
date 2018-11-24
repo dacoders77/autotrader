@@ -112,17 +112,6 @@ class ExecutionController extends Controller
             $balancePortionXBT = $execution->client_funds * $execution->percent / 100;
 
             // Contract formula
-            /*
-            if ($execution->symbol == "BTC/USD") $this->symbolInXBT = 1 / $this->symbolQuote;
-            if ($execution->symbol == "ETH/USD") $this->symbolInXBT = $this->symbolQuote * 0.000001;
-
-            if ($execution->symbol == "ADAZ18") $this->symbolInXBT = $this->symbolQuote;
-            if ($execution->symbol == "BCHZ18") $this->symbolInXBT = $this->symbolQuote;
-            if ($execution->symbol == "EOSZ18") $this->symbolInXBT = $this->symbolQuote;
-            if ($execution->symbol == "LTCZ18") $this->symbolInXBT = $this->symbolQuote;
-            if ($execution->symbol == "TRXZ18") $this->symbolInXBT = $this->symbolQuote;
-            if ($execution->symbol == "XRPZ18") $this->symbolInXBT = $this->symbolQuote;
-            */
 
             // Formulas are set in Symbols.vue
             // Get the formula. Use symbol as the key
@@ -206,6 +195,7 @@ class ExecutionController extends Controller
             //$setLeverageResponse = $exchange->privatePostPositionLeverage(array('symbol' => Symbol::where('execution_name', $execution->symbol)->value('leverage_name'), 'leverage' => $execution->leverage));
             $setLeverageResponse = $exchange->privatePostPositionLeverage(array('symbol' => 'ETHUSD_ddd', 'leverage' => $execution->leverage));
             //LogToFile::add(__FILE__ . __LINE__, "SET LEVERAGE RESPONSE: " . Symbol::where('execution_name', $execution->symbol)->value('leverage_name'));
+
         }
         catch (\Exception $e){
             throw (New Exception('Leverage set error. ' . $e->getMessage()));

@@ -18,6 +18,8 @@ class Client extends Model
         'name',
         'last_name',
         'telegram',
+        'valid',
+        'active',
         'email',
         'api',
         'api_secret',

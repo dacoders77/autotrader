@@ -71815,9 +71815,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -71837,7 +71834,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        // Symbol test execution. DELEE
         executeSymbol: function executeSymbol(signal) {
 
             swal({
@@ -72811,6 +72807,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -72831,6 +72845,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        activateClient: function activateClient(client) {
+            axios.post('activateclient', client).then(function (response) {
+                Fire.$emit('AfterCreate');
+            }).catch(function (error) {
+                swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+                Fire.$emit('AfterCreate');
+            });
+        },
+        validateClient: function validateClient(client) {
+            axios.post('validateclient', client).then(function (response) {
+                swal('Proceeded!', response.data.message, // Response from ClientController.php
+                'success');
+                console.log(response);
+                Fire.$emit('AfterCreateSignal');
+            }).catch(function (error) {
+                swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+
+                //console.log(error.response.data.message);
+                /*
+                for(var i in error){
+                    console.log(i, error[i]);
+                }
+                */
+                Fire.$emit('AfterCreateSignal');
+            });
+        },
+
         // Pagination. https://github.com/gilbitron/laravel-vue-pagination
         getResults: function getResults() {
             var _this = this;
@@ -72981,7 +73022,68 @@ var render = function() {
                       return _c("tr", { key: signal.id }, [
                         _c("td", [_vm._v(_vm._s(signal.id))]),
                         _vm._v(" "),
-                        _vm._m(1, true),
+                        _c("td", [
+                          signal.active == "1"
+                            ? _c("div", [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-default",
+                                    on: {
+                                      click: function($event) {
+                                        _vm.activateClient(signal)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fas fa-check-square"
+                                    })
+                                  ]
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          signal.active == "0"
+                            ? _c("div", [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-default",
+                                    on: {
+                                      click: function($event) {
+                                        _vm.activateClient(signal)
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "far fa-square" })]
+                                )
+                              ])
+                            : _vm._e()
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("div", { staticClass: "btn-group" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-warning",
+                                on: {
+                                  click: function($event) {
+                                    _vm.validateClient(signal)
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "nav-icon fas fa-redo white"
+                                })
+                              ]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("True")]),
                         _vm._v(" "),
                         _c("td", [
                           _c("div", { staticClass: "btn-group" }, [
@@ -73124,7 +73226,7 @@ var render = function() {
                   [_vm._v("Update client")]
                 ),
                 _vm._v(" "),
-                _vm._m(2)
+                _vm._m(1)
               ]),
               _vm._v(" "),
               _c(
@@ -73485,7 +73587,11 @@ var staticRenderFns = [
     return _c("tr", [
       _c("th", [_c("i", { staticClass: "fas fa-info-circle blue" })]),
       _vm._v(" "),
-      _c("th", [_vm._v("Reload")]),
+      _c("th", [_vm._v("Active")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Validate")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Valid")]),
       _vm._v(" "),
       _c("th", [_vm._v("Action")]),
       _vm._v(" "),
@@ -73508,18 +73614,6 @@ var staticRenderFns = [
       _c("th", [_vm._v("Funds")]),
       _vm._v(" "),
       _c("th", [_vm._v("Info")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("div", { staticClass: "btn-group" }, [
-        _c("button", { staticClass: "btn btn-warning" }, [
-          _c("i", { staticClass: "nav-icon fas fa-redo white" })
-        ])
-      ])
     ])
   },
   function() {

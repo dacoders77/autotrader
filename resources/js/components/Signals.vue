@@ -32,13 +32,10 @@
                                     <th>Side</th>
                                     <th>Quote</th>
 
-
                                     <th>Open</th>
                                     <th>Price</th>
                                     <th>Close</th>
                                     <th>Price</th>
-
-
 
                                 </tr>
                                 <tr v-for="signal in signals.data" :key="signal.id" :class="signal.status == 'finished' ? 'grey' : '' ">
@@ -198,7 +195,6 @@
             }
         },
         methods:{
-            // Symbol test execution. DELEE
             executeSymbol(signal){
 
                 swal({

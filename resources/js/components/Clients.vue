@@ -20,7 +20,9 @@
                                 <tbody>
                                 <tr>
                                     <th><i class="fas fa-info-circle blue"></i></th>
-                                    <th>Reload</th>
+                                    <th>Active</th>
+                                    <th>Validate</th>
+                                    <th>Valid</th>
                                     <th>Action</th>
                                     <th>Created</th>
 
@@ -37,15 +39,31 @@
                                     <th>Info</th>
 
 
-
                                 </tr>
                                 <tr v-for="signal in clients.data" :key="signal.id">
                                     <td>{{ signal.id }}</td>
                                     <td>
+
+
+                                        <div v-if="signal.active == '1'">
+                                            <button class="btn btn-default" @click="activateClient(signal)">
+                                                <i class="fas fa-check-square"></i></button>
+                                        </div>
+
+                                        <div v-if="signal.active == '0'">
+                                            <button class="btn btn-default" @click="activateClient(signal)">
+                                                <i class="far fa-square"></i></button>
+                                        </div>
+
+
+                                    </td>
+                                    <td>
                                         <div class="btn-group">
-                                            <button class="btn btn-warning"><i class="nav-icon fas fa-redo white"></i></button>
+                                            <button class="btn btn-warning" @click="validateClient(signal)">
+                                            <i class="nav-icon fas fa-redo white"></i></button>
                                         </div>
                                     </td>
+                                    <td>True</td>
                                     <td>
                                         <div class="btn-group">
                                             <button class="btn btn-primary" @click="deleteSignal(signal.id)">
@@ -178,6 +196,42 @@
             }
         },
         methods:{
+            activateClient(client){
+                axios.post('activateclient', client)
+                    .then(response => {
+                        Fire.$emit('AfterCreate');
+                    })
+                    .catch(error => {
+                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+                        Fire.$emit('AfterCreate');
+                    });
+                },
+            validateClient(client){
+            axios.post('validateclient', client)
+                .then(response => {
+                    swal(
+                        'Proceeded!',
+                        response.data.message, // Response from ClientController.php
+                        'success'
+                    )
+                    console.log(response);
+                    Fire.$emit('AfterCreateSignal');
+                })
+                .catch(error => {
+                    swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+
+                    //console.log(error.response.data.message);
+                    /*
+                    for(var i in error){
+                        console.log(i, error[i]);
+                    }
+                    */
+                    Fire.$emit('AfterCreateSignal');
+                });
+
+
+
+            },
             // Pagination. https://github.com/gilbitron/laravel-vue-pagination
             getResults(page = 1) {
                 axios.get('api/client?page=' + page)
@@ -279,3 +333,4 @@
         }
     }
 </script>
+

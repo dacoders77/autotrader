@@ -16,13 +16,6 @@ Route::get('/', function () {
 });
 
 
-// Delete
-Route::get('/bal', function () {
-    dump(\App\Classes\Client::checkBalance());
-    //dump (gettype(\App\Classes\Client::checkSmallOrderExecution()));
-});
-
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -35,4 +28,14 @@ Route::get('{zzz}', "HomeController@index")->where( 'path', '([A-z\d-\/_.]+)?' )
 
 // Symbol execution. Called from signal.vue
 Route::post('/exec', 'API\ExecutionController@executeSymbol');
+
+// Client validation. Called from client.vue
+Route::post('/validateclient', 'API\ClientController@validateClient');
+
+// Client check box selection. Called from client.vue
+Route::post('/activateclient', 'API\ClientController@activateClient');
+
+
+
+
 

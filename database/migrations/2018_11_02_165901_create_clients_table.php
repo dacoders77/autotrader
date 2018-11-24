@@ -23,7 +23,11 @@ class CreateClientsTable extends Migration
             $table->string('email')->nullable();
             $table->string('api')->nullable();
             $table->string('api_secret')->nullable();
-            $table->string('status')->default('new');
+            $table->string('status')->default('new'); // obsolete
+
+            $table->boolean('valid')->nullable(); // If balance and small order passed
+            $table->boolean('active')->nullable(); // If checked by checkbox by user
+
             $table->decimal('funds', 8, 4)->nullable();
             $table->string('info')->nullable();
             $table->boolean('is_deleted')->default(0);

@@ -10,6 +10,9 @@ use Mockery\Exception;
 
 class ClientController extends Controller
 {
+    private $api;
+    private $apiSecret;
+
     /**
      * Display a listing of the resource.
      *
@@ -49,21 +52,28 @@ class ClientController extends Controller
         /** Validation rule
          * @see https://laravel-news.com/custom-validation-rule-objects
          */
+        $this->api = $request['api'];
+        $this->apiSecret = $request['api_secret'];
+
+
+
         $this->validate($request, [
             'name' => 'required|string|max:20',
             'email' => 'sometimes|nullable|email',
             'api' =>
                 [function ($attributes, $value, $fail) {
-                    if (gettype(\App\Classes\Client::checkBalance()) != "double") {
-                        $fail("Can't get account balance! Wrong API keys or no privileges.");
+                    $response = \App\Classes\Client::checkBalance($this->api, $this->apiSecret);
+                    if (gettype($response) != "double") {
+                        $fail($response);
                     }
                 },
                 function ($attributes, $value, $fail) {
-                    if (\App\Classes\Client::checkSmallOrderExecution()) {
-                        $fail("Can't execute order on provided account! Wrong API keys or no privileges.");
+                    $response = \App\Classes\Client::checkSmallOrderExecution($this->api, $this->apiSecret);
+                    if (gettype($response) != "array") {
+                        $fail($response);
                     }
                 },
-                'api' => 'max:20'],
+                'api' => 'max:50'],
             'api_secret' => 'required|unique:clients|string|max:50',
 
         ]);
@@ -137,8 +147,8 @@ class ClientController extends Controller
         $this->validate($request, [
             'name' => 'required|string|max:20',
             'email' => 'sometimes|nullable|email',
-            'api' => 'required|string|unique:clients|max:50',
-            'api_secret' => 'required|string|unique:clients|max:50'
+            'api' => 'required|string|max:50',
+            'api_secret' => 'required|string|max:50'
         ]);
 
         $client->update($request->all());
@@ -156,5 +166,51 @@ class ClientController extends Controller
         $client = Client::findOrFail($id);
         $client->delete();
         return ['message' => 'Client deleted'];
+    }
+
+    /**
+     * Validate client via api keys access and small order execution.
+     *
+     * @param Request $request
+     * @return boolean
+     */
+    public function validateClient(Request $request ){
+
+        // Balance
+        $response = \App\Classes\Client::checkBalance($request['api'], $request['api_secret']);
+        if (gettype($response) == "double"){
+            Client::where('id', $request['id'])->update([
+                'valid' => true
+            ]);
+        }
+        else{
+            Client::where('id', $request['id'])->update([
+                'valid' => false
+            ]);
+            throw (new Exception(json_encode($response)));
+        }
+
+        // Small order
+        $response = \App\Classes\Client::checkSmallOrderExecution($request['api'], $request['api_secret']);
+        if (gettype($response) == "array"){
+            Client::where('id', $request['id'])->update([
+                'valid' => true
+            ]);
+        }
+        else{
+            Client::where('id', $request['id'])->update([
+                'valid' => false
+            ]);
+            throw (new Exception(json_encode($response)));
+        }
+
+        return (['message' => 'Client valid! Balance and small order check passed.']);
+    }
+
+    public function activateClient(Request $request){
+        Client::where('id', $request['id'])->update([
+            'active' => !Client::where('id', $request['id'])->value('active')
+        ]);
+        return($request);
     }
 }
