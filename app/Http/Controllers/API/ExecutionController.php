@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Classes\LogToFile;
+use App\Jobs\GetClientFundsCheck;
+use App\Jobs\InPlaceOrder;
+use App\Jobs\OutPlaceOrder;
+use App\Jobs\SetLeverageCheck;
+use App\Jobs\SmallOrderCheck;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Signal; // Link model
@@ -37,22 +42,52 @@ class ExecutionController extends Controller
         $this->exchange = new bitmex();
     }
 
-    // add: signal id, client id
+    /**
+     * Controller is called from Signals.vue and Execution.vue.
+     * Execute a symbol an multiple clients accounts.
+     *
+     * @param Request $request
+     */
     public function executeSymbol(Request $request){
 
-        LogToFile::createTextLogFile();
+        //LogToFile::createTextLogFile();
+
+
+        // Do for both: new and open signals
+        foreach (Execution::where('signal_id', $request['id']) //
+                     //->where('client_volume', '!=', null)
+                     ->get() as $execution) {
+
+            /* Checks to perform. Each check is added to que and proceeded independently. Last - place order. */
+            GetClientFundsCheck::dispatch($this->exchange, $execution);
+            SetLeverageCheck::dispatch($this->exchange, $execution);
+            SmallOrderCheck::dispatch($this->exchange, $execution);
+            InPlaceOrder::dispatch($this->exchange, $execution);
+        }
+
+        Signal::where('id', $execution->signal_id)->update(['status' => 'pending']);
+
+
+        return 'Return from exec controller! ' . __FILE__;
+        die(__FILE__);
+
+        // Add controller: execclose
+        // Controller is fired
+        // Foreach through all records in executions where in_place_order_status == ok
+        // Place sell order
+        // Change close buttons on signals.vue, execution.vue
+
 
         // Do it once. Only for a new signal
         if ($request['status'] == "new"){
-            $this->fillExecutionsTable($request);
-            $this->getClientsFunds($request, $this->exchange);
-            $this->fillVolume($request, $this->exchange);
+            // $this->fillExecutionsTable($request); // Moved to Signal controller
+            //$this->getClientsFunds($request, $this->exchange);
+            //$this->fillVolume($request, $this->exchange);
         }
 
-        // Do for both: new and open signals
-        foreach (Execution::where('signal_id', $request['id'])
-                     ->where('client_volume', '!=', null)
-                     ->get() as $execution){
+
+
+
 
             $this->exchange->apiKey = Client::where('id', $execution->client_id)->value('api');
             $this->exchange->secret = Client::where('id', $execution->client_id)->value('api_secret');
@@ -79,7 +114,7 @@ class ExecutionController extends Controller
         //return "position closed";
         //return response('No symbol found', 412);
 
-    }
+
 
     /**
      * Calculate and fill volume for each client (each record in the table).
@@ -158,28 +193,7 @@ class ExecutionController extends Controller
         }
     }
 
-    /**
-     * Fill executions table with a job. A job - symbolize a signal executed on a client account.
-     * Clone signal to all clients.
-     * Quantity of records = quantity of clients
-     * @param Request $request
-     */
-    private function fillExecutionsTable(Request $request){
-        foreach (Client::all() as $client){
-            Execution::create([
-                'signal_id' => $request['id'],
-                'client_id' => $client->id,
-                'client_name' => $client->name,
-                'symbol' => $request['symbol'],
-                'multiplier' => $request['multiplier'],
-                'direction' => $request['direction'],
-                'percent' => $request['percent'],
-                'leverage' => $request['leverage'],
-                //'symbol' => $request['percent'],
-                //'leverage' => $request['leverage'],
-            ]);
-        }
-    }
+
 
     /**
      * Open positions.
@@ -189,7 +203,6 @@ class ExecutionController extends Controller
      * @param $orderVolume
      */
     private function openPosition(bitmex $exchange, $execution, $direction){
-
         /* Set leverage */
         try{
             //$setLeverageResponse = $exchange->privatePostPositionLeverage(array('symbol' => Symbol::where('execution_name', $execution->symbol)->value('leverage_name'), 'leverage' => $execution->leverage));
@@ -253,6 +266,7 @@ class ExecutionController extends Controller
         // Write statuses to DB
         // Open
         Signal::where('id', $execution->signal_id)->update($updateSignalStatuses);
+
         if ($execution->status == "new") {
             Execution::where('id', $execution->id)->update($updateExecutionOpenStatuses);
             Signal::where('id', $execution->signal_id)->update([
@@ -272,13 +286,27 @@ class ExecutionController extends Controller
             ]);
         }
     }
+
+    /**
+     * Display a listing of the resource.
+     * Called from Execution.vue
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getExecution($id)
+    {
+        return Execution::latest()->where('signal_id', $id)->paginate(10);
+    }
+
+    public function closeSymbol(Request $request){
+        foreach (Execution::where('signal_id', $request['id']) //
+        ->where('in_place_order_status', 'ok')
+        ->get() as $execution) {
+            OutPlaceOrder::dispatch($this->exchange, $execution);
+        }
+
+        //Signal::where('id', $execution->signal_id)->update(['status' => 'pending']);
+    }
 }
 
 
-/*
-        $exchange = new bitmex();
-        //dump(array_keys($exchange->load_markets())); // ETH/USD BTC/USD
-        //dump($exchange->fetch_ticker('BTC/USD'));
-        $exchange->apiKey = Client::where('id', '>', 0)->orderby('id', 'desc')->first()->api;
-        $exchange->secret = Client::where('id', '>', 0)->orderby('id', 'desc')->first()->api_secret;
-*/

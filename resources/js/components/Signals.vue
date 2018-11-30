@@ -45,7 +45,7 @@
                                             <div v-if="signal.status == 'new'">
                                                 <button class="btn btn-success" @click="executeSymbol(signal)"><i class="fas fa-play"></i></button>
                                             </div>
-                                            <div v-if="signal.status == 'proceeded'">
+                                            <div v-if="signal.status == 'success'">
                                                 <button class="btn btn-danger" @click="executeSymbol(signal)"><i class="fas fa-stop"></i></button>
                                             </div>
                                             <div v-if="signal.status == 'error' || signal.status == 'finished'">
@@ -57,27 +57,24 @@
                                         <div class="btn-group">
                                             <button class="btn btn-primary" @click="deleteSignal(signal.id)"><i class="nav-icon fas fa-trash white"></i></button>
                                             <button v-if="signal.status == 'new'" class="btn btn-secondary" @click="editModal(signal)"><i class="nav-icon fas fa-edit white"></i></button>
-                                            <button v-if="signal.status == 'error' || signal.status == 'proceeded' || signal.status == 'finished'" class="btn btn-secondary" disabled @click="editModal(signal) "><i class="nav-icon fas fa-edit white"></i></button>
+                                            <button v-if="signal.status == 'error' || signal.status == 'success' || signal.status == 'finished'" class="btn btn-secondary" disabled @click="editModal(signal) "><i class="nav-icon fas fa-edit white"></i></button>
                                         </div>
                                     </td>
-
 
                                     <td>{{ signal.created_at | myDate }}</td>
                                     <td>{{ signal.symbol }}</td>
                                     <td>{{ signal.multiplier }} </td>
-                                    <td>{{ signal.status }}</td>
-                                    <td>{{ signal.percent }}</td>
+                                    <td><router-link :to="{ name: 'Page2', params: { signal: signal } }">{{ signal.status }}</router-link></td>
 
+                                    <td>{{ signal.percent }}</td>
                                     <td>{{ signal.leverage }}</td>
                                     <td>{{ signal.direction }}</td>
                                     <td>{{ signal.quote }}</td>
-
 
                                     <td>{{ signal.open_date }}</td>
                                     <td>{{ signal.open_price }}</td>
                                     <td>{{ signal.close_date }}</td>
                                     <td>{{ signal.close_price }}</td>
-
 
                                 </tr>
                                 </tbody></table>
@@ -111,22 +108,6 @@
 
                     <form @submit.prevent="editmode ? updateSignal() : createSignal()">
                         <div class="modal-body">
-                            <!--
-                            <div class="form-group">
-                                <input v-model="form.symbol" type="text" name="symbol"
-                                       placeholder="Symbol"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('symbol') }">
-                                <has-error :form="form" field="symbol"></has-error>
-                            </div>
-
-                            <div class="form-group">
-                                <input v-model="form.multiplier" type="number" step="0.00000001" name="multiplier"
-                                       placeholder="Multiplier (ETH: 0.000001)"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('multiplier') }">
-                                <has-error :form="form" field="multiplier"></has-error>
-                            </div>
-                            -->
-
                             <div class="form-group">
                                 <select name="symbol" v-model="form.symbol" id="symbol" class="form-control" :class="{ 'is-invalid': form.errors.has('symbol') }">
                                     <option value="">Symbol</option>
@@ -196,7 +177,6 @@
         },
         methods:{
             executeSymbol(signal){
-
                 swal({
                     title: 'Are you sure?',
                     text: "Signal will be proceeded!!",
@@ -208,7 +188,7 @@
                 }).then((result) => {
                     // Ajax request
                     if (result.value){
-                        axios.post('exec', signal)
+                        axios.post('exec', signal) // ExecutionController.php
                             .then(response => {
                                 swal(
                                     'Proceeded!',
@@ -218,7 +198,6 @@
                                 Fire.$emit('AfterCreateSignal');
                             })
                             .catch(error => {
-                                //swal("Failed!", "Error: \n" + error.response.data, "warning");
                                 swal("Failed!", "Error: \n" + error.response.data.message, "warning");
 
                                 //console.log(error.response.data.message);
@@ -231,8 +210,6 @@
                             });
                     }
                 })
-
-
             },
             // Pagination. https://github.com/gilbitron/laravel-vue-pagination
             getResults(page = 1) {
@@ -255,7 +232,6 @@
             },
             loadUsers(){
                 axios.get('api/signal').then(({data}) => (this.signals = data)); // Resource controllers are defined in api.php
-                //console.log(this.users);
                 axios.get('api/symbol').then(({data}) => (this.symbols = data));
             },
             createSignal(){

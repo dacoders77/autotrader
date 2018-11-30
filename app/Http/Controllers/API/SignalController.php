@@ -4,7 +4,10 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller; // Must hook this name space. Otherwise 500 error while access from front end
+use App\Client; // Link model
 use App\Signal; // Link model
+use App\Execution; // Link model
+
 
 class SignalController extends Controller
 {
@@ -36,9 +39,7 @@ class SignalController extends Controller
      */
     public function store(Request $request)
     {
-
-        /* Validation rule */
-
+        /* Validation rules */
         $this->validate($request,[
             'symbol' => 'required|string|max:8',
             //'multiplier' => 'required|string|max:10',
@@ -48,13 +49,19 @@ class SignalController extends Controller
             //'password' => 'required|string|min:6'
         ]);
 
-        return Signal::create([
+        $response = Signal::create([
             'symbol' => $request['symbol'],
             'multiplier' => $request['multiplier'],
             'percent' => $request['percent'],
             'leverage' => $request['leverage'],
             'direction' => $request['direction'],
         ]);
+
+        $id = (array)$response;
+        //dump($x["\x00*\x00attributes"]['id']);
+        self::fillExecutionsTable($request, $id["\x00*\x00attributes"]['id']);
+
+
 
     }
 
@@ -118,4 +125,31 @@ class SignalController extends Controller
         $signal->delete();
         return ['message' => 'Signal deleted'];
     }
+
+    /* NON DEFAULT API METHODS */
+
+    /**
+     * Fill executions table with a job. A job - symbolize a signal executed on a client account.
+     * Clone signal to all clients.
+     * Quantity of records = quantity of clients
+     * @param Request $request
+     */
+    private function fillExecutionsTable(Request $request, $id){
+        foreach (Client::where('active', 1)->get() as $client){
+            Execution::create([
+                'signal_id' => $id,
+                'client_id' => $client->id,
+                'client_name' => $client->name,
+                'symbol' => $request['symbol'],
+
+                'direction' => $request['direction'],
+                'percent' => $request['percent'],
+                'leverage' => $request['leverage'],
+
+                'status' => 'new'
+            ]);
+        }
+    }
+
+
 }

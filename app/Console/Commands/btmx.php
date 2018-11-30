@@ -7,7 +7,10 @@ use ccxt\ExchangeError;
 use Illuminate\Console\Command;
 use ccxt\bitmex;
 use Mockery\Exception;
-use App\Client;
+
+use App\Client; // Link model
+use App\Execution; // Link model
+use App\Signal; // Link model
 
 class btmx extends Command
 {
@@ -56,17 +59,16 @@ class btmx extends Command
         $exchange->secret = 'IFnTQcesYzCy3c8Srs5ULB8qZGpnHAOBvrfOwmnsHDJLLsFi';
 
         //dump(array_keys($exchange->load_markets())); // ETH/USD BTC/USD
+
         try{
             //$r = $exchange->fetch_ticker('BTC/USD'); // BCHZ18 works good
-            $r = $exchange->privatePostPositionLeverage(array('symbol' => 'XBTUSD', 'leverage' => 10));
-            dump($r);
+            //$r = $exchange->privatePostPositionLeverage(array('symbol' => 'XBTUSD', 'leverage' => 10));
+            //dump($r);
         }
         catch (ExchangeError $e)
         {
-            echo $e->getMessage();
+            //echo $e->getMessage();
         }
-
-
 
         //dump($exchange->fetchBalance()['BTC']['free']); // BTC balance
 
@@ -76,6 +78,39 @@ class btmx extends Command
         //$response = $exchange->createMarketSellOrder('ETHUSD', 1, []);
 
         //dump($exchange->privatePostPositionLeverage(array('symbol' => 'ETHUSD', 'leverage' => 10))); // privatePostPositionLeverage ADAZ18
+
+
+        $arr = Execution::where('signal_id', 21)->get(['in_place_order_status']);
+        $push = array();
+        foreach($arr as $object)
+        {
+            array_push($push, $object->{'in_place_order_status'});
+        }
+        dump(array_flip($push));
+        dump(count(array_keys(array_flip($push))));
+
+        if(count(array_keys(array_flip($push))) == 1){
+            if (array_key_exists('ok', array_flip($push))){
+                dump('signal status: ok');
+            }
+        }
+        if(count(array_keys(array_flip($push))) > 1){
+            if (array_key_exists('ok', array_flip($push))){
+                dump('signal status: error');
+            }
+        }
+
+
+        // Count = 1
+        // Set button to stop
+        // in_status == ok
+        // Signal status = success
+
+        // Count > 1
+        // Status = error
+
+
+
 
     }
 

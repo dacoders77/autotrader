@@ -120,7 +120,6 @@
             },
             loadClients() {
                 axios.get('api/execution').then(({data}) => (this.clients = data)); // Resource controllers are defined in api.php
-                //console.log(this.users);
             }
         },
         created() {

@@ -61,6 +61,7 @@ let routes = [
     { path: '/clients', component: require('./components/Clients.vue') },
     { path: '/executions', component: require('./components/Executions.vue') },
     { path: '/symbols', component: require('./components/Symbols.vue') },
+    { path: '/execution', name: 'Page2', component: require('./components/Execution.vue') },
 
     { path: '/dashboard', component: require('./components/Dashboard.vue') },
     { path: '/profile', component: require('./components/Profile.vue') }

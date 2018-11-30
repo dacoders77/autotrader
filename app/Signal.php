@@ -16,7 +16,6 @@ class Signal extends Model
      */
     protected $fillable = [
         'symbol',
-        'multiplier',
         'percent',
         'leverage',
         'direction',

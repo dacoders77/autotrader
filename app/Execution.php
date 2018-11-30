@@ -20,13 +20,34 @@ class Execution extends Model
         'client_id',
         'client_name',
         'symbol',
-        'multiplier',
+
         'direction',
         'volume',
         'percent',
         'leverage',
+
+        'client_funds_status',
+        'client_funds_response',
+        'client_funds_value',
+
+        'leverage_status',
         'leverage_response',
-        'client_funds',
+        'leverage_value',
+
+        'small_order_status',
+        'small_order_response',
+        'small_order_value',
+
+        'in_place_order_status',
+        'in_place_order_response',
+        'in_place_order_value',
+
+        'out_place_order_status',
+        'out_place_order_response',
+        'out_place_order_value',
+
+
+
         'client_volume',
         'multiplier',
         'open_status',
