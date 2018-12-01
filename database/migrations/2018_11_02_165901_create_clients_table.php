@@ -28,6 +28,8 @@ class CreateClientsTable extends Migration
             $table->boolean('valid')->nullable(); // If balance and small order passed
             $table->boolean('active')->nullable(); // If checked by checkbox by user
 
+            $table->string('balance_symbols')->nullable();
+
             $table->decimal('funds', 8, 4)->nullable();
             $table->string('info')->nullable();
             $table->boolean('is_deleted')->default(0);

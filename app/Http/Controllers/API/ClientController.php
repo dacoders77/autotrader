@@ -60,7 +60,7 @@ class ClientController extends Controller
             'email' => 'sometimes|nullable|email',
             'api' =>
                 [function ($attributes, $value, $fail) {
-                    $response = \App\Classes\Client::checkBalance($this->api, $this->apiSecret);
+                    $response = \App\Classes\Client::checkBalance($this->api, $this->apiSecret, 'checkBalance');
                     if (gettype($response) != "double") {
                         $fail($response);
                     }
@@ -152,7 +152,7 @@ class ClientController extends Controller
             'email' => 'sometimes|nullable|email',
             'api' =>
                 [function ($attributes, $value, $fail) {
-                    $response = \App\Classes\Client::checkBalance($this->api, $this->apiSecret);
+                    $response = \App\Classes\Client::checkBalance($this->api, $this->apiSecret, 'checkBalance');
                     if (gettype($response) != "double") {
                         $fail($response);
                     }
@@ -193,7 +193,7 @@ class ClientController extends Controller
     public function validateClient(Request $request ){
 
         // Balance
-        $response = \App\Classes\Client::checkBalance($request['api'], $request['api_secret']);
+        $response = \App\Classes\Client::checkBalance($request['api'], $request['api_secret'], 'checkBalance');
         if (gettype($response) == "double"){
             Client::where('id', $request['id'])->update([
                 'valid' => true
@@ -228,5 +228,21 @@ class ClientController extends Controller
             'active' => !Client::where('id', $request['id'])->value('active')
         ]);
         return($request);
+    }
+
+    public function getClientTradingBalance(Request $request){
+        //
+
+        $response = \App\Classes\Client::checkBalance($request['api'], $request['api_secret'], 'getTradingBalance');
+        // Parse response
+        $arr = "";
+        foreach ($response as $symbol){
+            $arr .= $symbol['symbol'] . ":" . $symbol['currentQty'] . ", ";
+        }
+        // Update DB
+        Client::where('id', $request['id'])->update([
+            'balance_symbols' => $arr
+        ]);
+        return (["message" => "Client's balance received", "arr" => $arr]);
     }
 }

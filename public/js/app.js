@@ -72824,12 +72824,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             editmode: false, // Modal edit record or create new flag
             clients: {},
+            validateButtonEnabled: true,
+            balanceButtonEnabled: true,
             form: new Form({ // Class instance
                 id: '',
                 name: '',
@@ -72844,6 +72867,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        getClientTradingBalance: function getClientTradingBalance(client) {
+            var _this = this;
+
+            this.$Progress.start();
+            this.balanceButtonEnabled = false;
+            axios.post('gettradebalance', client).then(function (response) {
+                swal('Proceeded!',
+                //response.data.message, // Response from ClientController.php
+                response.data.arr, 'success');
+                Fire.$emit('AfterCreate');
+                _this.balanceButtonEnabled = true;
+                _this.$Progress.finish();
+            }).catch(function (error) {
+                swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+                Fire.$emit('AfterCreate');
+                _this.balanceButtonEnabled = true;
+                _this.$Progress.finish();
+            });
+        },
         activateClient: function activateClient(client) {
             axios.post('activateclient', client).then(function (response) {
                 Fire.$emit('AfterCreate');
@@ -72853,24 +72895,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         validateClient: function validateClient(client) {
+            var _this2 = this;
+
+            this.$Progress.start();
+            this.validateButtonEnabled = false;
             axios.post('validateclient', client).then(function (response) {
                 swal('Proceeded!', response.data.message, // Response from ClientController.php
                 'success');
                 Fire.$emit('AfterCreate');
+                _this2.validateButtonEnabled = true;
+                _this2.$Progress.finish();
             }).catch(function (error) {
                 swal("Failed!", "Error: \n" + error.response.data.message, "warning");
                 Fire.$emit('AfterCreate');
+                _this2.validateButtonEnabled = true;
+                _this2.$Progress.finish();
             });
         },
 
         // Pagination. https://github.com/gilbitron/laravel-vue-pagination
         getResults: function getResults() {
-            var _this = this;
+            var _this3 = this;
 
             var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
             axios.get('api/client?page=' + page).then(function (response) {
-                _this.clients = response.data;
+                _this3.clients = response.data;
             });
         },
         editModal: function editModal(signal) {
@@ -72886,16 +72936,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             $('#addNewSignalModal').modal('show');
         },
         loadClients: function loadClients() {
-            var _this2 = this;
+            var _this4 = this;
 
             axios.get('api/client').then(function (_ref) {
                 var data = _ref.data;
-                return _this2.clients = data;
+                return _this4.clients = data;
             }); // Resource controllers are defined in api.php
             //console.log(this.users);
         },
         createClient: function createClient() {
-            var _this3 = this;
+            var _this5 = this;
 
             // Progress bar
             this.$Progress.start();
@@ -72909,7 +72959,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     type: 'success',
                     title: 'Client created successfully'
                 });
-                _this3.$Progress.finish();
+                _this5.$Progress.finish();
             }).catch(function (error) {
                 // Error
                 //alert(error.response.data.message);
@@ -72917,20 +72967,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         updateClient: function updateClient() {
-            var _this4 = this;
+            var _this6 = this;
 
             this.$Progress.start();
             this.form.put('api/client/' + this.form.id).then(function () {
                 $('#addNewSignalModal').modal('hide');
                 swal('Updated!', 'Client has been updated', 'success');
-                _this4.$Progress.finish();
+                _this6.$Progress.finish();
                 Fire.$emit('AfterCreate');
             }).catch(function () {
-                _this4.$Progress.fail();
+                _this6.$Progress.fail();
             });
         },
         deleteSignal: function deleteSignal(id) {
-            var _this5 = this;
+            var _this7 = this;
 
             swal({
                 title: 'Are you sure?',
@@ -72944,7 +72994,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Ajax request
                 // Delete request type
                 if (result.value) {
-                    _this5.form.delete('api/client/' + id).then(function () {
+                    _this7.form.delete('api/client/' + id).then(function () {
                         if (result.value) {
                             swal('Deleted!', 'Client has been deleted.', 'success');
                             Fire.$emit('AfterCreate');
@@ -72957,13 +73007,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     created: function created() {
-        var _this6 = this;
+        var _this8 = this;
 
         this.loadClients();
 
         // Event listener
         Fire.$on('AfterCreate', function () {
-            _this6.loadClients();
+            _this8.loadClients();
         });
     }
 });
@@ -73093,22 +73143,42 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [
                           _c("div", { staticClass: "btn-group" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-warning",
-                                on: {
-                                  click: function($event) {
-                                    _vm.validateClient(signal)
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "nav-icon fas fa-redo white"
-                                })
-                              ]
-                            )
+                            _vm.validateButtonEnabled == true
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-warning",
+                                    on: {
+                                      click: function($event) {
+                                        _vm.validateClient(signal)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "nav-icon fas fa-redo white"
+                                    })
+                                  ]
+                                )
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "btn-group" }, [
+                            _vm.validateButtonEnabled == false
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-warning",
+                                    attrs: { disabled: "" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.validateClient(signal)
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "far fa-clock" })]
+                                )
+                              : _vm._e()
                           ])
                         ]),
                         _vm._v(" "),
@@ -73139,6 +73209,49 @@ var render = function() {
                               )
                             : _vm._e()
                         ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("div", { staticClass: "btn-group" }, [
+                            _vm.balanceButtonEnabled == true
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-info",
+                                    on: {
+                                      click: function($event) {
+                                        _vm.getClientTradingBalance(signal)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fas fa-arrow-down"
+                                    })
+                                  ]
+                                )
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "btn-group" }, [
+                            _vm.balanceButtonEnabled == false
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-info",
+                                    attrs: { disabled: "" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.getClientTradingBalance(signal)
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "far fa-clock" })]
+                                )
+                              : _vm._e()
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(signal.balance_symbols))]),
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(_vm._s(_vm._f("myDate")(signal.created_at)))
@@ -73611,6 +73724,10 @@ var staticRenderFns = [
       _c("th", [_vm._v("Validate")]),
       _vm._v(" "),
       _c("th", [_vm._v("Valid")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Balance")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Symbols")]),
       _vm._v(" "),
       _c("th", [_vm._v("Created       ")]),
       _vm._v(" "),

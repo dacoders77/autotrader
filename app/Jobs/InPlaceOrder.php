@@ -25,9 +25,9 @@ class InPlaceOrder implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($exchnage, $execution)
+    public function __construct($exchange, $execution)
     {
-        $this->exchange = $exchnage;
+        $this->exchange = $exchange;
         $this->execution = $execution;
     }
 

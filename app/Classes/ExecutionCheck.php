@@ -34,11 +34,12 @@ class ExecutionCheck
 
 
 
-        $arr = Execution::where('signal_id', $execution->signal_id)->get(['in_place_order_status']);
+        $arr = Execution::where('signal_id', $execution->signal_id)->get(['in_place_order_status']); // Get executions with the same signal_id
         $push = array();
         foreach($arr as $object)
         {
-            array_push($push, $object->{'in_place_order_status'});
+            if ($object->{'in_place_order_status'})
+                array_push($push, $object->{'in_place_order_status'});
         }
         dump(array_flip($push));
         dump(count(array_keys(array_flip($push))));

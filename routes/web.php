@@ -42,6 +42,9 @@ Route::post('/validateclient', 'API\ClientController@validateClient');
 // Client check box selection. Called from client.vue
 Route::post('/activateclient', 'API\ClientController@activateClient');
 
+// Get client trading balance. Called from client.vue
+Route::post('/gettradebalance', 'API\ClientController@getClientTradingBalance');
+
 
 
 

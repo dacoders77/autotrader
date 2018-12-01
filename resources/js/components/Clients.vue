@@ -24,6 +24,8 @@
                                     <th>Action</th>
                                     <th>Validate</th>
                                     <th>Valid</th>
+                                    <th>Balance</th>
+                                    <th>Symbols</th>
                                     <th>Created&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
 
                                     <th>Name</th>
@@ -64,8 +66,12 @@
                                     </td>
                                     <td>
                                         <div class="btn-group">
-                                            <button class="btn btn-warning" @click="validateClient(signal)">
+                                            <button v-if="validateButtonEnabled == true " class="btn btn-warning" @click="validateClient(signal)">
                                                 <i class="nav-icon fas fa-redo white"></i></button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button v-if="validateButtonEnabled == false " class="btn btn-warning" disabled @click="validateClient(signal)">
+                                                <i class="far fa-clock"></i></button>
                                         </div>
                                     </td>
                                     <td style="text-align: center">
@@ -76,6 +82,21 @@
                                             <i class="far fa-angry fa-lg text-danger"></i>
                                         </div>
                                     </td>
+
+                                    <td>
+                                        <div class="btn-group">
+                                            <button v-if="balanceButtonEnabled == true " class="btn btn-info" @click="getClientTradingBalance(signal)">
+                                                <i class="fas fa-arrow-down"></i></button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button v-if="balanceButtonEnabled == false " class="btn btn-info" disabled @click="getClientTradingBalance(signal)">
+                                                <i class="far fa-clock"></i></button>
+                                        </div>
+                                    </td>
+
+                                    <td>{{ signal.balance_symbols }}</td>
+
+
                                     <td>{{ signal.created_at | myDate }}</td>
                                     <td>{{ signal.name }}</td>
                                     <td>{{ signal.last_name }}</td>
@@ -186,6 +207,8 @@
             return {
                 editmode: false, // Modal edit record or create new flag
                 clients: {},
+                validateButtonEnabled: true,
+                balanceButtonEnabled: true,
                 form: new Form({ // Class instance
                     id: '',
                     name: '',
@@ -199,6 +222,28 @@
             }
         },
         methods: {
+            getClientTradingBalance(client) {
+                this.$Progress.start();
+                this.balanceButtonEnabled = false;
+                axios.post('gettradebalance', client)
+                    .then(response => {
+                        swal(
+                            'Proceeded!',
+                            //response.data.message, // Response from ClientController.php
+                            response.data.arr,
+                            'success'
+                        )
+                        Fire.$emit('AfterCreate');
+                        this.balanceButtonEnabled = true;
+                        this.$Progress.finish();
+                    })
+                    .catch(error => {
+                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+                        Fire.$emit('AfterCreate');
+                        this.balanceButtonEnabled = true;
+                        this.$Progress.finish();
+                    });
+            },
             activateClient(client) {
                 axios.post('activateclient', client)
                     .then(response => {
@@ -210,6 +255,8 @@
                     });
             },
             validateClient(client) {
+                this.$Progress.start();
+                this.validateButtonEnabled = false;
                 axios.post('validateclient', client)
                     .then(response => {
                         swal(
@@ -218,13 +265,15 @@
                             'success'
                         )
                         Fire.$emit('AfterCreate');
+                        this.validateButtonEnabled = true;
+                        this.$Progress.finish();
                     })
                     .catch(error => {
                         swal("Failed!", "Error: \n" + error.response.data.message, "warning");
                         Fire.$emit('AfterCreate');
+                        this.validateButtonEnabled = true;
+                        this.$Progress.finish();
                     });
-
-
             },
             // Pagination. https://github.com/gilbitron/laravel-vue-pagination
             getResults(page = 1) {

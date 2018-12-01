@@ -52,16 +52,15 @@ class ExecutionController extends Controller
 
         //LogToFile::createTextLogFile();
 
-
         // Do for both: new and open signals
-        foreach (Execution::where('signal_id', $request['id']) //
+        foreach (Execution::where('signal_id', $request['id'])
                      //->where('client_volume', '!=', null)
                      ->get() as $execution) {
-
             /* Checks to perform. Each check is added to que and proceeded independently. Last - place order. */
             GetClientFundsCheck::dispatch($this->exchange, $execution);
             SetLeverageCheck::dispatch($this->exchange, $execution);
-            SmallOrderCheck::dispatch($this->exchange, $execution);
+            //SmallOrderCheck::dispatch($this->exchange, $execution);
+            /* Place order */
             InPlaceOrder::dispatch($this->exchange, $execution);
         }
 

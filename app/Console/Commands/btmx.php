@@ -71,7 +71,6 @@ class btmx extends Command
         }
 
         //dump($exchange->fetchBalance()['BTC']['free']); // BTC balance
-
         //$response = $exchange->createMarketBuyOrder('BTC/USD', 1, []);
         //dump($response);
 
@@ -79,35 +78,9 @@ class btmx extends Command
 
         //dump($exchange->privatePostPositionLeverage(array('symbol' => 'ETHUSD', 'leverage' => 10))); // privatePostPositionLeverage ADAZ18
 
-
-        $arr = Execution::where('signal_id', 21)->get(['in_place_order_status']);
-        $push = array();
-        foreach($arr as $object)
-        {
-            array_push($push, $object->{'in_place_order_status'});
-        }
-        dump(array_flip($push));
-        dump(count(array_keys(array_flip($push))));
-
-        if(count(array_keys(array_flip($push))) == 1){
-            if (array_key_exists('ok', array_flip($push))){
-                dump('signal status: ok');
-            }
-        }
-        if(count(array_keys(array_flip($push))) > 1){
-            if (array_key_exists('ok', array_flip($push))){
-                dump('signal status: error');
-            }
-        }
+        dump($exchange->privateGetPosition());
 
 
-        // Count = 1
-        // Set button to stop
-        // in_status == ok
-        // Signal status = success
-
-        // Count > 1
-        // Status = error
 
 
 

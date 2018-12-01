@@ -20,6 +20,7 @@ class Client extends Model
         'telegram',
         'valid',
         'active',
+        'balance_symbols',
         'email',
         'api',
         'api_secret',

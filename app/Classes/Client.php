@@ -19,6 +19,7 @@ use Mockery\Exception;
 class Client
 {
     private static $exchange;
+    private static $response;
 
     public static function bitmex($api = '', $apiSecret = '') {
         if (!self::$exchange) self::$exchange = new bitmex();
@@ -27,13 +28,14 @@ class Client
         return self::$exchange;
     }
 
-    public static function checkBalance($api = '', $apiSecret = ''){
+    public static function checkBalance($api = '', $apiSecret = '', $request){
         try{
-            $response = self::bitmex($api, $apiSecret)->fetchBalance()['BTC']['free'];
-            return $response;
+            if ($request == 'checkBalance') self::$response = self::bitmex($api, $apiSecret)->fetchBalance()['BTC']['free'];
+            if ($request == 'getTradingBalance') self::$response = self::bitmex($api, $apiSecret)->privateGetPosition();
+            return self::$response;
         }
         catch (\Exception $e){
-            $var =  preg_replace('~^bitmex ~', '', $e->getMessage());
+            $var =  preg_replace('~^bitmex ~', '', $e->getMessage()); // Get rid of bitmex word word at the beginning of the message
             return json_decode($var, 1);
         }
     }
