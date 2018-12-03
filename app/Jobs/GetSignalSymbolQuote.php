@@ -2,34 +2,43 @@
 
 namespace App\Jobs;
 
-use App\Classes\ExecutionCheck;
-use App\Execution;
-use ccxt\ExchangeNotAvailable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Client;
+use App\Client; // Link model
+use App\Signal;
 use Mockery\Exception;
 
-class GetClientFundsCheck implements ShouldQueue
+/**
+ * Class GetSignalSymbolQuote
+ * Called from SignalController.php when executions table is filled
+ *
+ * @package App\Jobs
+ */
+class GetSignalSymbolQuote implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $exchange;
-    protected $execution;
     private $response;
+    private $tradingSymbol;
+    private $signalId;
 
     /**
      * Create a new job instance.
      *
-     * @return void
+     * GetSignalSymbolQuote constructor.
+     * @param $exchange
+     * @param $tradingSymbol
+     * @param $signalId
      */
-    public function __construct($exchnage, $execution)
+    public function __construct($exchange, $tradingSymbol, $signalId)
     {
-        $this->exchange = $exchnage;
-        $this->execution = $execution;
+        $this->exchange = $exchange;
+        $this->tradingSymbol = $tradingSymbol;
+        $this->signalId = $signalId;
     }
 
     /**
@@ -39,38 +48,33 @@ class GetClientFundsCheck implements ShouldQueue
      */
     public function handle()
     {
-        Execution::where('id', $this->execution->id)
+        Signal::where('id', $this->signalId)
             ->update([
-                'client_funds_status' => 'pending',
+                'quote_status' => 'pending',
             ]);
 
-        $this->exchange->apiKey = Client::where('id', $this->execution->client_id)->value('api');
-        $this->exchange->secret = Client::where('id', $this->execution->client_id)->value('api_secret');
-
         try{
-            $this->response = $this->exchange->fetchBalance()['BTC']['free'];
+            $this->response = $this->exchange->fetch_ticker($this->tradingSymbol)['last'];
         }
         catch (\Exception $e)
         {
             $this->response = $e->getMessage();
-
-            Execution::where('id', $this->execution->id)
+            Signal::where('id', $this->signalId)
                 ->update([
-                    'client_funds_status' => 'error',
-                    'client_funds_response' => $this->response // Overloaded should be here
+                    'quote_status' => 'error',
+                    'quote_response' => $this->response // Overloaded should be here
                 ]);
         }
 
-       if (gettype($this->response) == 'double'){
+        if (gettype($this->response) == 'double'){
             // Success
-           Execution::where('id', $this->execution->id)
-               ->update([
-                   'client_funds_value' => $this->response,
-                   'client_funds_response' => $this->response,
-                   'client_funds_status' => 'ok',
-                   //'status' => 'proceeded'
-               ]);
-       }
+            Signal::where('id', $this->signalId)
+                ->update([
+                    'quote_value' => $this->response,
+                    'quote_response' => $this->response,
+                    'quote_status' => 'ok',
+                ]);
+        }
 
         dump(gettype($this->response));
         dump($this->response);
@@ -85,7 +89,7 @@ class GetClientFundsCheck implements ShouldQueue
             // "bitmex requires `apiKey`"
             if ($this->response == "bitmex {\"error\":{\"message\":\"The system is currently overloaded. Please try again later.\",\"name\":\"HTTPError\"}}\""){
                 // Set get client status to: overloaded
-                dump('EXCHANGE OVERLOADED! RESTART JOB! get client funds');
+                dump('EXCHANGE OVERLOADED! RESTART JOB!' . __FILE__);
                 throw new Exception();
             }
         }

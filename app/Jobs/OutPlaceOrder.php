@@ -46,7 +46,12 @@ class OutPlaceOrder implements ShouldQueue
         $this->exchange->secret = Client::where('id', $this->execution->client_id)->value('api_secret');
 
         try{
-            $this->response = $this->exchange->createMarketSellOrder($this->execution->symbol, 1, []);
+            if ($this->execution->direction == 'long'){
+                $this->response = $this->exchange->createMarketSellOrder($this->execution->symbol, $this->execution->client_volume, []);
+            }
+            else{
+                $this->response = $this->exchange->createMarketBuyOrder($this->execution->symbol, $this->execution->client_volume, []);
+            }
         }
         catch (\Exception $e)
         {

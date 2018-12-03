@@ -19,11 +19,18 @@ class CreateSignalsTable extends Migration
 
             $table->string('symbol')->nullable();
             $table->decimal('multiplier', 12,6)->nullable();
-            $table->decimal('percent')->nullable();
-            $table->decimal('leverage')->nullable();
-            $table->string('direction')->nullable();
-            $table->decimal('quote', 16, 8)->nullable();
-            $table->string('status')->default('new');
+            $table->decimal('percent')->nullable()->nullable();
+            $table->decimal('leverage')->nullable()->nullable();
+            $table->string('direction')->nullable()->nullable();
+
+
+            $table->decimal('quote_value', 16, 8)->nullable();
+            $table->string('quote_response')->nullable();
+            $table->string('quote_status')->nullable();
+
+
+
+            $table->string('status')->default('new')->nullable();
 
             $table->dateTime('open_date')->nullable();
             $table->decimal('open_price', 16, 8)->nullable();

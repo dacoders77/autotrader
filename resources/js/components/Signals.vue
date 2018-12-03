@@ -24,7 +24,7 @@
                                     <th>Edit</th>
                                     <th>Created</th>
                                     <th>Symbol</th>
-                                    <th>Multiplier</th>
+
                                     <th>Status</th>
                                     <th>%</th>
 
@@ -63,13 +63,13 @@
 
                                     <td>{{ signal.created_at | myDate }}</td>
                                     <td>{{ signal.symbol }}</td>
-                                    <td>{{ signal.multiplier }} </td>
+
                                     <td><router-link :to="{ name: 'Page2', params: { signal: signal } }">{{ signal.status }}</router-link></td>
 
                                     <td>{{ signal.percent }}</td>
                                     <td>{{ signal.leverage }}</td>
                                     <td>{{ signal.direction }}</td>
-                                    <td>{{ signal.quote }}</td>
+                                    <td>{{ signal.quote_value }}</td>
 
                                     <td>{{ signal.open_date }}</td>
                                     <td>{{ signal.open_price }}</td>

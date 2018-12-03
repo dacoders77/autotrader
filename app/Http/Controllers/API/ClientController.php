@@ -231,8 +231,6 @@ class ClientController extends Controller
     }
 
     public function getClientTradingBalance(Request $request){
-        //
-
         $response = \App\Classes\Client::checkBalance($request['api'], $request['api_secret'], 'getTradingBalance');
         // Parse response
         $arr = "";
@@ -243,6 +241,6 @@ class ClientController extends Controller
         Client::where('id', $request['id'])->update([
             'balance_symbols' => $arr
         ]);
-        return (["message" => "Client's balance received", "arr" => $arr]);
+        return (["message" => "Client's trading balance received", "arr" => $arr]);
     }
 }

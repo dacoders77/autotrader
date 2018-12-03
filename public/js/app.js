@@ -30380,7 +30380,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(139);
-module.exports = __webpack_require__(192);
+module.exports = __webpack_require__(195);
 
 
 /***/ }),
@@ -30455,7 +30455,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_4_vue_progressbar___default.a, options);
 
 // Define routes for vue routing
 // https://router.vuejs.org/guide/#javascript
-var routes = [{ path: '/signals', component: __webpack_require__(171) }, { path: '/clients', component: __webpack_require__(174) }, { path: '/executions', component: __webpack_require__(177) }, { path: '/symbols', component: __webpack_require__(180) }, { path: '/execution', name: 'Page2', component: __webpack_require__(218) }, { path: '/dashboard', component: __webpack_require__(183) }, { path: '/profile', component: __webpack_require__(186) }];
+var routes = [{ path: '/signals', component: __webpack_require__(171) }, { path: '/clients', component: __webpack_require__(174) }, { path: '/executions', component: __webpack_require__(177) }, { path: '/symbols', component: __webpack_require__(180) }, { path: '/execution', name: 'Page2', component: __webpack_require__(183) }, { path: '/dashboard', component: __webpack_require__(186) }, { path: '/profile', component: __webpack_require__(189) }];
 
 // Link vue component without vue router
 //Vue.component('signals', require('./components/signals.vue'));
@@ -30486,7 +30486,7 @@ window.Fire = new Vue();
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-Vue.component('example-component', __webpack_require__(189));
+Vue.component('example-component', __webpack_require__(192));
 
 var app = new Vue({
     el: '#app',
@@ -72116,8 +72116,6 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(signal.symbol))]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(signal.multiplier) + " ")]),
-                          _vm._v(" "),
                           _c(
                             "td",
                             [
@@ -72143,7 +72141,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(signal.direction))]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(signal.quote))]),
+                          _c("td", [_vm._v(_vm._s(signal.quote_value))]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(signal.open_date))]),
                           _vm._v(" "),
@@ -72530,8 +72528,6 @@ var staticRenderFns = [
       _c("th", [_vm._v("Created")]),
       _vm._v(" "),
       _c("th", [_vm._v("Symbol")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Multiplier")]),
       _vm._v(" "),
       _c("th", [_vm._v("Status")]),
       _vm._v(" "),
@@ -74974,6 +74970,661 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
+Component.options.__file = "resources/js/components/Execution.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-64b0693d", Component.options)
+  } else {
+    hotAPI.reload("data-v-64b0693d", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 184 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            signal: {}, // Props. Sent from Signals.vue
+            signals: {},
+            interval: null
+        };
+    },
+
+    methods: {
+        closeSymbol: function closeSymbol(signal) {
+            swal({
+                title: 'Are you sure?',
+                text: "Signal will be proceeded!!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, proceed it!'
+            }).then(function (result) {
+                if (result.value) {
+                    axios.post('execclose', signal).then(function (response) {
+                        swal('Proceeded!', 'Signal has been proceeded', 'success');
+                        Fire.$emit('AfterCreateSignal');
+                    }).catch(function (error) {
+                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+                        Fire.$emit('AfterCreateSignal');
+                    });
+                }
+            });
+        },
+        executeSymbol: function executeSymbol(signal) {
+            swal({
+                title: 'Are you sure?',
+                text: "Signal will be proceeded!!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, proceed it!'
+            }).then(function (result) {
+                if (result.value) {
+                    axios.post('exec', signal).then(function (response) {
+                        swal('Proceeded!', 'Signal has been proceeded', 'success');
+                        Fire.$emit('AfterCreateSignal');
+                    }).catch(function (error) {
+                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+                        Fire.$emit('AfterCreateSignal');
+                    });
+                }
+            });
+        },
+        loadUsers: function loadUsers() {
+            var _this = this;
+
+            axios.get('getexecution/' + this.signal.id).then(function (_ref) {
+                var data = _ref.data;
+
+                _this.signals = data['execution'];
+                _this.signal = data['signal'][0];
+            });
+        },
+
+
+        /*            loadData: function () {
+                        alert('load data');
+                        axios.get('/api/data', function (response) {
+                            //this.items = response.items;
+                        }.bind(this));
+                    },*/
+        showError: function showError(error) {
+            swal({
+                type: 'info',
+                title: 'Bimex response: ',
+                text: error,
+                footer: '<a href>Why do I have this issue?</a>'
+            });
+        }
+    },
+    created: function created() {
+        var _this2 = this;
+
+        // Props link
+        this.signal = this.$route.params.signal; // Works good
+        this.loadUsers();
+
+        // Event listener
+        Fire.$on('AfterCreateSignal', function () {
+            _this2.loadUsers();
+        });
+    },
+
+    mounted: function mounted() {
+        this.interval = setInterval(function () {
+            this.loadUsers();
+        }.bind(this), 3000);
+    },
+    destroyed: function destroyed() {
+        // Stop timer when closed
+        clearInterval(this.interval);
+    }
+});
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row mt-3" }, [
+      _c("div", { staticStyle: { width: "100%" } }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _c("span", { staticStyle: { "font-size": "140%" } }, [
+              _c("div", { staticClass: "container" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm" }, [
+                    _vm._v(
+                      "\n                            Signal id: " +
+                        _vm._s(_vm.signal.id)
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "\n                            Symbol: " +
+                        _vm._s(_vm.signal.symbol)
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "\n                            Quote: " +
+                        _vm._s(_vm.signal.quote_value)
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "\n                            Quote status: " +
+                        _vm._s(_vm.signal.quote_status)
+                    ),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm" }, [
+                    _vm._v(
+                      "\n                            Perсent: " +
+                        _vm._s(_vm.signal.percent)
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "\n                            Leverage: " +
+                        _vm._s(_vm.signal.leverage) +
+                        " "
+                    ),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm" }, [
+                    _vm._v(
+                      "\n                            Status: " +
+                        _vm._s(_vm.signal.status)
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "\n                            Clients: " +
+                        _vm._s(Object.keys(_vm.signals.data).length) +
+                        "\n                        "
+                    )
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-tools" }, [
+              _c("div", { staticClass: "btn-group" }, [
+                true
+                  ? _c("div", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success",
+                          on: {
+                            click: function($event) {
+                              _vm.executeSymbol(_vm.signal)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-play" })]
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                true
+                  ? _c("div", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function($event) {
+                              _vm.closeSymbol(_vm.signal)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-stop" })]
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                false ? _c("div", [_vm._m(0)]) : _vm._e()
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "card-body table-responsive p-0" }, [
+              _c("table", { staticClass: "table table-hover" }, [
+                _c(
+                  "tbody",
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _vm._l(_vm.signals.data, function(execution) {
+                      return [
+                        _c("tr", [
+                          _c("td", [_vm._v(_vm._s(execution.id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(execution.client_id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(execution.client_name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(execution.client_volume))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(execution.client_funds_value))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            execution.in_place_order_status == "ok"
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "badge badge-pill badge-success"
+                                  },
+                                  [_vm._v("IN")]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            execution.in_place_order_status == "error"
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass: "badge badge-pill badge-danger"
+                                  },
+                                  [_vm._v("IN")]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            execution.out_place_order_status == "ok"
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass:
+                                      "badge badge-pill badge-success"
+                                  },
+                                  [_vm._v("OUT")]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            execution.out_place_order_status == "error"
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticClass: "badge badge-pill badge-danger"
+                                  },
+                                  [_vm._v("OUT")]
+                                )
+                              : _vm._e()
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", { staticClass: "detail-row" }, [
+                          _c("td", { attrs: { colspan: "3" } }, [
+                            _vm._v(
+                              "\n                                        IN:"
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n                                        Calculate volume:\n                                        "
+                            ),
+                            _vm.signal.quote_value != null
+                              ? _c("span", [_vm._v("ok")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.signal.quote_value == null
+                              ? _c("span", [_vm._v("No quote!")])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("br"),
+                            _vm._v(
+                              "\n                                        Get client funds: "
+                            ),
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.showError(
+                                      execution.client_funds_response
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v(_vm._s(execution.client_funds_status))]
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n                                        Set leverage: "
+                            ),
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.showError(execution.leverage_response)
+                                  }
+                                }
+                              },
+                              [_vm._v(_vm._s(execution.leverage_status))]
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n                                        Place order: "
+                            ),
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.showError(
+                                      execution.in_place_order_response
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v(_vm._s(execution.in_place_order_status))]
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n                                        Balance: "
+                            ),
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.showError(execution.in_balance_response)
+                                  }
+                                }
+                              },
+                              [_vm._v(_vm._s(execution.in_balance_value))]
+                            ),
+                            _c("br")
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { attrs: { colspan: "3" } }, [
+                            _vm._v(
+                              "\n                                        OUT:"
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n                                        Place order: "
+                            ),
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.showError(
+                                      execution.out_place_order_response
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v(_vm._s(execution.out_place_order_status))]
+                            ),
+                            _c("br"),
+                            _vm._v(
+                              "\n                                        Balance: "
+                            ),
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.showError(
+                                      execution.out_balance_response
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v(_vm._s(execution.out_balance_value))]
+                            ),
+                            _c("br")
+                          ])
+                        ])
+                      ]
+                    })
+                  ],
+                  2
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer" })
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-light", attrs: { disabled: "" } },
+      [_c("i", { staticClass: "fas fa-check" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_c("i", { staticClass: "fas fa-info-circle blue" })]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Client ID")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Volume")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Funds")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Result")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-64b0693d", module.exports)
+  }
+}
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(187)
+/* template */
+var __vue_template__ = __webpack_require__(188)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
 Component.options.__file = "resources/js/components/Dashboard.vue"
 
 /* hot reload */
@@ -74996,7 +75647,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 184 */
+/* 187 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -75223,7 +75874,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 185 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -75643,15 +76294,15 @@ if (false) {
 }
 
 /***/ }),
-/* 186 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(187)
+var __vue_script__ = __webpack_require__(190)
 /* template */
-var __vue_template__ = __webpack_require__(188)
+var __vue_template__ = __webpack_require__(191)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -75680,125 +76331,6 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-3bd692e4", Component.options)
   } else {
     hotAPI.reload("data-v-3bd692e4", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 187 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
-    }
-});
-
-/***/ }),
-/* 188 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card card-default" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Profile Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
-              )
-            ])
-          ])
-        ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3bd692e4", module.exports)
-  }
-}
-
-/***/ }),
-/* 189 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(190)
-/* template */
-var __vue_template__ = __webpack_require__(191)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/ExampleComponent.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-299e239e", Component.options)
-  } else {
-    hotAPI.reload("data-v-299e239e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -75857,6 +76389,125 @@ var staticRenderFns = [
         _c("div", { staticClass: "col-md-8" }, [
           _c("div", { staticClass: "card card-default" }, [
             _c("div", { staticClass: "card-header" }, [
+              _vm._v("Profile Component")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _vm._v(
+                "\n                    I'm an example component.\n                "
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3bd692e4", module.exports)
+  }
+}
+
+/***/ }),
+/* 192 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(193)
+/* template */
+var __vue_template__ = __webpack_require__(194)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/ExampleComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-299e239e", Component.options)
+  } else {
+    hotAPI.reload("data-v-299e239e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 193 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {
+        console.log('Component mounted.');
+    }
+});
+
+/***/ }),
+/* 194 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row justify-content-center" }, [
+        _c("div", { staticClass: "col-md-8" }, [
+          _c("div", { staticClass: "card card-default" }, [
+            _c("div", { staticClass: "card-header" }, [
               _vm._v("Example Component")
             ]),
             _vm._v(" "),
@@ -75881,601 +76532,10 @@ if (false) {
 }
 
 /***/ }),
-/* 192 */
+/* 195 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */,
-/* 197 */,
-/* 198 */,
-/* 199 */,
-/* 200 */,
-/* 201 */,
-/* 202 */,
-/* 203 */,
-/* 204 */,
-/* 205 */,
-/* 206 */,
-/* 207 */,
-/* 208 */,
-/* 209 */,
-/* 210 */,
-/* 211 */,
-/* 212 */,
-/* 213 */,
-/* 214 */,
-/* 215 */,
-/* 216 */,
-/* 217 */,
-/* 218 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(219)
-/* template */
-var __vue_template__ = __webpack_require__(220)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/components/Execution.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-64b0693d", Component.options)
-  } else {
-    hotAPI.reload("data-v-64b0693d", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 219 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            signal: {}, // props
-            signals: {}
-            //
-        };
-    },
-
-    methods: {
-        closeSymbol: function closeSymbol(signal) {
-            swal({
-                title: 'Are you sure?',
-                text: "Signal will be proceeded!!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, proceed it!'
-            }).then(function (result) {
-                if (result.value) {
-                    axios.post('execclose', signal).then(function (response) {
-                        swal('Proceeded!', 'Signal has been proceeded', 'success');
-                        Fire.$emit('AfterCreateSignal');
-                    }).catch(function (error) {
-                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
-                        Fire.$emit('AfterCreateSignal');
-                    });
-                }
-            });
-        },
-        executeSymbol: function executeSymbol(signal) {
-            swal({
-                title: 'Are you sure?',
-                text: "Signal will be proceeded!!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, proceed it!'
-            }).then(function (result) {
-                if (result.value) {
-                    axios.post('exec', signal).then(function (response) {
-                        swal('Proceeded!', 'Signal has been proceeded', 'success');
-                        Fire.$emit('AfterCreateSignal');
-                    }).catch(function (error) {
-                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
-                        Fire.$emit('AfterCreateSignal');
-                    });
-                }
-            });
-        },
-        loadUsers: function loadUsers() {
-            var _this = this;
-
-            axios.get('getexecution/' + this.signal.id).then(function (_ref) {
-                var data = _ref.data;
-                return _this.signals = data;
-            }); // Resource controllers are defined in api.php
-        },
-
-        loadData: function loadData() {
-            alert('load data');
-            axios.get('/api/data', function (response) {
-                //this.items = response.items;
-            }.bind(this));
-        },
-        showError: function showError(error) {
-            swal({
-                type: 'info',
-                title: 'bimex response: ',
-                text: error,
-                footer: '<a href>Why do I have this issue?</a>'
-            });
-        }
-    },
-    created: function created() {
-        var _this2 = this;
-
-        // Props link
-        this.signal = this.$route.params.signal; // Works good
-        this.loadUsers();
-
-        // Event listener
-        Fire.$on('AfterCreateSignal', function () {
-            _this2.loadUsers();
-        });
-    },
-
-    mounted: function mounted() {
-        //this.loadData();
-
-        setInterval(function () {
-            //this.loadData();
-            this.loadUsers();
-        }.bind(this), 2000);
-    }
-
-});
-
-/***/ }),
-/* 220 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row mt-3" }, [
-      _c("div", { staticStyle: { width: "100%" } }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _c("span", { staticStyle: { "font-size": "140%" } }, [
-              _c("div", { staticClass: "container" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-sm" }, [
-                    _vm._v(
-                      "\n                            Signal id: " +
-                        _vm._s(_vm.signal.id)
-                    ),
-                    _c("br"),
-                    _vm._v(
-                      "\n                            Symbol: " +
-                        _vm._s(_vm.signal.symbol)
-                    ),
-                    _c("br")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-sm" }, [
-                    _vm._v(
-                      "\n                            Perсent: " +
-                        _vm._s(_vm.signal.percent)
-                    ),
-                    _c("br"),
-                    _vm._v(
-                      "\n                            Leverage: " +
-                        _vm._s(_vm.signal.leverage) +
-                        " "
-                    ),
-                    _c("br")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-sm" }, [
-                    _vm._v(
-                      "\n                            Status: " +
-                        _vm._s(_vm.signal.status) +
-                        " "
-                    ),
-                    _c("br"),
-                    _vm._v(
-                      "\n                            Clients: 8\n                        "
-                    )
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-tools" }, [
-              _c("div", { staticClass: "btn-group" }, [
-                true
-                  ? _c("div", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-success",
-                          on: {
-                            click: function($event) {
-                              _vm.executeSymbol(_vm.signal)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fas fa-play" })]
-                      )
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                true
-                  ? _c("div", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger",
-                          on: {
-                            click: function($event) {
-                              _vm.closeSymbol(_vm.signal)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fas fa-stop" })]
-                      )
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                false ? _c("div", [_vm._m(0)]) : _vm._e()
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "card-body table-responsive p-0" }, [
-              _c("table", { staticClass: "table table-hover" }, [
-                _c(
-                  "tbody",
-                  [
-                    _vm._m(1),
-                    _vm._v(" "),
-                    _vm._l(_vm.signals.data, function(execution) {
-                      return [
-                        _c("tr", [
-                          _c("td", [_vm._v(_vm._s(execution.id))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(execution.client_id))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(execution.client_name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(execution.client_volume))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(execution.client_funds))]),
-                          _vm._v(" "),
-                          _vm._m(2, true)
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", { staticClass: "detail-row" }, [
-                          _c("td", { attrs: { colspan: "3" } }, [
-                            _vm._v(
-                              "\n                                        IN:"
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                                        Get client funds: "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.showError(
-                                      execution.client_funds_response
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(execution.client_funds_status))]
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                                        Set leverage: "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.showError(execution.leverage_response)
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(execution.leverage_status))]
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                                        Small order check(BTC): "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.showError(
-                                      execution.small_order_response
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(execution.small_order_status))]
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                                        Place order: "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.showError(
-                                      execution.in_place_order_response
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(execution.in_place_order_status))]
-                            ),
-                            _c("br")
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { attrs: { colspan: "3" } }, [
-                            _vm._v(
-                              "\n                                        OUT:"
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                                        Place order: "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.showError(
-                                      execution.out_place_order_response
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(execution.out_place_order_status))]
-                            ),
-                            _c("br")
-                          ])
-                        ])
-                      ]
-                    })
-                  ],
-                  2
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-footer" })
-          ])
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-light", attrs: { disabled: "" } },
-      [_c("i", { staticClass: "fas fa-check" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", [_c("i", { staticClass: "fas fa-info-circle blue" })]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Client ID")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Name")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Volume")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Funds")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Result")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("span", { staticClass: "badge badge-pill badge-info" }, [
-        _vm._v("Status")
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-64b0693d", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

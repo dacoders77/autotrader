@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Jobs\CalculateClientOrderVolume;
+use App\Jobs\GetClientFundsCheck;
+use App\Jobs\GetSignalSymbolQuote;
+use ccxt\bitmex;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller; // Must hook this name space. Otherwise 500 error while access from front end
 use App\Client; // Link model
@@ -11,6 +15,8 @@ use App\Execution; // Link model
 
 class SignalController extends Controller
 {
+    public $symbolQuote;
+
     /**
      * Display a listing of the resource.
      *
@@ -58,11 +64,7 @@ class SignalController extends Controller
         ]);
 
         $id = (array)$response;
-        //dump($x["\x00*\x00attributes"]['id']);
         self::fillExecutionsTable($request, $id["\x00*\x00attributes"]['id']);
-
-
-
     }
 
     /**
@@ -132,24 +134,96 @@ class SignalController extends Controller
      * Fill executions table with a job. A job - symbolize a signal executed on a client account.
      * Clone signal to all clients.
      * Quantity of records = quantity of clients
+     *
      * @param Request $request
      */
     private function fillExecutionsTable(Request $request, $id){
         foreach (Client::where('active', 1)->get() as $client){
-            Execution::create([
+            $execution = Execution::create([
                 'signal_id' => $id,
                 'client_id' => $client->id,
                 'client_name' => $client->name,
                 'symbol' => $request['symbol'],
-
                 'direction' => $request['direction'],
                 'percent' => $request['percent'],
                 'leverage' => $request['leverage'],
-
-                'status' => 'new'
+                'status' => 'new',
             ]);
+            GetClientFundsCheck::dispatch(new bitmex(), $execution);
         }
+
+        GetSignalSymbolQuote::dispatch(new bitmex(), $request['symbol'], $id);
+        // Add volume calculate job
+        CalculateClientOrderVolume::dispatch($id);
+
     }
+
+    /**
+     * Calculate and fill volume for each client (each record in the table).
+     *
+     * @param Request $request
+     * @param bitmex $exchange
+     * @return string
+     */
+    public function fillVolume(Request $request){
+
+
+
+        // Get clients balances. Dispatch job to a que. Use GetClientFundsCheck.php
+
+        // Make and dispatch new job: fetchTicker
+        // Foreach execution
+        // Get the formula
+        // Calculate client volume
+
+        $exchange = new bitmex();
+
+        /* Get quote */
+        try {
+            $this->symbolQuote = $exchange->fetch_ticker($request['symbol'])['last'];
+            //LogToFile::add(__FILE__ . __LINE__, $this->symbolQuote);
+        } catch (\Exception $e) {
+            //LogToFile::add(__FILE__ . __LINE__, $e->getMessage());
+            throw (new Exception($e->getMessage()));
+            //return $e->getMessage();
+        }
+
+        // Balance share calculation
+        //$balancePortionXBT = $execution->client_funds * $execution->percent / 100;
+
+
+        //return $this->symbolQuote;
+
+        /**
+         * Run through all records in executions table
+         * With a specific signal id
+         * And where client funds != 0. If == 0 it means that API keys did not work and we did not get the balance
+         */
+
+/*        foreach (Execution::where('signal_id', $request['id'])
+                     ->where('client_funds', '!=', null)
+                     ->get() as $execution){
+
+            // Balance share calculation
+            $balancePortionXBT = $execution->client_funds * $execution->percent / 100;
+
+            // Contract formula
+
+            // Formulas are set in Symbols.vue
+            // Get the formula. Use symbol as the key
+            $formula = Symbol::where('execution_name', $execution->symbol)->value('formula');
+            if ($formula == "=1/symbolQuote(BTC)") $this->symbolInXBT = 1 / $this->symbolQuote;
+            if ($formula == "=symbolQuote*multp(ETH)") $this->symbolInXBT = $this->symbolQuote * 0.000001;
+            if ($formula == "=symbolQuote")$this->symbolInXBT = $this->symbolQuote;
+
+            Execution::where('signal_id', $request['id'])
+                ->where('client_id', $execution->client_id)
+                ->update(['client_volume' => round($balancePortionXBT / $this->symbolInXBT),
+                    'status' => 'new',
+                    'info' => 'volume calculated']);
+        }*/
+    }
+
 
 
 }

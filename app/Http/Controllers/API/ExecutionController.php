@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Classes\LogToFile;
 use App\Jobs\GetClientFundsCheck;
+use App\Jobs\GetClientTradingBalance;
+use App\Jobs\GetClientTradingBalanceOut;
 use App\Jobs\InPlaceOrder;
 use App\Jobs\OutPlaceOrder;
 use App\Jobs\SetLeverageCheck;
@@ -19,6 +21,7 @@ use Illuminate\Support\Facades\Cache;
 use Mockery\Exception;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use test\Mockery\SubclassWithFinalWakeup;
 
 /**
  * Class SymbolController.
@@ -62,6 +65,8 @@ class ExecutionController extends Controller
             //SmallOrderCheck::dispatch($this->exchange, $execution);
             /* Place order */
             InPlaceOrder::dispatch($this->exchange, $execution);
+            /* Get trading balance after order execution */
+            GetClientTradingBalance::dispatch($this->exchange, $execution);
         }
 
         Signal::where('id', $execution->signal_id)->update(['status' => 'pending']);
@@ -70,11 +75,9 @@ class ExecutionController extends Controller
         return 'Return from exec controller! ' . __FILE__;
         die(__FILE__);
 
-        // Add controller: execclose
-        // Controller is fired
-        // Foreach through all records in executions where in_place_order_status == ok
-        // Place sell order
-        // Change close buttons on signals.vue, execution.vue
+
+
+        /*Delete this code*/
 
 
         // Do it once. Only for a new signal
@@ -83,8 +86,6 @@ class ExecutionController extends Controller
             //$this->getClientsFunds($request, $this->exchange);
             //$this->fillVolume($request, $this->exchange);
         }
-
-
 
 
 
@@ -117,6 +118,7 @@ class ExecutionController extends Controller
 
     /**
      * Calculate and fill volume for each client (each record in the table).
+     *
      * @param Request $request
      * @param bitmex $exchange
      * @return string
@@ -294,7 +296,8 @@ class ExecutionController extends Controller
      */
     public function getExecution($id)
     {
-        return Execution::latest()->where('signal_id', $id)->paginate(10);
+        $signal = Signal::where('id', $id)->get();
+        return(['execution' => Execution::latest()->where('signal_id', $id)->paginate(10), 'signal' => $signal]);
     }
 
     public function closeSymbol(Request $request){
@@ -302,6 +305,7 @@ class ExecutionController extends Controller
         ->where('in_place_order_status', 'ok')
         ->get() as $execution) {
             OutPlaceOrder::dispatch($this->exchange, $execution);
+            GetClientTradingBalanceOut::dispatch($this->exchange, $execution);
         }
 
         //Signal::where('id', $execution->signal_id)->update(['status' => 'pending']);

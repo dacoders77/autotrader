@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Classes\ExecutionCheck;
+use App\Symbol;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -12,13 +13,14 @@ use App\Client;
 use App\Execution;
 use Mockery\Exception;
 
-class InPlaceOrder implements ShouldQueue
+class GetClientTradingBalance implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $exchange;
     protected $execution;
     private $response;
+    private $tradingBalance;
 
     /**
      * Create a new job instance.
@@ -40,20 +42,14 @@ class InPlaceOrder implements ShouldQueue
     {
         Execution::where('id', $this->execution->id)
             ->update([
-                'in_place_order_status' => 'pending',
+                'in_balance_status' => 'pending',
             ]);
 
         $this->exchange->apiKey = Client::where('id', $this->execution->client_id)->value('api');
         $this->exchange->secret = Client::where('id', $this->execution->client_id)->value('api_secret');
 
         try{
-            if ($this->execution->direction == 'long'){
-                $this->response = $this->exchange->createMarketBuyOrder($this->execution->symbol, $this->execution->client_volume, []);
-            }
-            else{
-                $this->response = $this->exchange->createMarketSellOrder($this->execution->symbol, $this->execution->client_volume, []);
-            }
-
+            $this->response = $this->exchange->privateGetPosition();
         }
         catch (\Exception $e)
         {
@@ -61,18 +57,26 @@ class InPlaceOrder implements ShouldQueue
 
             Execution::where('id', $this->execution->id)
                 ->update([
-                    'in_place_order_status' => 'error',
-                    'in_place_order_response' => json_encode($this->response)
+                    'in_balance_status' => 'error',
+                    'in_balance_response' => json_encode($this->response)
                 ]);
+        }
+
+        /* In case of invalid api keys string value instead of array is received */
+        if (gettype($this->response) == 'array' ){
+            foreach ($this->response as $symbol){
+                if ($symbol['symbol'] == Symbol::where('execution_name', $this->execution->symbol)->value('leverage_name'))
+                    $this->tradingBalance = $symbol['currentQty'];
+            }
         }
 
         if (gettype($this->response) == 'array'){
             // Success
             Execution::where('id', $this->execution->id)
                 ->update([
-                    'in_place_order_value' => $this->response['price'],
-                    'in_place_order_response' => json_encode($this->response),
-                    'in_place_order_status' => 'ok',
+                    'in_balance_value' => $this->tradingBalance,
+                    'in_balance_response' => json_encode($this->response),
+                    'in_balance_status' => 'ok'
                 ]);
         }
 
@@ -87,7 +91,7 @@ class InPlaceOrder implements ShouldQueue
              */
             if ($this->response == "bitmex {\"error\":{\"message\":\"The system is currently overloaded. Please try again later.\",\"name\":\"HTTPError\"}}\""){
                 // Set get client status to: overloaded
-                dump('EXCHANGE OVERLOADED! RESTART JOB! IN place order');
+                dump('EXCHANGE OVERLOADED! RESTART JOB! IN client balance');
                 throw new Exception();
             }
         }
@@ -97,3 +101,6 @@ class InPlaceOrder implements ShouldQueue
     }
 
 }
+
+
+

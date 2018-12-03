@@ -17,8 +17,8 @@ class CreateExecutionsTable extends Migration
             $table->increments('id');
             $table->timestamps();
 
-            $table->string('signal_id')->nullable();
-            $table->string('client_id')->nullable();
+            $table->integer('signal_id')->nullable();
+            $table->integer('client_id')->nullable();
             $table->string('client_name')->nullable();
 
             $table->string('symbol')->nullable();
@@ -50,12 +50,17 @@ class CreateExecutionsTable extends Migration
             $table->text('in_place_order_response')->nullable();
             $table->decimal('in_place_order_value', 12,6)->nullable();
 
+            $table->string('in_balance_status')->nullable();
+            $table->text('in_balance_response')->nullable();
+            $table->integer('in_balance_value')->nullable();
+
             $table->string('out_place_order_status')->nullable();
             $table->text('out_place_order_response')->nullable();
             $table->decimal('out_place_order_value', 12,6)->nullable();
 
-
-
+            $table->string('out_balance_status')->nullable();
+            $table->text('out_balance_response')->nullable();
+            $table->integer('out_balance_value')->nullable();
 
 
 
@@ -67,23 +72,6 @@ class CreateExecutionsTable extends Migration
             $table->text('open_response')->nullable();
             $table->text('close_response')->nullable();
             $table->string('info', 10000)->nullable();
-
-            // open_status (take from response)
-            // close_status
-            // signal id
-            // client id
-            // client name
-            // symbol
-            // direction
-            // volume
-            // %
-            // leverage
-            // open price
-            // close price
-            // open_response (full)
-            // close_response (full)
-            // info
-
 
         });
     }

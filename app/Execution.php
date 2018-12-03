@@ -42,11 +42,17 @@ class Execution extends Model
         'in_place_order_response',
         'in_place_order_value',
 
+        'in_balance',
+        'in_balance_response',
+        'in_balance_value',
+
         'out_place_order_status',
         'out_place_order_response',
         'out_place_order_value',
 
-
+        'out_balance',
+        'out_balance_response',
+        'out_balance_value',
 
         'client_volume',
         'multiplier',

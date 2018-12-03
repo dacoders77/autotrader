@@ -6,20 +6,21 @@
                     <div class="card-header"><span style="font-size:140%">
 
 
-
                         <div class="container">
                           <div class="row">
                             <div class="col-sm">
                                 Signal id: {{ signal.id }}<br>
                                 Symbol: {{ signal.symbol }}<br>
+                                Quote: {{ signal.quote_value }}<br>
+                                Quote status: {{ signal.quote_status }}<br>
                             </div>
                             <div class="col-sm">
                                 Perсent: {{ signal.percent }}<br>
                                 Leverage: {{ signal.leverage }} <br>
                             </div>
                             <div class="col-sm">
-                                Status: {{ signal.status }} <br>
-                                Clients: 8
+                                Status: {{ signal.status }}<br>
+                                Clients: {{ Object.keys(signals.data).length }}
                             </div>
                           </div>
                         </div>
@@ -75,16 +76,27 @@
                                         <td>{{ execution.client_name }}</td>
 
                                         <td>{{ execution.client_volume}}</td>
-                                        <td>{{ execution.client_funds }}</td>
-                                        <td><span class="badge badge-pill badge-info">Status</span></td>
+                                        <td>{{ execution.client_funds_value }}</td>
+                                        <td>
+                                            <span v-if="execution.in_place_order_status == 'ok'" class="badge badge-pill badge-success">IN</span>
+                                            <span v-if="execution.in_place_order_status == 'error'" class="badge badge-pill badge-danger">IN</span>
+                                            <span v-if="execution.out_place_order_status == 'ok'" class="badge badge-pill badge-success">OUT</span>
+                                            <span v-if="execution.out_place_order_status == 'error'" class="badge badge-pill badge-danger">OUT</span>
+
+                                        </td>
+
                                     </tr>
                                     <tr class="detail-row">
                                         <td colspan="3">
                                             IN:<br>
+                                            Calculate volume:
+                                            <span v-if="signal.quote_value != null">ok</span>
+                                            <span v-if="signal.quote_value == null">No quote!</span>
+                                            <br>
                                             Get client funds: <a href="#" @click="showError(execution.client_funds_response)">{{ execution.client_funds_status }}</a><br>
                                             Set leverage: <a href="#" @click="showError(execution.leverage_response)">{{ execution.leverage_status }}</a><br>
-                                            Small order check(BTC): <a href="#" @click="showError(execution.small_order_response)">{{ execution.small_order_status }}</a><br>
                                             Place order: <a href="#" @click="showError(execution.in_place_order_response)">{{ execution.in_place_order_status }}</a><br>
+                                            Balance: <a href="#" @click="showError(execution.in_balance_response)">{{ execution.in_balance_value }}</a><br>
                                             <!--
                                             Result:
                                             <span v-if="execution.in_status == 'success'" class="badge badge-pill badge-success">Success</span>
@@ -96,6 +108,7 @@
                                         <td colspan="3">
                                             OUT:<br>
                                             Place order: <a href="#" @click="showError(execution.out_place_order_response)">{{ execution.out_place_order_status }}</a><br>
+                                            Balance: <a href="#" @click="showError(execution.out_balance_response)">{{ execution.out_balance_value }}</a><br>
                                         </td>
                                     </tr>
                                 </template>
@@ -124,9 +137,9 @@
     export default {
         data() {
             return {
-                signal: {}, // props
+                signal: {}, // Props. Sent from Signals.vue
                 signals: {},
-                //
+                interval: null,
             }
         },
         methods: {
@@ -185,26 +198,28 @@
                 })
             },
             loadUsers(){
-                axios.get('getexecution/' + this.signal.id).then(({data}) => (this.signals = data)); // Resource controllers are defined in api.php
-
+                axios.get('getexecution/' + this.signal.id).then(({data}) => {
+                    this.signals = data['execution']
+                    this.signal = data['signal'][0]
+                });
             },
-            loadData: function () {
+
+/*            loadData: function () {
                 alert('load data');
                 axios.get('/api/data', function (response) {
                     //this.items = response.items;
                 }.bind(this));
-            },
+            },*/
             showError(error){
                 swal({
                     type: 'info',
-                    title: 'bimex response: ',
+                    title: 'Bimex response: ',
                     text: error,
                     footer: '<a href>Why do I have this issue?</a>'
                 })
             }
         },
         created() {
-
             // Props link
             this.signal = this.$route.params.signal; // Works good
             this.loadUsers();
@@ -215,13 +230,13 @@
             });
         },
         mounted: function () {
-            //this.loadData();
-
-            setInterval(function () {
-                //this.loadData();
+            this.interval = setInterval(function () {
                 this.loadUsers();
-            }.bind(this), 2000);
+            }.bind(this), 3000);
+        },
+        destroyed(){
+            // Stop timer when closed
+            clearInterval(this.interval);
         }
-
     }
 </script>
