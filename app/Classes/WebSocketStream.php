@@ -38,7 +38,7 @@ class WebSocketStream
             ]);
 
         //event(new AttrUpdateEvent($message[0]['lastPrice']));
-        event(new AttrUpdateEvent(['signal' => Signal::paginate(), 'symbol' => Symbol::paginate()])); // Event is received in signals.vue, symbols.vue
+        event(new AttrUpdateEvent(['signal' => Signal::paginate(), 'symbol' => Symbol::paginate(), 'ticker' => $message[0]['symbol'], 'price' => $message[0]['lastPrice']])); // Event is received in signals.vue, symbols.vue
     }
 
     public  static function stopLossCheck($message){

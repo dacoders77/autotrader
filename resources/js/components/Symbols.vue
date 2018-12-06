@@ -254,16 +254,18 @@
             Echo.channel('ATTR')
                 .listen('AttrUpdateEvent', (e) => {
                     this.symbols = e.update.symbol;
+                    //console.log(e.update.symbol.data[0]);
 
                     // Quotes
                     if (this.limitOrderStatuses.length < 11) { // 11 - quantity of rows in Order trace window
-                        //this.limitOrderStatuses.push(e.update);
-                        this.limitOrderStatuses.push(1);
+                        this.limitOrderStatuses.push(e.update.ticker + ' ' + e.update.price);
+
+
                     }
                     else {
                         this.limitOrderStatuses.shift();
-                        //this.limitOrderStatuses.push(e.update);
-                        this.limitOrderStatuses.push(2);
+                        this.limitOrderStatuses.push(e.update.ticker + ' ' + e.update.price);
+
                     }
 
                 });

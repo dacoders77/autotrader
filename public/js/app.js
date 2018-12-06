@@ -84619,16 +84619,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // Sent from WebSocketStream.php
         Echo.channel('ATTR').listen('AttrUpdateEvent', function (e) {
             _this6.symbols = e.update.symbol;
+            //console.log(e.update.symbol.data[0]);
 
             // Quotes
             if (_this6.limitOrderStatuses.length < 11) {
                 // 11 - quantity of rows in Order trace window
-                //this.limitOrderStatuses.push(e.update);
-                _this6.limitOrderStatuses.push(1);
+                _this6.limitOrderStatuses.push(e.update.ticker + ' ' + e.update.price);
             } else {
                 _this6.limitOrderStatuses.shift();
-                //this.limitOrderStatuses.push(e.update);
-                _this6.limitOrderStatuses.push(2);
+                _this6.limitOrderStatuses.push(e.update.ticker + ' ' + e.update.price);
             }
         });
     }

@@ -59,7 +59,7 @@ class btmxws extends Command
         /* Start subscription when the console command is started. Symbols will be taken from the DB */
         Cache::put('object', ['subscribeInit' => true], 5);
 
-        $loop->addPeriodicTimer(0.1, function() use($loop) {
+        $loop->addPeriodicTimer(2, function() use($loop) {
             \App\Classes\Websocket::listenCache($this->connection);
         });
 
