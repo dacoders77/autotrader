@@ -10,7 +10,6 @@
                         <button type="button" class="btn btn-success float-right" @click="newModal">
                             <i class="fas fa-plus-square"></i> Signal
                         </button>
-
                     </div>
 
                     <div class="card-body">
@@ -31,11 +30,14 @@
                                     <th>Lvrg</th>
                                     <th>Side</th>
                                     <th>Quote</th>
+                                    <th>StopLoss</th>
+                                    <th>Info</th>
 
-                                    <th>Open</th>
+
+                                    <!--<th>Open</th>
                                     <th>Price</th>
                                     <th>Close</th>
-                                    <th>Price</th>
+                                    <th>Price</th>-->
 
                                 </tr>
                                 <tr v-for="signal in signals.data" :key="signal.id" :class="signal.status == 'finished' ? 'grey' : '' ">
@@ -70,11 +72,13 @@
                                     <td>{{ signal.leverage }}</td>
                                     <td>{{ signal.direction }}</td>
                                     <td>{{ signal.quote_value }}</td>
+                                    <td>{{ signal.stop_loss_price }}</td>
+                                    <td>{{ signal.info }}</td>
 
-                                    <td>{{ signal.open_date }}</td>
+                                    <!--<td>{{ signal.open_date }}</td>
                                     <td>{{ signal.open_price }}</td>
                                     <td>{{ signal.close_date }}</td>
-                                    <td>{{ signal.close_price }}</td>
+                                    <td>{{ signal.close_price }}</td>-->
 
                                 </tr>
                                 </tbody></table>
@@ -132,7 +136,6 @@
                                        class="form-control" :class="{ 'is-invalid': form.errors.has('leverage') }">
                                 <has-error :form="form" field="leverage"></has-error>
                             </div>
-
                             <div class="form-group">
                                 <select name="type" v-model="form.direction" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('direction') }">
                                     <option value="">Side(direction)</option>
@@ -140,6 +143,12 @@
                                     <option value="short">Short</option>
                                 </select>
                                 <has-error :form="form" field="direction"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <input v-model="form.stop_loss_price" type="number" name="stop_loss_price"
+                                       placeholder="Stop loss price"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('stop_loss_price') }">
+                                <has-error :form="form" field="stop_loss_price"></has-error>
                             </div>
 
                         </div>
@@ -167,11 +176,12 @@
                 symbols: {}, // Symbols for drop down menu in create/update modal
                 form: new Form({ // Class instance
                     id: '',
-                    symbol: '',
+                    symbol: 'BTC/USD',
                     multiplier: '',
-                    percent: '',
-                    leverage: '',
-                    direction: '',
+                    percent: 30,
+                    leverage: 5,
+                    direction: 'long',
+                    stop_loss_price: '5555',
                 })
             }
         },
@@ -231,7 +241,13 @@
                 $('#addNewSignalModal').modal('show');
             },
             loadUsers(){
-                axios.get('api/signal').then(({data}) => (this.signals = data)); // Resource controllers are defined in api.php
+                // Signal. Resource controllers are defined in api.php
+                axios.get('api/signal').then(({data}) => {
+                    this.signals = data // Data is loaded from two sources: get response and websocket
+                    //console.log(data);
+                });
+
+                // SYMBOL! These lines are different!
                 axios.get('api/symbol').then(({data}) => (this.symbols = data));
             },
             createSignal(){
@@ -302,11 +318,16 @@
         },
         created() {
             this.loadUsers();
-
             // Event listener
             Fire.$on('AfterCreateSignal', () => {
                 this.loadUsers();
             });
+            // Websocket listener
+            // Sent from WebSocketStream.php
+            Echo.channel('ATTR')
+                .listen('AttrUpdateEvent', (e) => {
+                    this.signals = e.update.signal;
+                });
         }
     }
 </script>

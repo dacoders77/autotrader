@@ -1,8 +1,8 @@
 <template>
     <div class="container" >
         <div class="row mt-3">
-            <div style="width: 100%">
-                <div class="card">
+            <div class="col"><!--<div style="width: 100%">-->
+                <div class="card h-100">
                     <div class="card-header"><span style="font-size:140%">Symbols</span>
                         <div class="card-tools">
                             <!-- Button trigger modal -->
@@ -10,7 +10,6 @@
                         <button type="button" class="btn btn-success float-right" @click="newModal">
                             <i class="fas fa-plus-square"></i> Symbol
                         </button>
-
                     </div>
 
                     <div class="card-body">
@@ -24,9 +23,9 @@
                                     <th>Action</th>
                                     <th>Execution name</th>
                                     <th>Leverage name</th>
-                                    <th>Min quant.</th>
+                                    <th>Quote</th>
                                     <th>Formula</th>
-                                    <th>Info</th>
+
                                 </tr>
                                 <tr v-for="symbol in symbols.data" :key="symbol.id">
                                     <td>{{ symbol.id }}</td>
@@ -40,10 +39,10 @@
                                     <td>{{ symbol.created_at | myDate }}</td>
                                     <td>{{ symbol.execution_name }}</td>
                                     <td>{{ symbol.leverage_name }}</td>
-                                    <td>{{ symbol.min_exec_quantity }}</td>
+                                    <td>{{ symbol.quote_value }}</td>
                                     <td>{{ symbol.formula }}</td>
 
-                                    <td>{{ symbol.info }}</td>
+
                                 </tr>
                                 </tbody></table>
                         </div>
@@ -58,6 +57,24 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-header"><span style="font-size:140%">Quotes</span>
+                        <div class="card-tools">
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span v-for="limitOrderStatus in limitOrderStatuses">
+                          <small>
+                              {{ limitOrderStatus }}<br>
+                          </small>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
 
@@ -96,12 +113,12 @@
                                 </select>
                                 <has-error :form="form" field="formula"></has-error>
                             </div>
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <input v-model="form.min_exec_quantity" type="number" name="min_exec_quantity"
                                        placeholder="Minimum execution quantity"
                                        class="form-control" :class="{ 'is-invalid': form.errors.has('min_exec_quantity') }">
                                 <has-error :form="form" field="min_exec_quantity"></has-error>
-                            </div>
+                            </div>-->
                             <div class="form-group">
                                 <input v-model="form.info" type="text" name="info"
                                        placeholder="Info"
@@ -130,11 +147,11 @@
             return{
                 editmode: false, // Modal edit record or create new flag
                 symbols: {},
+                limitOrderStatuses: [],
                 form: new Form({ // Class instance
                     execution_name: '',
                     leverage_name: '',
                     formula: '',
-                    min_exec_quantity: '',
                     info: ''
                 })
             }
@@ -222,11 +239,35 @@
             }
         },
         created() {
+
+
+
+
             this.loadSymbols();
             // Event listener
             Fire.$on('AfterCreate', () => {
                 this.loadSymbols();
             });
+
+            // Websocket listener
+            // Sent from WebSocketStream.php
+            Echo.channel('ATTR')
+                .listen('AttrUpdateEvent', (e) => {
+                    this.symbols = e.update.symbol;
+
+                    // Quotes
+                    if (this.limitOrderStatuses.length < 11) { // 11 - quantity of rows in Order trace window
+                        //this.limitOrderStatuses.push(e.update);
+                        this.limitOrderStatuses.push(1);
+                    }
+                    else {
+                        this.limitOrderStatuses.shift();
+                        //this.limitOrderStatuses.push(e.update);
+                        this.limitOrderStatuses.push(2);
+                    }
+
+                });
+
         }
     }
 </script>

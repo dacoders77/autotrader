@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Cache;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +14,16 @@
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+// Delete
+Route::get('/conn', function () {
+    Cache::put('object', ['subscribe' => 'XBTUSD'], 5);
+});
+
+Route::get('/conn2', function () {
+    Cache::put('object', ['unsubscribe' => 'XBTUSD'], 5);
 });
 
 
@@ -44,6 +55,8 @@ Route::post('/activateclient', 'API\ClientController@activateClient');
 
 // Get client trading balance. Called from client.vue
 Route::post('/gettradebalance', 'API\ClientController@getClientTradingBalance');
+
+
 
 
 

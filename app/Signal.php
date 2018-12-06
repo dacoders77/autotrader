@@ -19,5 +19,6 @@ class Signal extends Model
         'percent',
         'leverage',
         'direction',
+        'stop_loss_price'
     ];
 }

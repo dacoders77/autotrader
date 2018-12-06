@@ -24,7 +24,8 @@ class SignalController extends Controller
      */
     public function index()
     {
-        return Signal::latest()->paginate(5);
+        //return Signal::latest()->paginate(5);
+        return Signal::paginate(); // No pagination. For testing purposes. Real-time websocket data is loaded from WebSocketStream.php
     }
 
     /**
@@ -48,10 +49,10 @@ class SignalController extends Controller
         /* Validation rules */
         $this->validate($request,[
             'symbol' => 'required|string|max:8',
-            //'multiplier' => 'required|string|max:10',
-            'percent' => 'required|string|max:4',
-            'leverage' => 'required|string|max:4',
+            'percent' => 'required|numeric|max:100',
+            'leverage' => 'required|numeric|max:100',
             'direction' => 'required|string|max:6',
+            'stop_loss_price' => 'required|string|max:6',
             //'password' => 'required|string|min:6'
         ]);
 
@@ -61,10 +62,13 @@ class SignalController extends Controller
             'percent' => $request['percent'],
             'leverage' => $request['leverage'],
             'direction' => $request['direction'],
+            'stop_loss_price' => $request['stop_loss_price']
         ]);
 
         $id = (array)$response;
         self::fillExecutionsTable($request, $id["\x00*\x00attributes"]['id']);
+
+        return $request;
     }
 
     /**
@@ -104,8 +108,8 @@ class SignalController extends Controller
         $this->validate($request,[
             'symbol' => 'required|string|max:8',
             //'multiplier' => 'required|numeric|max:10',
-            'percent' => 'required|string|max:4',
-            'leverage' => 'required|string|max:4',
+            'percent' => 'required|numeric|max:100',
+            'leverage' => 'required|numeric|max:100',
             'direction' => 'required|string|max:6',
             //'password' => 'required|string|min:6'
         ]);

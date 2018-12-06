@@ -40,12 +40,28 @@ class Client
         }
     }
 
-    public static function checkSmallOrderExecution($api = '', $apiSecret = ''){
+    public static function checkSmallOrderExecution($api = '', $apiSecret = '', $symbol = 'BTC/USD'){
         self::$exchange = new bitmex();
         try{
             $quantity = 1;
-            $response = self::bitmex($api, $apiSecret)->createMarketBuyOrder('BTC/USD', $quantity, []);
-            self::bitmex($api, $apiSecret)->createMarketSellOrder('BTC/USD', $quantity, []);
+            $response = self::bitmex($api, $apiSecret)->createMarketBuyOrder($symbol, $quantity, []);
+            self::bitmex($api, $apiSecret)->createMarketSellOrder($symbol, $quantity, []);
+            return $response;
+        }
+        catch (\Exception $e){
+            return $e->getMessage();
+        }
+    }
+
+    public static function setLeverageCheck($api = '', $apiSecret = '', $symbol){
+        self::$exchange = new bitmex();
+        try{
+
+
+            $response = self::bitmex($api, $apiSecret)->privatePostPositionLeverage(array('symbol' => $symbol, 'leverage' => 1));
+
+            //$response = self::bitmex($api, $apiSecret)->createMarketBuyOrder($symbol, $quantity, []);
+            //self::bitmex($api, $apiSecret)->createMarketSellOrder($symbol, $quantity, []);
             return $response;
         }
         catch (\Exception $e){

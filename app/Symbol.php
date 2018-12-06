@@ -19,6 +19,7 @@ class Symbol extends Model
         'leverage_name',
         'formula',
         'min_exec_quantity',
+        'quote_value',
         'info',
     ];
 
