@@ -301,7 +301,7 @@ class ExecutionController extends Controller
     }
 
     public function closeSymbol(Request $request){
-        foreach (Execution::where('signal_id', $request['id']) //
+        foreach (Execution::where('signal_id', $request['id'])
         ->where('in_place_order_status', 'ok')
         ->get() as $execution) {
             OutPlaceOrder::dispatch($this->exchange, $execution);
@@ -309,6 +309,15 @@ class ExecutionController extends Controller
         }
 
         //Signal::where('id', $execution->signal_id)->update(['status' => 'pending']);
+    }
+
+    public function stopLoss($signalId){
+        foreach (Execution::where('signal_id', $signalId)
+        ->where('in_place_order_status', 'ok')
+                     ->get() as $execution) {
+            OutPlaceOrder::dispatch($this->exchange, $execution);
+            GetClientTradingBalanceOut::dispatch($this->exchange, $execution);
+        }
     }
 }
 

@@ -99,7 +99,6 @@ class btmxws extends Command
                 ]);
                 $conn->send($requestObject);*/
 
-
             }, function(\Exception $e) use ($loop) {
                 $errorString = "RatchetPawlSocket.php Could not connect. Reconnect in 5 sec. \n Reason: {$e->getMessage()} \n";
                 echo $errorString;

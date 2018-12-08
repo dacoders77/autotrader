@@ -9,6 +9,7 @@
 namespace App\Classes;
 
 use App\Events\AttrUpdateEvent;
+use App\Http\Controllers\API\ExecutionController;
 use App\Signal; // Link model
 use App\Symbol;
 
@@ -22,7 +23,12 @@ use App\Symbol;
  */
 class WebSocketStream
 {
+    /* @var boolean Rate limit first enter flag. */
+    private static $isFirstTimeTickCheck;
+    private static $addedTickTime;
+
     public static function Parse(array $message){
+
         Symbol::where('leverage_name', $message[0]['symbol'])
             ->update([
                 'quote_value' => $message[0]['lastPrice']
@@ -37,21 +43,26 @@ class WebSocketStream
                 'quote_value' => $message[0]['lastPrice']
             ]);
 
-        //event(new AttrUpdateEvent($message[0]['lastPrice']));
-        event(new AttrUpdateEvent(['signal' => Signal::paginate(), 'symbol' => Symbol::paginate(), 'ticker' => $message[0]['symbol'], 'price' => $message[0]['lastPrice']])); // Event is received in signals.vue, symbols.vue
+        $quoteTickTime = strtotime($message[0]['timestamp']);
+
+        /* Send event to vue.js once a second */
+        if (self::$isFirstTimeTickCheck || $quoteTickTime >= self::$addedTickTime){
+            self::$isFirstTimeTickCheck = false;
+            self::$addedTickTime = $quoteTickTime + 1; // Allow ticks not frequenter than twice a second
+            /* Event is received in signals.vue, symbols.vue */
+            event(new AttrUpdateEvent(['signal' => Signal::paginate(), 'symbol' => Symbol::paginate(), 'ticker' => $message[0]['symbol'], 'price' => $message[0]['lastPrice']]));
+        }
     }
 
     public  static function stopLossCheck($message){
-        // Get all signals with -ticker
+
         /* We don't have execution name in signals table, but we do in symbols */
         $executionSymbolName = Symbol::where('leverage_name', $message[0]['symbol'])->value('execution_name');
         // Run through this array
 
-        dump($message[0]['symbol'] . " " . $message[0]['lastPrice']);
+        //dump($message[0]['symbol'] . " " . $message[0]['lastPrice']);
 
         foreach (Signal::where('symbol', $executionSymbolName)->get() as $signal){
-            //dump('price /stop_loss_value: ' . $message[0]['lastPrice'] . " " . $signal->stop_loss_price . " " . gettype($message[0]['lastPrice']) . " " . gettype($signal->stop_loss_price));
-
             if($signal->direction == "long" && $signal->info != "stop_loss"){
                 if($message[0]['lastPrice'] < (double)$signal->stop_loss_price){
 
@@ -59,7 +70,10 @@ class WebSocketStream
                         ->update([
                             'info' => 'stop_loss'
                         ]);
-                    echo('long stop loss worked!http/n');
+                    echo('long stop loss worked!/n');
+
+                    // Stop execution goes here
+                    app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
                 }
             }
 
@@ -71,6 +85,9 @@ class WebSocketStream
                             'info' => 'stop_loss'
                         ]);
                     echo('short stop loss worked!/n');
+
+                    // Stop execution goes here
+                    app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
                 }
             }
 
