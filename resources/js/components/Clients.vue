@@ -25,6 +25,7 @@
                                     <th>Validate</th>
                                     <th>Valid</th>
                                     <th>Balance</th>
+                                    <th>Drop</th>
                                     <th>Symbols</th>
                                     <th>Created&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
 
@@ -85,11 +86,24 @@
 
                                     <td>
                                         <div class="btn-group">
-                                            <button v-if="balanceButtonEnabled == true " class="btn btn-info" @click="getClientTradingBalance(signal)">
+                                            <button v-if="balanceButtonEnabled == true "class="btn btn-info" @click="getClientTradingBalance(signal)">
                                                 <i class="fas fa-arrow-down"></i></button>
                                         </div>
                                         <div class="btn-group">
-                                            <button v-if="balanceButtonEnabled == false " class="btn btn-info" disabled @click="getClientTradingBalance(signal)">
+                                            <button v-if="balanceButtonEnabled == false "class="btn btn-info" disabled>
+                                                <i class="far fa-clock"></i></button>
+                                        </div>
+                                    </td>
+
+
+
+                                    <td>
+                                        <div class="btn-group">
+                                            <button v-if="true" class="btn btn-warning" @click="dropClientTradingBalance(signal)">
+                                                <i class="fas fa-skull-crossbones" ></i></button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button v-if="false" class="btn btn-info" disabled>
                                                 <i class="far fa-clock"></i></button>
                                         </div>
                                     </td>
@@ -120,7 +134,6 @@
                             <ul class="pagination justify-content-center">
                                 <pagination :data="clients" @pagination-change-page="getResults"></pagination>
                             </ul>
-
 
                         </div>
                     </div>
@@ -222,6 +235,36 @@
             }
         },
         methods: {
+            dropClientTradingBalance(client) {
+                this.$Progress.start();
+                //this.balanceButtonEnabled = false;
+                axios.post('dropbalance', client)
+                    .then(response => {
+                        swal(
+                            'Proceeded!',
+                            response.data.message, // Response from ClientController.php
+                            //response.data.arr,
+                            'success'
+                        )
+                        // Reload data after the balance was dropped
+                        axios.post('gettradebalance', client)
+                            .then(response => {
+                                Fire.$emit('AfterCreate');
+                                //this.balanceButtonEnabled = true;
+                                this.$Progress.finish();
+                            })
+                            .catch(error => {
+                                swal("Failed! Can't get balance", "Error: \n" + error.response.data.message, "warning");
+                                Fire.$emit('AfterCreate');;
+                            });
+                    })
+                    .catch(error => {
+                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+                        Fire.$emit('AfterCreate');
+                        //this.balanceButtonEnabled = true;
+                        this.$Progress.finish();
+                    });
+            },
             getClientTradingBalance(client) {
                 this.$Progress.start();
                 this.balanceButtonEnabled = false;

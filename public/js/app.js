@@ -83019,6 +83019,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -83041,8 +83054,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        getClientTradingBalance: function getClientTradingBalance(client) {
+        dropClientTradingBalance: function dropClientTradingBalance(client) {
             var _this = this;
+
+            this.$Progress.start();
+            //this.balanceButtonEnabled = false;
+            axios.post('dropbalance', client).then(function (response) {
+                swal('Proceeded!', response.data.message, // Response from ClientController.php
+                //response.data.arr,
+                'success');
+                // Reload data after the balance was dropped
+                axios.post('gettradebalance', client).then(function (response) {
+                    Fire.$emit('AfterCreate');
+                    //this.balanceButtonEnabled = true;
+                    _this.$Progress.finish();
+                }).catch(function (error) {
+                    swal("Failed! Can't get balance", "Error: \n" + error.response.data.message, "warning");
+                    Fire.$emit('AfterCreate');;
+                });
+            }).catch(function (error) {
+                swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+                Fire.$emit('AfterCreate');
+                //this.balanceButtonEnabled = true;
+                _this.$Progress.finish();
+            });
+        },
+        getClientTradingBalance: function getClientTradingBalance(client) {
+            var _this2 = this;
 
             this.$Progress.start();
             this.balanceButtonEnabled = false;
@@ -83051,13 +83089,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 //response.data.message, // Response from ClientController.php
                 response.data.arr, 'success');
                 Fire.$emit('AfterCreate');
-                _this.balanceButtonEnabled = true;
-                _this.$Progress.finish();
+                _this2.balanceButtonEnabled = true;
+                _this2.$Progress.finish();
             }).catch(function (error) {
                 swal("Failed!", "Error: \n" + error.response.data.message, "warning");
                 Fire.$emit('AfterCreate');
-                _this.balanceButtonEnabled = true;
-                _this.$Progress.finish();
+                _this2.balanceButtonEnabled = true;
+                _this2.$Progress.finish();
             });
         },
         activateClient: function activateClient(client) {
@@ -83069,7 +83107,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         validateClient: function validateClient(client) {
-            var _this2 = this;
+            var _this3 = this;
 
             this.$Progress.start();
             this.validateButtonEnabled = false;
@@ -83077,24 +83115,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 swal('Proceeded!', response.data.message, // Response from ClientController.php
                 'success');
                 Fire.$emit('AfterCreate');
-                _this2.validateButtonEnabled = true;
-                _this2.$Progress.finish();
+                _this3.validateButtonEnabled = true;
+                _this3.$Progress.finish();
             }).catch(function (error) {
                 swal("Failed!", "Error: \n" + error.response.data.message, "warning");
                 Fire.$emit('AfterCreate');
-                _this2.validateButtonEnabled = true;
-                _this2.$Progress.finish();
+                _this3.validateButtonEnabled = true;
+                _this3.$Progress.finish();
             });
         },
 
         // Pagination. https://github.com/gilbitron/laravel-vue-pagination
         getResults: function getResults() {
-            var _this3 = this;
+            var _this4 = this;
 
             var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
             axios.get('api/client?page=' + page).then(function (response) {
-                _this3.clients = response.data;
+                _this4.clients = response.data;
             });
         },
         editModal: function editModal(signal) {
@@ -83110,16 +83148,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             $('#addNewSignalModal').modal('show');
         },
         loadClients: function loadClients() {
-            var _this4 = this;
+            var _this5 = this;
 
             axios.get('api/client').then(function (_ref) {
                 var data = _ref.data;
-                return _this4.clients = data;
+                return _this5.clients = data;
             }); // Resource controllers are defined in api.php
             //console.log(this.users);
         },
         createClient: function createClient() {
-            var _this5 = this;
+            var _this6 = this;
 
             // Progress bar
             this.$Progress.start();
@@ -83133,7 +83171,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     type: 'success',
                     title: 'Client created successfully'
                 });
-                _this5.$Progress.finish();
+                _this6.$Progress.finish();
             }).catch(function (error) {
                 // Error
                 //alert(error.response.data.message);
@@ -83141,20 +83179,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         updateClient: function updateClient() {
-            var _this6 = this;
+            var _this7 = this;
 
             this.$Progress.start();
             this.form.put('api/client/' + this.form.id).then(function () {
                 $('#addNewSignalModal').modal('hide');
                 swal('Updated!', 'Client has been updated', 'success');
-                _this6.$Progress.finish();
+                _this7.$Progress.finish();
                 Fire.$emit('AfterCreate');
             }).catch(function () {
-                _this6.$Progress.fail();
+                _this7.$Progress.fail();
             });
         },
         deleteSignal: function deleteSignal(id) {
-            var _this7 = this;
+            var _this8 = this;
 
             swal({
                 title: 'Are you sure?',
@@ -83168,7 +83206,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Ajax request
                 // Delete request type
                 if (result.value) {
-                    _this7.form.delete('api/client/' + id).then(function () {
+                    _this8.form.delete('api/client/' + id).then(function () {
                         if (result.value) {
                             swal('Deleted!', 'Client has been deleted.', 'success');
                             Fire.$emit('AfterCreate');
@@ -83181,13 +83219,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     created: function created() {
-        var _this8 = this;
+        var _this9 = this;
 
         this.loadClients();
 
         // Event listener
         Fire.$on('AfterCreate', function () {
-            _this8.loadClients();
+            _this9.loadClients();
         });
     }
 });
@@ -83412,12 +83450,43 @@ var render = function() {
                                   "button",
                                   {
                                     staticClass: "btn btn-info",
-                                    attrs: { disabled: "" },
+                                    attrs: { disabled: "" }
+                                  },
+                                  [_c("i", { staticClass: "far fa-clock" })]
+                                )
+                              : _vm._e()
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("div", { staticClass: "btn-group" }, [
+                            true
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-warning",
                                     on: {
                                       click: function($event) {
-                                        _vm.getClientTradingBalance(signal)
+                                        _vm.dropClientTradingBalance(signal)
                                       }
                                     }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fas fa-skull-crossbones"
+                                    })
+                                  ]
+                                )
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "btn-group" }, [
+                            false
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-info",
+                                    attrs: { disabled: "" }
                                   },
                                   [_c("i", { staticClass: "far fa-clock" })]
                                 )
@@ -83900,6 +83969,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Valid")]),
       _vm._v(" "),
       _c("th", [_vm._v("Balance")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Drop")]),
       _vm._v(" "),
       _c("th", [_vm._v("Symbols")]),
       _vm._v(" "),

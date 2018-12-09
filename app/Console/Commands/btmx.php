@@ -55,8 +55,8 @@ class btmx extends Command
         //dd($exchange->urls);
 
         $exchange = new bitmex();
-        $exchange->apiKey = 'WkrVX4BG6aj4Y1rVGfZfB9CG';
-        $exchange->secret = 'IFnTQcesYzCy3c8Srs5ULB8qZGpnHAOBvrfOwmnsHDJLLsFi';
+        $exchange->apiKey = '1pL3jbhVk0L8FC7bmzAKDPK0';
+        $exchange->secret = '3Vz1HEQ3VwBwsNTk-nRnPzXYMFeztMxK3jQRsrtkIrht5WDy';
 
         //dump(array_keys($exchange->load_markets())); // ETH/USD BTC/USD
 
@@ -71,8 +71,8 @@ class btmx extends Command
         }
 
         //dump($exchange->fetchBalance()['BTC']['free']); // BTC balance
-        //$response = $exchange->createMarketBuyOrder('BTC/USD', 1, []);
-        //dump($response);
+        $response = $exchange->createMarketSellOrder('BTC/USD', 14, []);
+        dump($response);
 
         //$response = $exchange->createMarketSellOrder('ETHUSD', 1, []);
 

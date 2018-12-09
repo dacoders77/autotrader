@@ -12,7 +12,7 @@ class LogToFile
 {
     static public function add ($source, $message){
         $txt = date("Y-m-d G:i:s") . " $source " . $message . "\n";
-        file_put_contents("1.txt", $txt, FILE_APPEND);
+        file_put_contents("../storage/logs/debug.txt", $txt, FILE_APPEND);
     }
 
     static public function createTextLogFile (){

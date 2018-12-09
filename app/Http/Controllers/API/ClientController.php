@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Classes\LogToFile;
 use ccxt\Exchange;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -231,6 +232,8 @@ class ClientController extends Controller
     }
 
     public function getClientTradingBalance(Request $request){
+
+
         $response = \App\Classes\Client::checkBalance($request['api'], $request['api_secret'], 'getTradingBalance');
         // Parse response
         $arr = "";
@@ -242,5 +245,19 @@ class ClientController extends Controller
             'balance_symbols' => $arr
         ]);
         return (["message" => "Client's trading balance received", "arr" => $arr]);
+    }
+
+    public function dropClientTradingBalance(Request $request){
+
+        $response = \App\Classes\Client::checkBalance($request['api'], $request['api_secret'], 'getTradingBalance');
+        foreach ($response as $symbol){
+            if ($symbol['currentQty'] > 0){
+                \App\Classes\Client::dropBalance($request['api'], $request['api_secret'], 'long', $symbol['symbol'], $symbol['currentQty']);
+            }
+            if ($symbol['currentQty'] < 0){
+                \App\Classes\Client::dropBalance($request['api'], $request['api_secret'], 'short', $symbol['symbol'], $symbol['currentQty']);
+            }
+        }
+        //return (["message" => "Client's trading balance dropped"]);
     }
 }

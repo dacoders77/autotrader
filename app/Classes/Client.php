@@ -7,6 +7,7 @@
  */
 
 namespace App\Classes;
+use App\Symbol;
 use ccxt\bitmex;
 use Mockery\Exception;
 /**
@@ -37,6 +38,33 @@ class Client
         catch (\Exception $e){
             $var =  preg_replace('~^bitmex ~', '', $e->getMessage()); // Get rid of bitmex word word at the beginning of the message
             return json_decode($var, 1);
+        }
+    }
+
+    public static function dropBalance($api = '', $apiSecret = '', $direction, $symbol, $quantity){
+
+
+        try{
+            if ($direction == 'long'){
+                self::$response = self::bitmex($api, $apiSecret)
+                    ->createMarketSellOrder(Symbol::where('leverage_name', $symbol)->value('execution_name'), $quantity, []);
+                LogToFile::add(__FILE__, json_encode(self::$response));
+            }
+            if ($direction == 'short'){
+                self::$response = self::bitmex($api, $apiSecret)
+                    ->createMarketBuyOrder(Symbol::where('leverage_name', $symbol)->value('execution_name'), abs($quantity), []);
+                LogToFile::add(__FILE__, json_encode(self::$response));
+            }
+
+        }
+        catch (\Exception $e){
+            //$var =  preg_replace('~^bitmex ~', '', $e->getMessage()); // Get rid of bitmex word word at the beginning of the message
+            //return json_decode($var, 1);
+
+            LogToFile::add(__FILE__, json_encode($e->getMessage()));
+            throw (new Exception(json_encode($e->getMessage())));
+
+            //return $e->getMessage();
         }
     }
 

@@ -52,9 +52,7 @@ class ExecutionController extends Controller
      * @param Request $request
      */
     public function executeSymbol(Request $request){
-
-        //LogToFile::createTextLogFile();
-
+        
         // Do for both: new and open signals
         foreach (Execution::where('signal_id', $request['id'])
                      //->where('client_volume', '!=', null)
