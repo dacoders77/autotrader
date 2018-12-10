@@ -92,6 +92,11 @@ Vue.filter('myDate', function(created_at){
 window.Fire = new Vue();
 
 
+// https://github.com/michaelfitzhavey/vue-json-tree-view
+import TreeView from "vue-json-tree-view";
+Vue.use(TreeView)
+
+
 
 
 

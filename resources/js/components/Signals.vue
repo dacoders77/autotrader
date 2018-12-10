@@ -1,5 +1,5 @@
 <template>
-    <div class="container" >
+    <div class="container">
         <div class="row mt-3">
             <div style="width: 100%">
                 <div class="card">
@@ -322,6 +322,7 @@
             Fire.$on('AfterCreateSignal', () => {
                 this.loadUsers();
             });
+
             // Websocket listener
             // Sent from WebSocketStream.php
             Echo.channel('ATTR')

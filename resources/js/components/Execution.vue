@@ -58,15 +58,9 @@
                                 </tr>
 
                                 <!--<tr v-for="signal in signals.data" :key="signal.id" :class="signal.status == 'finished' ? 'grey' : '' ">
-
                                     <td>{{ signal.id }}</td>
                                     <td>{{ signal.client_id }}</td>
                                     <td>{{ signal.client_name }}</td>
-
-                                    <td>{{ signal.client_volume}}</td>
-                                    <td>{{ signal.client_funds }}</td>
-                                    <td>OK</td>
-
                                 </tr>-->
 
                                 <template v-for="execution in signals.data">
@@ -82,9 +76,7 @@
                                             <span v-if="execution.in_place_order_status == 'error'" class="badge badge-pill badge-danger">IN</span>
                                             <span v-if="execution.out_place_order_status == 'ok'" class="badge badge-pill badge-success">OUT</span>
                                             <span v-if="execution.out_place_order_status == 'error'" class="badge badge-pill badge-danger">OUT</span>
-
                                         </td>
-
                                     </tr>
                                     <tr class="detail-row">
                                         <td colspan="3">
@@ -93,22 +85,15 @@
                                             <span v-if="signal.quote_value != null">ok</span>
                                             <span v-if="signal.quote_value == null">No quote!</span>
                                             <br>
-                                            Get client funds: <a href="#" @click="showError(execution.client_funds_response)">{{ execution.client_funds_status }}</a><br>
-                                            Set leverage: <a href="#" @click="showError(execution.leverage_response)">{{ execution.leverage_status }}</a><br>
-                                            Place order: <a href="#" @click="showError(execution.in_place_order_response)">{{ execution.in_place_order_status }}</a><br>
-                                            Balance: <a href="#" @click="showError(execution.in_balance_response)">{{ execution.in_balance_value }}</a><br>
-                                            <!--
-                                            Result:
-                                            <span v-if="execution.in_status == 'success'" class="badge badge-pill badge-success">Success</span>
-                                            <span v-if="execution.in_status == null" class="badge badge-pill badge-info">?</span>
-                                            <span v-if="execution.in_status == 'pending'" class="badge badge-pill badge-secondary">Pending</span>
-                                            <span v-if="execution.in_status == 'error'" class="badge badge-pill badge-danger">Error</span>-->
-
+                                            Get client funds: <a href="#" @click="newModal(execution.client_funds_response)">{{ execution.client_funds_status }}</a><br>
+                                            Set leverage: <a href="#" @click="newModal(execution.leverage_response)">{{ execution.leverage_status }}</a><br>
+                                            Place order: <a href="#" @click="newModal(execution.in_place_order_response)">{{ execution.in_place_order_status }}</a><br>
+                                            Balance: <a href="#" @click="newModal(execution.in_balance_response)">{{ execution.in_balance_value }}</a><br>
                                         </td>
                                         <td colspan="3">
                                             OUT:<br>
-                                            Place order: <a href="#" @click="showError(execution.out_place_order_response)">{{ execution.out_place_order_status }}</a><br>
-                                            Balance: <a href="#" @click="showError(execution.out_balance_response)">{{ execution.out_balance_value }}</a><br>
+                                            Place order: <a href="#" @click="newModal(execution.out_place_order_response)">{{ execution.out_place_order_status }}</a><br>
+                                            Balance: <a href="#" @click="newModal(execution.out_balance_response)">{{ execution.out_balance_value }}</a><br>
                                         </td>
                                     </tr>
                                 </template>
@@ -130,6 +115,31 @@
                 </div>
             </div>
         </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="addNewSignalModal" tabindex="-1" role="dialog" aria-labelledby="newSignalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" v-show="!editmode" id="newSignalLabel">Response data</h5>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <!-- content -->
+                    <div>
+                        <tree-view :data="jsonModalMessage" :options="{maxDepth: 3}"></tree-view>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
 </template>
 
@@ -140,9 +150,19 @@
                 signal: {}, // Props. Sent from Signals.vue
                 signals: {},
                 interval: null,
+                jsonModalMessage: []
             }
         },
         methods: {
+            newModal(message){
+                //this.editmode = false;
+                //this.form.reset();
+
+                this.jsonModalMessage = JSON.parse(message);
+                console.log(message);
+
+                $('#addNewSignalModal').modal('show');
+            },
             closeSymbol(signal){
                 swal({
                     title: 'Are you sure?',
@@ -211,12 +231,13 @@
                 }.bind(this));
             },*/
             showError(error){
-                swal({
+                /*swal({
                     type: 'info',
                     title: 'Bimex response: ',
                     text: error,
                     footer: '<a href>Why do I have this issue?</a>'
-                })
+                })*/
+
             }
         },
         created() {
@@ -228,6 +249,11 @@
             Fire.$on('AfterCreateSignal', () => {
                 this.loadUsers();
             });
+
+            // Event listener
+            /*Fire.$on('AfterCreateSignal', () => {
+                //this.loadUsers();
+            });*/
         },
         mounted: function () {
             this.interval = setInterval(function () {

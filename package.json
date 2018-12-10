@@ -28,6 +28,7 @@
         "pusher-js": "^4.3.1",
         "sweetalert2": "^7.29.2",
         "vform": "^1.0.0",
+        "vue-json-tree-view": "^2.1.4",
         "vue-progressbar": "^0.7.5",
         "vue-router": "^3.0.2"
     }
