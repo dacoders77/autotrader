@@ -37,7 +37,7 @@ class CreateSignalsTable extends Migration
             $table->dateTime('close_date')->nullable();
             $table->decimal('close_price', 16, 8)->nullable();
 
-            $table->decimal('stop_loss_price')->nullable();
+            $table->decimal('stop_loss_price', 14, 9)->nullable();
             $table->decimal('stop_loss_percent')->nullable();
 
             $table->string('info')->nullable();

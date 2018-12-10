@@ -82616,7 +82616,7 @@ var render = function() {
                           },
                           attrs: {
                             type: "number",
-                            step: "0.00000001",
+                            step: "0.000000001",
                             name: "stop_loss_price",
                             placeholder: "Stop loss price"
                           },
@@ -83064,6 +83064,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 swal('Proceeded!', response.data.message, // Response from ClientController.php
                 //response.data.arr,
                 'success');
+                _this.$Progress.finish();
             }).catch(function (error) {
                 swal("Failed!", "Error: \n" + error.response.data.message, "warning");
                 Fire.$emit('AfterCreate');
@@ -83132,7 +83133,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.form.reset(); // Reset form function. https://github.com/cretueusebiu/vform
             $('#addNewSignalModal').modal('show');
             this.form.fill(signal);
-            console.log(signal);
         },
         newModal: function newModal() {
             this.editmode = false;
@@ -83146,7 +83146,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var data = _ref.data;
                 return _this5.clients = data;
             }); // Resource controllers are defined in api.php
-            //console.log(this.users);
         },
         createClient: function createClient() {
             var _this6 = this;
@@ -83224,7 +83223,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // Sent from Client.php
         Echo.channel('ATTR').listen('AttrUpdateEvent', function (e) {
             _this9.clients = e.update.clients;
-            console.log(e.update.clients);
         });
     }
 });

@@ -246,6 +246,7 @@
                             //response.data.arr,
                             'success'
                         )
+                        this.$Progress.finish();
                     })
                     .catch(error => {
                         swal("Failed!", "Error: \n" + error.response.data.message, "warning");
@@ -319,7 +320,6 @@
                 this.form.reset(); // Reset form function. https://github.com/cretueusebiu/vform
                 $('#addNewSignalModal').modal('show');
                 this.form.fill(signal);
-                console.log(signal);
             },
             newModal() {
                 this.editmode = false;
@@ -328,7 +328,6 @@
             },
             loadClients() {
                 axios.get('api/client').then(({data}) => (this.clients = data)); // Resource controllers are defined in api.php
-                //console.log(this.users);
             },
             createClient() {
                 // Progress bar
@@ -411,7 +410,6 @@
             Echo.channel('ATTR')
                 .listen('AttrUpdateEvent', (e) => {
                     this.clients = e.update.clients;
-                    console.log(e.update.clients);
                 });
         }
     }

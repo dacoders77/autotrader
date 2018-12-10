@@ -61,22 +61,14 @@ class Client
             //return $e->getMessage();
         }
 
+        /* Need to wait a bit. Exchange delays balance update. */
         sleep(3);
-        // Call update balance method
-        $response = self::checkBalance($api, $apiSecret, 'getTradingBalance');
-        $arr = "";
-        foreach ($response as $symbol){
-            $arr .= $symbol['symbol'] . ":" . $symbol['currentQty'] . ", ";
-        }
+
         // Update DB
         \App\Client::where('id', $id)->update([
-            'balance_symbols' => $arr
+            'balance_symbols' => self::makeClientTradingBalanceString(self::checkBalance($api, $apiSecret, 'getTradingBalance'))
         ]);
 
-
-        // Get Client ORM model
-        // Generate event and inform vue.js that the balance has changed
-        // The same but for clients table
         event(new AttrUpdateEvent(['clients' => \App\Client::paginate()])); // Received in Clients.vue
     }
 
@@ -107,5 +99,22 @@ class Client
         catch (\Exception $e){
             return $e->getMessage();
         }
+    }
+
+    /**
+     * Get client trading balance symbols and me a string out of it.
+     * Then insert this string to DB.
+     * Value is outputted in Clients.vue.
+     * Used in two cases: get client balance and drop client balance.
+     *
+     * @param array $response
+     * @return string
+     */
+    public static function makeClientTradingBalanceString($response){
+        $arr = "";
+        foreach ($response as $symbol){
+            if ($symbol['currentQty'] != 0)$arr .= $symbol['symbol'] . ":" . $symbol['currentQty'] . ", ";
+        }
+        return $arr;
     }
 }

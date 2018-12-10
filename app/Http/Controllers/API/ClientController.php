@@ -234,13 +234,7 @@ class ClientController extends Controller
 
     public function getClientTradingBalance(Request $request){
 
-        $response = \App\Classes\Client::checkBalance($request['api'], $request['api_secret'], 'getTradingBalance');
-        // Parse response
-        $arr = "";
-        foreach ($response as $symbol){
-            $arr .= $symbol['symbol'] . ":" . $symbol['currentQty'] . ", ";
-        }
-        // Update DB
+        $arr = \App\Classes\Client::makeClientTradingBalanceString(\App\Classes\Client::checkBalance($request['api'], $request['api_secret'], 'getTradingBalance'));
         Client::where('id', $request['id'])->update([
             'balance_symbols' => $arr
         ]);

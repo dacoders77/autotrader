@@ -145,7 +145,7 @@
                                 <has-error :form="form" field="direction"></has-error>
                             </div>
                             <div class="form-group">
-                                <input v-model="form.stop_loss_price" type="number" step="0.00000001" name="stop_loss_price"
+                                <input v-model="form.stop_loss_price" type="number" step="0.000000001" name="stop_loss_price"
                                        placeholder="Stop loss price"
                                        class="form-control" :class="{ 'is-invalid': form.errors.has('stop_loss_price') }">
                                 <has-error :form="form" field="stop_loss_price"></has-error>

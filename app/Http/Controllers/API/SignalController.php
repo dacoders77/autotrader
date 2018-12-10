@@ -52,8 +52,7 @@ class SignalController extends Controller
             'percent' => 'required|numeric|max:100',
             'leverage' => 'required|numeric|max:100',
             'direction' => 'required|string|max:6',
-            'stop_loss_price' => 'required|string|max:6',
-            //'password' => 'required|string|min:6'
+            'stop_loss_price' => 'required|string|max:14',
         ]);
 
         $response = Signal::create([
@@ -107,11 +106,10 @@ class SignalController extends Controller
         /* Validation rule */
         $this->validate($request,[
             'symbol' => 'required|string|max:8',
-            //'multiplier' => 'required|numeric|max:10',
             'percent' => 'required|numeric|max:100',
             'leverage' => 'required|numeric|max:100',
             'direction' => 'required|string|max:6',
-            //'password' => 'required|string|min:6'
+            'stop_loss_price' => 'required|string|max:14',
         ]);
 
         $signal->update($request->all());
