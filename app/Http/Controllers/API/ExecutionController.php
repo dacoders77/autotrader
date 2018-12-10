@@ -303,7 +303,7 @@ class ExecutionController extends Controller
         ->where('in_place_order_status', 'ok')
         ->get() as $execution) {
             OutPlaceOrder::dispatch($this->exchange, $execution);
-            GetClientTradingBalanceOut::dispatch($this->exchange, $execution);
+            GetClientTradingBalanceOut::dispatch($this->exchange, $execution)->delay(5);
         }
 
         //Signal::where('id', $execution->signal_id)->update(['status' => 'pending']);
@@ -314,7 +314,7 @@ class ExecutionController extends Controller
         ->where('in_place_order_status', 'ok')
                      ->get() as $execution) {
             OutPlaceOrder::dispatch($this->exchange, $execution);
-            GetClientTradingBalanceOut::dispatch($this->exchange, $execution);
+            GetClientTradingBalanceOut::dispatch($this->exchange, $execution)->delay(5);
         }
     }
 }
