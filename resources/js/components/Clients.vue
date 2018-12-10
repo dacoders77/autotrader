@@ -246,17 +246,6 @@
                             //response.data.arr,
                             'success'
                         )
-                        // Reload data after the balance was dropped
-                        axios.post('gettradebalance', client)
-                            .then(response => {
-                                Fire.$emit('AfterCreate');
-                                //this.balanceButtonEnabled = true;
-                                this.$Progress.finish();
-                            })
-                            .catch(error => {
-                                swal("Failed! Can't get balance", "Error: \n" + error.response.data.message, "warning");
-                                Fire.$emit('AfterCreate');;
-                            });
                     })
                     .catch(error => {
                         swal("Failed!", "Error: \n" + error.response.data.message, "warning");
@@ -416,6 +405,14 @@
             Fire.$on('AfterCreate', () => {
                 this.loadClients();
             });
+
+            // Websocket listener
+            // Sent from Client.php
+            Echo.channel('ATTR')
+                .listen('AttrUpdateEvent', (e) => {
+                    this.clients = e.update.clients;
+                    console.log(e.update.clients);
+                });
         }
     }
 </script>

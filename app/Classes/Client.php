@@ -7,7 +7,8 @@
  */
 
 namespace App\Classes;
-use App\Symbol;
+use App\Events\AttrUpdateEvent;
+use App\Symbol; // Link model
 use ccxt\bitmex;
 use Mockery\Exception;
 /**
@@ -41,9 +42,7 @@ class Client
         }
     }
 
-    public static function dropBalance($api = '', $apiSecret = '', $direction, $symbol, $quantity){
-
-
+    public static function dropBalance($api = '', $apiSecret = '', $direction, $symbol, $quantity, $id){
         try{
             if ($direction == 'long'){
                 self::$response = self::bitmex($api, $apiSecret)
@@ -55,17 +54,30 @@ class Client
                     ->createMarketBuyOrder(Symbol::where('leverage_name', $symbol)->value('execution_name'), abs($quantity), []);
                 LogToFile::add(__FILE__, json_encode(self::$response));
             }
-
         }
         catch (\Exception $e){
-            //$var =  preg_replace('~^bitmex ~', '', $e->getMessage()); // Get rid of bitmex word word at the beginning of the message
-            //return json_decode($var, 1);
-
             LogToFile::add(__FILE__, json_encode($e->getMessage()));
             throw (new Exception(json_encode($e->getMessage())));
-
             //return $e->getMessage();
         }
+
+        sleep(3);
+        // Call update balance method
+        $response = self::checkBalance($api, $apiSecret, 'getTradingBalance');
+        $arr = "";
+        foreach ($response as $symbol){
+            $arr .= $symbol['symbol'] . ":" . $symbol['currentQty'] . ", ";
+        }
+        // Update DB
+        \App\Client::where('id', $id)->update([
+            'balance_symbols' => $arr
+        ]);
+
+
+        // Get Client ORM model
+        // Generate event and inform vue.js that the balance has changed
+        // The same but for clients table
+        event(new AttrUpdateEvent(['clients' => \App\Client::paginate()])); // Received in Clients.vue
     }
 
     public static function checkSmallOrderExecution($api = '', $apiSecret = '', $symbol = 'BTC/USD'){

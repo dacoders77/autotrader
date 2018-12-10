@@ -71,8 +71,8 @@ class btmx extends Command
         }
 
         //dump($exchange->fetchBalance()['BTC']['free']); // BTC balance
-        $response = $exchange->createMarketSellOrder('BTC/USD', 14, []);
-        dump($response);
+        //$response = $exchange->createMarketSellOrder('BTC/USD', 14, []);
+        //dump($response);
 
         //$response = $exchange->createMarketSellOrder('ETHUSD', 1, []);
 

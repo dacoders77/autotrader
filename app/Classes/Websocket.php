@@ -60,7 +60,9 @@ class Websocket
             }
 
 
-            /* Not used. For now we only subscribe */
+            /** Not used. For now we only subscribe
+             * @todo DELETE IT
+             */
             if(array_key_exists('unsubscribe', Cache::get('object'))){
                 self::$webSocketObject = json_encode([
                     "op" => "unsubscribe",

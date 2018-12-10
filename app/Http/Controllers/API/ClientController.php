@@ -21,7 +21,8 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return Client::latest()->paginate(5);
+        //return Client::latest()->paginate(5);
+        return Client::latest()->paginate();
     }
 
     /**
@@ -233,7 +234,6 @@ class ClientController extends Controller
 
     public function getClientTradingBalance(Request $request){
 
-
         $response = \App\Classes\Client::checkBalance($request['api'], $request['api_secret'], 'getTradingBalance');
         // Parse response
         $arr = "";
@@ -252,10 +252,10 @@ class ClientController extends Controller
         $response = \App\Classes\Client::checkBalance($request['api'], $request['api_secret'], 'getTradingBalance');
         foreach ($response as $symbol){
             if ($symbol['currentQty'] > 0){
-                \App\Classes\Client::dropBalance($request['api'], $request['api_secret'], 'long', $symbol['symbol'], $symbol['currentQty']);
+                \App\Classes\Client::dropBalance($request['api'], $request['api_secret'], 'long', $symbol['symbol'], $symbol['currentQty'], $request['id']);
             }
             if ($symbol['currentQty'] < 0){
-                \App\Classes\Client::dropBalance($request['api'], $request['api_secret'], 'short', $symbol['symbol'], $symbol['currentQty']);
+                \App\Classes\Client::dropBalance($request['api'], $request['api_secret'], 'short', $symbol['symbol'], $symbol['currentQty'], $request['id']);
             }
         }
         //return (["message" => "Client's trading balance dropped"]);

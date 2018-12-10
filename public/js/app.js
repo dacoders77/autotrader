@@ -30591,7 +30591,7 @@ window.Pusher = __webpack_require__(163);
 
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo__["a" /* default */]({
   broadcaster: 'pusher',
-  key: "e74cf9fca0ddc528fd4f",
+  key: "e1b344da5a4dfdb1a231",
   cluster: "ap1",
   encrypted: true
 });
@@ -82616,6 +82616,7 @@ var render = function() {
                           },
                           attrs: {
                             type: "number",
+                            step: "0.00000001",
                             name: "stop_loss_price",
                             placeholder: "Stop loss price"
                           },
@@ -83063,15 +83064,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 swal('Proceeded!', response.data.message, // Response from ClientController.php
                 //response.data.arr,
                 'success');
-                // Reload data after the balance was dropped
-                axios.post('gettradebalance', client).then(function (response) {
-                    Fire.$emit('AfterCreate');
-                    //this.balanceButtonEnabled = true;
-                    _this.$Progress.finish();
-                }).catch(function (error) {
-                    swal("Failed! Can't get balance", "Error: \n" + error.response.data.message, "warning");
-                    Fire.$emit('AfterCreate');;
-                });
             }).catch(function (error) {
                 swal("Failed!", "Error: \n" + error.response.data.message, "warning");
                 Fire.$emit('AfterCreate');
@@ -83226,6 +83218,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // Event listener
         Fire.$on('AfterCreate', function () {
             _this9.loadClients();
+        });
+
+        // Websocket listener
+        // Sent from Client.php
+        Echo.channel('ATTR').listen('AttrUpdateEvent', function (e) {
+            _this9.clients = e.update.clients;
+            console.log(e.update.clients);
         });
     }
 });
