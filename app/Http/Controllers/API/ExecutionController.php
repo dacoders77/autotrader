@@ -64,7 +64,7 @@ class ExecutionController extends Controller
             /* Place order */
             InPlaceOrder::dispatch($this->exchange, $execution);
             /* Get trading balance after order execution */
-            GetClientTradingBalance::dispatch($this->exchange, $execution);
+            GetClientTradingBalance::dispatch($this->exchange, $execution)->delay(5);
         }
 
         Signal::where('id', $execution->signal_id)->update(['status' => 'pending']);
