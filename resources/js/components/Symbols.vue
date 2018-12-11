@@ -1,9 +1,10 @@
 <template>
     <div class="container" >
         <div class="row mt-3">
-            <div class="col"><!--<div style="width: 100%">-->
+            <div class="col">
                 <div class="card h-100">
-                    <div class="card-header"><span style="font-size:140%">Symbols</span>
+                    <div class="card-header">
+                        <span style="font-size:140%">Symbols</span>
                         <div class="card-tools">
                             <!-- Button trigger modal -->
                         </div>
@@ -54,7 +55,7 @@
                                 <pagination :data="symbols" @pagination-change-page="getResults"></pagination>
                             </ul>
                         </div>
-                    </div>
+                    </div> <!-- here -->
                 </div>
             </div>
 
@@ -113,12 +114,6 @@
                                 </select>
                                 <has-error :form="form" field="formula"></has-error>
                             </div>
-<!--                            <div class="form-group">
-                                <input v-model="form.min_exec_quantity" type="number" name="min_exec_quantity"
-                                       placeholder="Minimum execution quantity"
-                                       class="form-control" :class="{ 'is-invalid': form.errors.has('min_exec_quantity') }">
-                                <has-error :form="form" field="min_exec_quantity"></has-error>
-                            </div>-->
                             <div class="form-group">
                                 <input v-model="form.info" type="text" name="info"
                                        placeholder="Info"
@@ -239,10 +234,6 @@
             }
         },
         created() {
-
-
-
-
             this.loadSymbols();
             // Event listener
             Fire.$on('AfterCreate', () => {
@@ -254,22 +245,15 @@
             Echo.channel('ATTR')
                 .listen('AttrUpdateEvent', (e) => {
                     this.symbols = e.update.symbol;
-                    //console.log(e.update.symbol.data[0]);
-
                     // Quotes
                     if (this.limitOrderStatuses.length < 11) { // 11 - quantity of rows in Order trace window
                         this.limitOrderStatuses.push(e.update.ticker + ' ' + e.update.price);
-
-
                     }
                     else {
                         this.limitOrderStatuses.shift();
                         this.limitOrderStatuses.push(e.update.ticker + ' ' + e.update.price);
-
                     }
-
                 });
-
         }
     }
 </script>

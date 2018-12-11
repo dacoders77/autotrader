@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Cache;
+use App\Events\AttrUpdateEvent;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,7 +24,7 @@ Route::get('/conn', function () {
 });
 
 Route::get('/conn2', function () {
-    Cache::put('object', ['unsubscribe' => 'XBTUSD'], 5);
+    event(new AttrUpdateEvent([]));
 });
 
 

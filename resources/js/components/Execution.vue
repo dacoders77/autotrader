@@ -1,47 +1,52 @@
 <template>
     <div class="container">
         <div class="row mt-3">
-            <div style="width: 100%">
-                <div class="card">
-                    <div class="card-header"><span style="font-size:140%">
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <span style="font-size:140%">
 
+                            <div class="card-body table-responsive p-0">
+                            <table class="table table-hover"  style="width:600px">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        Signal id: {{ (signal ? signal.id : null) }}<br>
+                                        Symbol: {{ (signal ? signal.symbol : null) }}<br>
+                                        Quote: {{ (signal ? signal.quote_value : null) }}<br>
+                                        Quote status: {{ (signal ? signal.quote_status : null) }}<br>
+                                    </td>
+                                    <td>
+                                        Perсent: {{ (signal ? signal.percent : null) }}<br>
+                                        Leverage: {{ (signal ? signal.leverage : null) }}<br>
+                                        Status: {{ (signal ? signal.status : null) }}<br>
+                                        Clients: {{ (signal ? Object.keys(signals.data).length : null) }}
+                                    </td>
+                                    <td>
+                                        <div class="card-tools text-right">
+                                            <div class="btn-group">
+                                                <div v-if="true">
+                                                    <button class="btn btn-success" @click="executeSymbol(signal)"><i class="fas fa-play"></i></button>
+                                                </div>
+                                                <div v-if="true">
+                                                    <button class="btn btn-danger" @click="closeSymbol(signal)"><i class="fas fa-stop"></i></button>
+                                                </div>
+                                                <div v-if="false">
+                                                    <button class="btn btn-light" disabled><i class="fas fa-check"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                        </span>
 
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-sm">
-                                Signal id: {{ signal.id }}<br>
-                                Symbol: {{ signal.symbol }}<br>
-                                Quote: {{ signal.quote_value }}<br>
-                                Quote status: {{ signal.quote_status }}<br>
-                            </div>
-                            <div class="col-sm">
-                                Perсent: {{ signal.percent }}<br>
-                                Leverage: {{ signal.leverage }} <br>
-                            </div>
-                            <div class="col-sm">
-                                Status: {{ signal.status }}<br>
-                                Clients: {{ Object.keys(signals.data).length }}
-                            </div>
-                          </div>
-                        </div>
-
-                    </span>
-                        <div class="card-tools">
-                            <!-- Button right up corner -->
-                            <div class="btn-group">
-                                <div v-if="true">
-                                    <button class="btn btn-success" @click="executeSymbol(signal)"><i class="fas fa-play"></i></button>
-                                </div>
-                                <div v-if="true">
-                                    <button class="btn btn-danger" @click="closeSymbol(signal)"><i class="fas fa-stop"></i></button>
-                                </div>
-                                <div v-if="false">
-                                    <button class="btn btn-light" disabled><i class="fas fa-check"></i></button>
-                                </div>
-                            </div>
-                        </div>
 
                     </div>
+
+
 
                     <div class="card-body">
                         <!-- /.card-header -->
@@ -114,6 +119,30 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-header">
+                            <span style="font-size:140%">
+                                Jobs. Failed: 0
+                                <button type="button" class="btn btn-success float-right" @click="newModal">
+                                <i class="far fa-trash-alt"></i>
+                                </button>
+                            </span>
+                        <div class="card-tools">
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <span v-for="job in jobs">
+                          <small>
+                              {{ job.id }} - {{ job.displayName }} - {{ job.attempts }}<br>
+                          </small>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
 
@@ -122,7 +151,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" v-show="!editmode" id="newSignalLabel">Response data</h5>
+                        <h5 class="modal-title" id="newSignalLabel">Response data</h5>
 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -150,7 +179,8 @@
                 signal: {}, // Props. Sent from Signals.vue
                 signals: {},
                 interval: null,
-                jsonModalMessage: []
+                jsonModalMessage: [],
+                jobs: null
             }
         },
         methods: {
@@ -159,8 +189,6 @@
                 //this.form.reset();
 
                 this.jsonModalMessage = JSON.parse(message);
-                console.log(message);
-
                 $('#addNewSignalModal').modal('show');
             },
             closeSymbol(signal){
@@ -218,6 +246,7 @@
                 })
             },
             loadUsers(){
+                // Pagination disabled
                 axios.get('getexecution/' + this.signal.id).then(({data}) => {
                     this.signals = data['execution']
                     this.signal = data['signal'][0]
@@ -240,6 +269,15 @@
 
             }
         },
+        mounted: function () {
+            this.interval = setInterval(function () {
+                this.loadUsers();
+            }.bind(this), 3000);
+        },
+        destroyed(){
+            // Stop timer when closed
+            clearInterval(this.interval);
+        },
         created() {
             // Props link
             this.signal = this.$route.params.signal; // Works good
@@ -250,19 +288,16 @@
                 this.loadUsers();
             });
 
-            // Event listener
-            /*Fire.$on('AfterCreateSignal', () => {
-                //this.loadUsers();
-            });*/
+            // Websocket listener
+            // Sent from WebSocketStream.php
+            Echo.channel('ATTR')
+                .listen('AttrUpdateEvent', (e) => {
+                    //this.symbols = e.update.symbol;
+                    console.log(JSON.parse(e.update));
+                    this.jobs = JSON.parse(e.update);
+
+                });
+
         },
-        mounted: function () {
-            this.interval = setInterval(function () {
-                this.loadUsers();
-            }.bind(this), 3000);
-        },
-        destroyed(){
-            // Stop timer when closed
-            clearInterval(this.interval);
-        }
     }
 </script>

@@ -84576,11 +84576,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -84694,8 +84689,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // Sent from WebSocketStream.php
         Echo.channel('ATTR').listen('AttrUpdateEvent', function (e) {
             _this6.symbols = e.update.symbol;
-            //console.log(e.update.symbol.data[0]);
-
             // Quotes
             if (_this6.limitOrderStatuses.length < 11) {
                 // 11 - quantity of rows in Order trace window
@@ -84736,7 +84729,7 @@ var render = function() {
               },
               [
                 _c("i", { staticClass: "fas fa-plus-square" }),
-                _vm._v(" Symbol\n                        ")
+                _vm._v(" Symbol\n                    ")
               ]
             )
           ]),
@@ -84821,8 +84814,7 @@ var render = function() {
               return _c("span", [
                 _c("small", [
                   _vm._v(
-                    "\n                              " +
-                      _vm._s(limitOrderStatus)
+                    "\n                          " + _vm._s(limitOrderStatus)
                   ),
                   _c("br")
                 ])
@@ -85410,6 +85402,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -85417,7 +85438,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             signal: {}, // Props. Sent from Signals.vue
             signals: {},
             interval: null,
-            jsonModalMessage: []
+            jsonModalMessage: [],
+            jobs: null
         };
     },
 
@@ -85427,8 +85449,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //this.form.reset();
 
             this.jsonModalMessage = JSON.parse(message);
-            console.log(message);
-
             $('#addNewSignalModal').modal('show');
         },
         closeSymbol: function closeSymbol(signal) {
@@ -85476,6 +85496,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         loadUsers: function loadUsers() {
             var _this = this;
 
+            // Pagination disabled
             axios.get('getexecution/' + this.signal.id).then(function (_ref) {
                 var data = _ref.data;
 
@@ -85501,6 +85522,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         }
     },
+    mounted: function mounted() {
+        this.interval = setInterval(function () {
+            this.loadUsers();
+        }.bind(this), 3000);
+    },
+    destroyed: function destroyed() {
+        // Stop timer when closed
+        clearInterval(this.interval);
+    },
     created: function created() {
         var _this2 = this;
 
@@ -85513,20 +85543,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this2.loadUsers();
         });
 
-        // Event listener
-        /*Fire.$on('AfterCreateSignal', () => {
-            //this.loadUsers();
-        });*/
-    },
-
-    mounted: function mounted() {
-        this.interval = setInterval(function () {
-            this.loadUsers();
-        }.bind(this), 3000);
-    },
-    destroyed: function destroyed() {
-        // Stop timer when closed
-        clearInterval(this.interval);
+        // Websocket listener
+        // Sent from WebSocketStream.php
+        Echo.channel('ATTR').listen('AttrUpdateEvent', function (e) {
+            //this.symbols = e.update.symbol;
+            console.log(JSON.parse(e.update));
+            _this2.jobs = JSON.parse(e.update);
+        });
     }
 });
 
@@ -85540,102 +85563,117 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row mt-3" }, [
-      _c("div", { staticStyle: { width: "100%" } }, [
-        _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("div", { staticClass: "card h-100" }, [
           _c("div", { staticClass: "card-header" }, [
             _c("span", { staticStyle: { "font-size": "140%" } }, [
-              _c("div", { staticClass: "container" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-sm" }, [
-                    _vm._v(
-                      "\n                            Signal id: " +
-                        _vm._s(_vm.signal.id)
-                    ),
-                    _c("br"),
-                    _vm._v(
-                      "\n                            Symbol: " +
-                        _vm._s(_vm.signal.symbol)
-                    ),
-                    _c("br"),
-                    _vm._v(
-                      "\n                            Quote: " +
-                        _vm._s(_vm.signal.quote_value)
-                    ),
-                    _c("br"),
-                    _vm._v(
-                      "\n                            Quote status: " +
-                        _vm._s(_vm.signal.quote_status)
-                    ),
-                    _c("br")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-sm" }, [
-                    _vm._v(
-                      "\n                            Perсent: " +
-                        _vm._s(_vm.signal.percent)
-                    ),
-                    _c("br"),
-                    _vm._v(
-                      "\n                            Leverage: " +
-                        _vm._s(_vm.signal.leverage) +
-                        " "
-                    ),
-                    _c("br")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-sm" }, [
-                    _vm._v(
-                      "\n                            Status: " +
-                        _vm._s(_vm.signal.status)
-                    ),
-                    _c("br"),
-                    _vm._v(
-                      "\n                            Clients: " +
-                        _vm._s(Object.keys(_vm.signals.data).length) +
-                        "\n                        "
-                    )
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-tools" }, [
-              _c("div", { staticClass: "btn-group" }, [
-                true
-                  ? _c("div", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-success",
-                          on: {
-                            click: function($event) {
-                              _vm.executeSymbol(_vm.signal)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fas fa-play" })]
-                      )
+              _c("div", { staticClass: "card-body table-responsive p-0" }, [
+                _c(
+                  "table",
+                  {
+                    staticClass: "table table-hover",
+                    staticStyle: { width: "600px" }
+                  },
+                  [
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("td", [
+                          _vm._v(
+                            "\n                                    Signal id: " +
+                              _vm._s(_vm.signal ? _vm.signal.id : null)
+                          ),
+                          _c("br"),
+                          _vm._v(
+                            "\n                                    Symbol: " +
+                              _vm._s(_vm.signal ? _vm.signal.symbol : null)
+                          ),
+                          _c("br"),
+                          _vm._v(
+                            "\n                                    Quote: " +
+                              _vm._s(_vm.signal ? _vm.signal.quote_value : null)
+                          ),
+                          _c("br"),
+                          _vm._v(
+                            "\n                                    Quote status: " +
+                              _vm._s(
+                                _vm.signal ? _vm.signal.quote_status : null
+                              )
+                          ),
+                          _c("br")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            "\n                                    Perсent: " +
+                              _vm._s(_vm.signal ? _vm.signal.percent : null)
+                          ),
+                          _c("br"),
+                          _vm._v(
+                            "\n                                    Leverage: " +
+                              _vm._s(_vm.signal ? _vm.signal.leverage : null)
+                          ),
+                          _c("br"),
+                          _vm._v(
+                            "\n                                    Status: " +
+                              _vm._s(_vm.signal ? _vm.signal.status : null)
+                          ),
+                          _c("br"),
+                          _vm._v(
+                            "\n                                    Clients: " +
+                              _vm._s(
+                                _vm.signal
+                                  ? Object.keys(_vm.signals.data).length
+                                  : null
+                              ) +
+                              "\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c("div", { staticClass: "card-tools text-right" }, [
+                            _c("div", { staticClass: "btn-group" }, [
+                              true
+                                ? _c("div", [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-success",
+                                        on: {
+                                          click: function($event) {
+                                            _vm.executeSymbol(_vm.signal)
+                                          }
+                                        }
+                                      },
+                                      [_c("i", { staticClass: "fas fa-play" })]
+                                    )
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              true
+                                ? _c("div", [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-danger",
+                                        on: {
+                                          click: function($event) {
+                                            _vm.closeSymbol(_vm.signal)
+                                          }
+                                        }
+                                      },
+                                      [_c("i", { staticClass: "fas fa-stop" })]
+                                    )
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              false ? _c("div", [_vm._m(0)]) : _vm._e()
+                            ])
+                          ])
+                        ])
+                      ])
                     ])
-                  : _vm._e(),
-                _vm._v(" "),
-                true
-                  ? _c("div", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger",
-                          on: {
-                            click: function($event) {
-                              _vm.closeSymbol(_vm.signal)
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fas fa-stop" })]
-                      )
-                    ])
-                  : _vm._e(),
-                _vm._v(" "),
-                false ? _c("div", [_vm._m(0)]) : _vm._e()
+                  ]
+                )
               ])
             ])
           ]),
@@ -85848,6 +85886,49 @@ var render = function() {
             _c("div", { staticClass: "card-footer" })
           ])
         ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col" }, [
+        _c("div", { staticClass: "card h-100" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _c("span", { staticStyle: { "font-size": "140%" } }, [
+              _vm._v(
+                "\n                            Jobs. Failed: 0\n                            "
+              ),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success float-right",
+                  attrs: { type: "button" },
+                  on: { click: _vm.newModal }
+                },
+                [_c("i", { staticClass: "far fa-trash-alt" })]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-tools" })
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-body" },
+            _vm._l(_vm.jobs, function(job) {
+              return _c("span", [
+                _c("small", [
+                  _vm._v(
+                    "\n                          " +
+                      _vm._s(job.id) +
+                      " - " +
+                      _vm._s(job.displayName) +
+                      " - " +
+                      _vm._s(job.attempts)
+                  ),
+                  _c("br")
+                ])
+              ])
+            })
+          )
+        ])
       ])
     ]),
     _vm._v(" "),
@@ -85872,26 +85953,7 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c(
-                  "h5",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: !_vm.editmode,
-                        expression: "!editmode"
-                      }
-                    ],
-                    staticClass: "modal-title",
-                    attrs: { id: "newSignalLabel" }
-                  },
-                  [_vm._v("Response data")]
-                ),
-                _vm._v(" "),
-                _vm._m(2)
-              ]),
+              _vm._m(2),
               _vm._v(" "),
               _c(
                 "div",
@@ -85945,18 +86007,26 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "close",
-        attrs: {
-          type: "button",
-          "data-dismiss": "modal",
-          "aria-label": "Close"
-        }
-      },
-      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-    )
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "newSignalLabel" } },
+        [_vm._v("Response data")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
   }
 ]
 render._withStripped = true
