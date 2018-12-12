@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Classes\LogToFile;
+use App\Classes\QueLock;
 use App\Jobs\GetClientFundsCheck;
 use App\Jobs\GetClientTradingBalance;
 use App\Jobs\GetClientTradingBalanceOut;
@@ -15,6 +16,8 @@ use Illuminate\Http\Response;
 use App\Signal; // Link model
 use App\Client; // Link model
 use App\Symbol; // Link model
+use App\Job;
+use App\Failed_job;
 use App\Execution; // Link model
 use ccxt\bitmex;
 use Illuminate\Support\Facades\Cache;
@@ -52,6 +55,11 @@ class ExecutionController extends Controller
      * @param Request $request
      */
     public function executeSymbol(Request $request){
+
+        /* Action is not allowed if job and failed_job tables are not empty. Que tasks may be in progress */
+        if (!QueLock::getStatus()){
+            throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
+        }
         
         // Do for both: new and open signals
         foreach (Execution::where('signal_id', $request['id'])
@@ -299,6 +307,12 @@ class ExecutionController extends Controller
     }
 
     public function closeSymbol(Request $request){
+
+        /* Action is not allowed if job and failed_job tables are not empty. Que tasks may be in progress */
+        if (!QueLock::getStatus()){
+            throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
+        }
+
         foreach (Execution::where('signal_id', $request['id'])
         ->where('in_place_order_status', 'ok')
         ->get() as $execution) {
@@ -316,6 +330,23 @@ class ExecutionController extends Controller
             OutPlaceOrder::dispatch($this->exchange, $execution);
             GetClientTradingBalanceOut::dispatch($this->exchange, $execution)->delay(5);
         }
+    }
+
+    /**
+     * Empty jobs and failed_jobs tables.
+     * Emty button called from Execution.vue
+     *
+     * @return void
+     */
+    public function clearJobTables(){
+
+        // drop jobs
+        // drop failed_jobs
+        // send executionEvent
+        Job::truncate();
+        Failed_job::truncate();
+
+
     }
 }
 

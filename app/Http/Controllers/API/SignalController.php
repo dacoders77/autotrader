@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Classes\QueLock;
 use App\Jobs\CalculateClientOrderVolume;
 use App\Jobs\GetClientFundsCheck;
 use App\Jobs\GetSignalSymbolQuote;
@@ -10,7 +11,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller; // Must hook this name space. Otherwise 500 error while access from front end
 use App\Client; // Link model
 use App\Signal; // Link model
-use App\Execution; // Link model
+use App\Execution;
+use Mockery\Exception; // Link model
 
 
 class SignalController extends Controller
@@ -46,6 +48,12 @@ class SignalController extends Controller
      */
     public function store(Request $request)
     {
+
+        /* Action is not allowed if job and failed_job tables are not empty. Que tasks may be in progress */
+        if (!QueLock::getStatus()){
+            throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
+        }
+
         /* Validation rules */
         $this->validate($request,[
             'symbol' => 'required|string|max:8',
@@ -101,6 +109,11 @@ class SignalController extends Controller
      */
     public function update(Request $request, $id)
     {
+        /* Action is not allowed if job and failed_job tables are not empty. Que tasks may be in progress */
+        if (!QueLock::getStatus()){
+            throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
+        }
+
         $signal = Signal::findOrFail($id);
 
         /* Validation rule */
@@ -114,7 +127,6 @@ class SignalController extends Controller
 
         $signal->update($request->all());
         return ['message' => 'Updated signal info'];
-
     }
 
     /**
@@ -169,8 +181,6 @@ class SignalController extends Controller
      */
     public function fillVolume(Request $request){
 
-
-
         // Get clients balances. Dispatch job to a que. Use GetClientFundsCheck.php
 
         // Make and dispatch new job: fetchTicker
@@ -183,9 +193,7 @@ class SignalController extends Controller
         /* Get quote */
         try {
             $this->symbolQuote = $exchange->fetch_ticker($request['symbol'])['last'];
-            //LogToFile::add(__FILE__ . __LINE__, $this->symbolQuote);
         } catch (\Exception $e) {
-            //LogToFile::add(__FILE__ . __LINE__, $e->getMessage());
             throw (new Exception($e->getMessage()));
             //return $e->getMessage();
         }
@@ -202,30 +210,5 @@ class SignalController extends Controller
          * And where client funds != 0. If == 0 it means that API keys did not work and we did not get the balance
          */
 
-/*        foreach (Execution::where('signal_id', $request['id'])
-                     ->where('client_funds', '!=', null)
-                     ->get() as $execution){
-
-            // Balance share calculation
-            $balancePortionXBT = $execution->client_funds * $execution->percent / 100;
-
-            // Contract formula
-
-            // Formulas are set in Symbols.vue
-            // Get the formula. Use symbol as the key
-            $formula = Symbol::where('execution_name', $execution->symbol)->value('formula');
-            if ($formula == "=1/symbolQuote(BTC)") $this->symbolInXBT = 1 / $this->symbolQuote;
-            if ($formula == "=symbolQuote*multp(ETH)") $this->symbolInXBT = $this->symbolQuote * 0.000001;
-            if ($formula == "=symbolQuote")$this->symbolInXBT = $this->symbolQuote;
-
-            Execution::where('signal_id', $request['id'])
-                ->where('client_id', $execution->client_id)
-                ->update(['client_volume' => round($balancePortionXBT / $this->symbolInXBT),
-                    'status' => 'new',
-                    'info' => 'volume calculated']);
-        }*/
     }
-
-
-
 }

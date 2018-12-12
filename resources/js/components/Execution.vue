@@ -124,8 +124,8 @@
                 <div class="card h-100">
                     <div class="card-header">
                             <span style="font-size:140%">
-                                Jobs. Failed: 0
-                                <button type="button" class="btn btn-success float-right" @click="newModal">
+                                Jobs. Failed: {{ failedJobsQuantity }}
+                                <button type="button" class="btn btn-success float-right" @click="clearJobTables">
                                 <i class="far fa-trash-alt"></i>
                                 </button>
                             </span>
@@ -180,10 +180,23 @@
                 signals: {},
                 interval: null,
                 jsonModalMessage: [],
-                jobs: null
+                jobs: null,
+                failedJobsQuantity: 0
             }
         },
         methods: {
+            clearJobTables(){
+                axios.post('clearjobs')
+                    .then(response => {
+                        toast({
+                            type: 'success',
+                            title: 'Job tables truncated'
+                        });
+                    })
+                    .catch(error => {
+                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+                    });
+            },
             newModal(message){
                 //this.editmode = false;
                 //this.form.reset();
@@ -292,9 +305,12 @@
             // Sent from WebSocketStream.php
             Echo.channel('ATTR')
                 .listen('AttrUpdateEvent', (e) => {
-                    //this.symbols = e.update.symbol;
-                    console.log(JSON.parse(e.update));
-                    this.jobs = JSON.parse(e.update);
+                    //this.jobs = e.update; //this.jobs = JSON.parse(e.update);
+                    if(e.update.eventName === 'execution'){
+                        //console.log(e.update.payLoad);
+                        this.jobs = e.update.payLoad.jobsTable;
+                        this.failedJobsQuantity = e.update.payLoad.failedJobsQuantity;
+                    }
 
                 });
 

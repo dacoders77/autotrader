@@ -209,13 +209,7 @@
                             })
                             .catch(error => {
                                 swal("Failed!", "Error: \n" + error.response.data.message, "warning");
-
                                 //console.log(error.response.data.message);
-                                /*
-                                for(var i in error){
-                                    console.log(i, error[i]);
-                                }
-                                */
                                 Fire.$emit('AfterCreateSignal');
                             });
                     }
@@ -259,16 +253,17 @@
                         // Request successful
                         Fire.$emit('AfterCreateSignal'); // Trigger an event of the global object which is declared in app.js
                         $('#addNewSignalModal').modal('hide'); // Modal hide
-                        // Toast notification
                         toast({
                             type: 'success',
                             title: 'Signal created successfully'
                         });
+
                         this.$Progress.finish();
                     })
-                    .catch(() => {
-                        // Error
+                    .catch(error => {
+                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
                     })
+
             },
             updateSignal(){
                 this.$Progress.start();
@@ -302,11 +297,11 @@
                     if (result.value){
                         this.form.delete('api/signal/' + id).then(() => {
                             if (result.value) {
-                                swal(
-                                    'Deleted!',
-                                    'Signal has been deleted.',
-                                    'success'
-                                )
+                                toast({
+                                    type: 'success',
+                                    title: 'Signal has been deleted'
+                                });
+
                                 Fire.$emit('AfterCreateSignal');
                             }
                         }).catch(() => {

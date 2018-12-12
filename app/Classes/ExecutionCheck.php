@@ -56,39 +56,5 @@ class ExecutionCheck
                 Signal::where('id', $execution->signal_id)->update(['status' => 'error']);
             }
         }
-
-
-
-
-
-
-        /*
-            if($execution->client_funds_status != null){
-            Execution::where('id', $execution->id)
-                ->update([
-                    'in_status' => 'pending',
-                ]);
-
-        }
-
-        if($execution->client_funds_status == 'ok' &&
-            $execution->leverage_status == 'ok' &&
-            $execution->small_order_status == 'ok' &&
-            $execution->in_place_order_status == 'ok'){
-            Execution::where('id', $execution->id)
-                ->update([
-                    'in_status' => 'success',
-                ]);
-        }
-
-
-        if($execution->client_funds_status == 'error' ||
-            $execution->leverage_status == 'error'){
-            Execution::where('id', $execution->id)
-                ->update([
-                    'in_status' => 'fail',
-                ]);
-        }
-        */
     }
 }

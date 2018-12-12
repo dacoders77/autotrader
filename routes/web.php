@@ -44,8 +44,11 @@ Route::get('{zzz}', "HomeController@index")->where( 'path', '([A-z\d-\/_.]+)?' )
 // Symbol execution. Called from signal.vue
 Route::post('/exec', 'API\ExecutionController@executeSymbol');
 
-// TEMP ROUTE!
+//
 Route::post('/execclose', 'API\ExecutionController@closeSymbol');
+
+// Clear jobs and failed_jobs tables. Called from Execution.vue
+Route::post('/clearjobs', 'API\ExecutionController@clearJobTables');
 
 
 // Client validation. Called from client.vue

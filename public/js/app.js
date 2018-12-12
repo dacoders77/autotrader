@@ -81972,13 +81972,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         Fire.$emit('AfterCreateSignal');
                     }).catch(function (error) {
                         swal("Failed!", "Error: \n" + error.response.data.message, "warning");
-
                         //console.log(error.response.data.message);
-                        /*
-                        for(var i in error){
-                            console.log(i, error[i]);
-                        }
-                        */
                         Fire.$emit('AfterCreateSignal');
                     });
                 }
@@ -82034,14 +82028,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Request successful
                 Fire.$emit('AfterCreateSignal'); // Trigger an event of the global object which is declared in app.js
                 $('#addNewSignalModal').modal('hide'); // Modal hide
-                // Toast notification
                 toast({
                     type: 'success',
                     title: 'Signal created successfully'
                 });
+
                 _this3.$Progress.finish();
-            }).catch(function () {
-                // Error
+            }).catch(function (error) {
+                swal("Failed!", "Error: \n" + error.response.data.message, "warning");
             });
         },
         updateSignal: function updateSignal() {
@@ -82074,7 +82068,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (result.value) {
                     _this5.form.delete('api/signal/' + id).then(function () {
                         if (result.value) {
-                            swal('Deleted!', 'Signal has been deleted.', 'success');
+                            toast({
+                                type: 'success',
+                                title: 'Signal has been deleted'
+                            });
+
                             Fire.$emit('AfterCreateSignal');
                         }
                     }).catch(function () {
@@ -85439,11 +85437,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             signals: {},
             interval: null,
             jsonModalMessage: [],
-            jobs: null
+            jobs: null,
+            failedJobsQuantity: 0
         };
     },
 
     methods: {
+        clearJobTables: function clearJobTables() {
+            axios.post('clearjobs').then(function (response) {
+                toast({
+                    type: 'success',
+                    title: 'Job tables truncated'
+                });
+            }).catch(function (error) {
+                swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+            });
+        },
         newModal: function newModal(message) {
             //this.editmode = false;
             //this.form.reset();
@@ -85546,9 +85555,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // Websocket listener
         // Sent from WebSocketStream.php
         Echo.channel('ATTR').listen('AttrUpdateEvent', function (e) {
-            //this.symbols = e.update.symbol;
-            console.log(JSON.parse(e.update));
-            _this2.jobs = JSON.parse(e.update);
+            //this.jobs = e.update; //this.jobs = JSON.parse(e.update);
+            if (e.update.eventName === 'execution') {
+                //console.log(e.update.payLoad);
+                _this2.jobs = e.update.payLoad.jobsTable;
+                _this2.failedJobsQuantity = e.update.payLoad.failedJobsQuantity;
+            }
         });
     }
 });
@@ -85893,14 +85905,16 @@ var render = function() {
           _c("div", { staticClass: "card-header" }, [
             _c("span", { staticStyle: { "font-size": "140%" } }, [
               _vm._v(
-                "\n                            Jobs. Failed: 0\n                            "
+                "\n                            Jobs. Failed: " +
+                  _vm._s(_vm.failedJobsQuantity) +
+                  "\n                            "
               ),
               _c(
                 "button",
                 {
                   staticClass: "btn btn-success float-right",
                   attrs: { type: "button" },
-                  on: { click: _vm.newModal }
+                  on: { click: _vm.clearJobTables }
                 },
                 [_c("i", { staticClass: "far fa-trash-alt" })]
               )
