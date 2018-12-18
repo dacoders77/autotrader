@@ -19,7 +19,6 @@
                                 <tbody>
                                 <tr>
                                     <th><i class="fas fa-info-circle blue"></i></th>
-                                    <th>Action</th>
                                     <th>Edit</th>
                                     <th>Created</th>
                                     <th>Symbol</th>
@@ -33,15 +32,10 @@
                                     <th>StopLoss</th>
                                     <th>Info</th>
 
-
-                                    <!--<th>Open</th>
-                                    <th>Price</th>
-                                    <th>Close</th>
-                                    <th>Price</th>-->
-
                                 </tr>
                                 <tr v-for="signal in signals.data" :key="signal.id" :class="signal.status == 'finished' ? 'grey' : '' ">
                                     <td>{{ signal.id }}</td>
+                                    <!--
                                     <td>
                                         <div class="btn-group">
                                             <div v-if="signal.status == 'new'">
@@ -54,7 +48,7 @@
                                                 <button class="btn btn-light" disabled><i class="fas fa-check"></i></button>
                                             </div>
                                         </div>
-                                    </td>
+                                    </td>-->
                                     <td>
                                         <div class="btn-group">
                                             <button class="btn btn-primary" @click="deleteSignal(signal.id)"><i class="nav-icon fas fa-trash white"></i></button>
@@ -74,12 +68,6 @@
                                     <td>{{ signal.quote_value }}</td>
                                     <td>{{ signal.stop_loss_price }}</td>
                                     <td>{{ signal.info }}</td>
-
-                                    <!--<td>{{ signal.open_date }}</td>
-                                    <td>{{ signal.open_price }}</td>
-                                    <td>{{ signal.close_date }}</td>
-                                    <td>{{ signal.close_price }}</td>-->
-
                                 </tr>
                                 </tbody></table>
                         </div>

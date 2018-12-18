@@ -44,8 +44,7 @@ class btmxws extends Command
      */
     public function handle()
     {
-        //event(new AttrUpdateEvent('attr update event!'));
-        //die(__FILE__);
+
         /**
          * Ratchet/pawl websocket library
          * @see https://github.com/ratchetphp/Pawl
@@ -76,7 +75,6 @@ class btmxws extends Command
                     $jsonMessage = json_decode($socketMessage->getPayload(), true);
                     dump($jsonMessage);
                     if (array_key_exists('data', $jsonMessage)){
-                        //dump($jsonMessage);
                         if (array_key_exists('lastPrice', $jsonMessage['data'][0])){
                             WebSocketStream::Parse($jsonMessage['data']); // Update quotes, send events to vue
                             WebSocketStream::stopLossCheck($jsonMessage['data']); // Stop loss execution
@@ -92,7 +90,7 @@ class btmxws extends Command
                     $this->handle(); // Call the main method of this class
                 });
 
-                /* Subscription object. Manual subscription. If on - subscription at the start must be disabled */
+                /* Manual subscription object. If on - subscription at the start must be disabled */
                 /*$requestObject = json_encode([
                     "op" => "subscribe",
                     "args" => ["instrument:XBTUSD", "instrument:ETHUSD"]

@@ -64,7 +64,6 @@ class Client
         /* Need to wait a bit. Exchange delays balance update. */
         sleep(3);
 
-        // Update DB
         \App\Client::where('id', $id)->update([
             'balance_symbols' => self::makeClientTradingBalanceString(self::checkBalance($api, $apiSecret, 'getTradingBalance'))
         ]);
@@ -88,12 +87,7 @@ class Client
     public static function setLeverageCheck($api = '', $apiSecret = '', $symbol){
         self::$exchange = new bitmex();
         try{
-
-
             $response = self::bitmex($api, $apiSecret)->privatePostPositionLeverage(array('symbol' => $symbol, 'leverage' => 1));
-
-            //$response = self::bitmex($api, $apiSecret)->createMarketBuyOrder($symbol, $quantity, []);
-            //self::bitmex($api, $apiSecret)->createMarketSellOrder($symbol, $quantity, []);
             return $response;
         }
         catch (\Exception $e){
@@ -102,7 +96,7 @@ class Client
     }
 
     /**
-     * Get client trading balance symbols and me a string out of it.
+     * Get client trading balance symbols and make a string out of it.
      * Then insert this string to DB.
      * Value is outputted in Clients.vue.
      * Used in two cases: get client balance and drop client balance.

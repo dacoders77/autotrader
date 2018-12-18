@@ -169,7 +169,6 @@ class SignalController extends Controller
         GetSignalSymbolQuote::dispatch(new bitmex(), $request['symbol'], $id);
         // Add volume calculate job
         CalculateClientOrderVolume::dispatch($id);
-
     }
 
     /**
@@ -180,16 +179,7 @@ class SignalController extends Controller
      * @return string
      */
     public function fillVolume(Request $request){
-
-        // Get clients balances. Dispatch job to a que. Use GetClientFundsCheck.php
-
-        // Make and dispatch new job: fetchTicker
-        // Foreach execution
-        // Get the formula
-        // Calculate client volume
-
         $exchange = new bitmex();
-
         /* Get quote */
         try {
             $this->symbolQuote = $exchange->fetch_ticker($request['symbol'])['last'];
@@ -198,17 +188,10 @@ class SignalController extends Controller
             //return $e->getMessage();
         }
 
-        // Balance share calculation
-        //$balancePortionXBT = $execution->client_funds * $execution->percent / 100;
-
-
-        //return $this->symbolQuote;
-
         /**
          * Run through all records in executions table
          * With a specific signal id
          * And where client funds != 0. If == 0 it means that API keys did not work and we did not get the balance
          */
-
     }
 }

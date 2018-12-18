@@ -81922,18 +81922,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -82152,49 +82140,6 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _c("div", { staticClass: "btn-group" }, [
-                              signal.status == "new"
-                                ? _c("div", [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-success",
-                                        on: {
-                                          click: function($event) {
-                                            _vm.executeSymbol(signal)
-                                          }
-                                        }
-                                      },
-                                      [_c("i", { staticClass: "fas fa-play" })]
-                                    )
-                                  ])
-                                : _vm._e(),
-                              _vm._v(" "),
-                              signal.status == "success"
-                                ? _c("div", [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-danger",
-                                        on: {
-                                          click: function($event) {
-                                            _vm.executeSymbol(signal)
-                                          }
-                                        }
-                                      },
-                                      [_c("i", { staticClass: "fas fa-stop" })]
-                                    )
-                                  ])
-                                : _vm._e(),
-                              _vm._v(" "),
-                              signal.status == "error" ||
-                              signal.status == "finished"
-                                ? _c("div", [_vm._m(1, true)])
-                                : _vm._e()
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c("div", { staticClass: "btn-group" }, [
                               _c(
                                 "button",
                                 {
@@ -82376,7 +82321,7 @@ var render = function() {
                   [_vm._v("Update signal")]
                 ),
                 _vm._v(" "),
-                _vm._m(2)
+                _vm._m(1)
               ]),
               _vm._v(" "),
               _c(
@@ -82709,8 +82654,6 @@ var staticRenderFns = [
     return _c("tr", [
       _c("th", [_c("i", { staticClass: "fas fa-info-circle blue" })]),
       _vm._v(" "),
-      _c("th", [_vm._v("Action")]),
-      _vm._v(" "),
       _c("th", [_vm._v("Edit")]),
       _vm._v(" "),
       _c("th", [_vm._v("Created")]),
@@ -82731,16 +82674,6 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Info")])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-light", attrs: { disabled: "" } },
-      [_c("i", { staticClass: "fas fa-check" })]
-    )
   },
   function() {
     var _vm = this

@@ -28,7 +28,6 @@ class WebSocketStream
     private static $addedTickTime;
 
     public static function Parse(array $message){
-
         Symbol::where('leverage_name', $message[0]['symbol'])
             ->update([
                 'quote_value' => $message[0]['lastPrice']
@@ -38,14 +37,14 @@ class WebSocketStream
         $executionSymbolName = Symbol::where('leverage_name', $message[0]['symbol'])->value('execution_name');
 
         Signal::where('symbol', $executionSymbolName)
-            ->where('info', null) // Update price only the signal was not close with stop loss
+            ->where('info', null) // Update quotes only for signal which was not close with stop loss
+            //->where('status', '!=', 'new') // Or manually closed via stop button click
             ->update([
                 'quote_value' => $message[0]['lastPrice']
             ]);
 
         $quoteTickTime = strtotime($message[0]['timestamp']);
-
-        /* Send event to vue.js once a second */
+        /* Send event to vue.js once a second. Otherwise pusher gets out of free messages limit. */
         if (self::$isFirstTimeTickCheck || $quoteTickTime >= self::$addedTickTime){
             self::$isFirstTimeTickCheck = false;
             self::$addedTickTime = $quoteTickTime + 1; // Allow ticks not frequenter than twice a second
@@ -54,55 +53,40 @@ class WebSocketStream
         }
     }
 
+    /**
+     * On each quote tick we check it for the stop loss.
+     * When a signal is closed with the stop loss or manually - we don't fire stop loss anymore.
+     *
+     * @param array $message
+     * @return void
+     */
     public  static function stopLossCheck($message){
-
         /* We don't have execution name in signals table, but we do in symbols */
         $executionSymbolName = Symbol::where('leverage_name', $message[0]['symbol'])->value('execution_name');
-        // Run through this array
-
-        //dump($message[0]['symbol'] . " " . $message[0]['lastPrice']);
-
+        /* Run through all signals array */
         foreach (Signal::where('symbol', $executionSymbolName)->get() as $signal){
-            if($signal->direction == "long" && $signal->info != "stop_loss"){
+            /* Stop loss for longs. Fire stop loss only when a position is not closed. */
+            if($signal->direction == "long" && $signal->status != "new" && ($signal->info != "stop_loss" || $signal->info != "manual_close") ){
                 if($message[0]['lastPrice'] < (double)$signal->stop_loss_price){
-
                     Signal::where('id', $signal->id)
                         ->update([
                             'info' => 'stop_loss'
                         ]);
-                    echo('long stop loss worked!/n');
-
-                    // Stop execution goes here
+                    /* Initiate stop button click via controller */
                     app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
                 }
             }
 
-            if($signal->direction == "short" && $signal->info != "stop_loss"){
+            /* Stop loss for Shorts */
+            if($signal->direction == "short" && ($signal->info != "stop_loss" && $signal->status != "new")){
                 if($message[0]['lastPrice'] > (double)$signal->stop_loss_price){
-
                     Signal::where('id', $signal->id)
                         ->update([
                             'info' => 'stop_loss'
                         ]);
-                    echo('short stop loss worked!/n');
-
-                    // Stop execution goes here
                     app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
                 }
             }
-
-            //dump($signal);
         }
-
-
-        // if long: quote < stop loss price
-        // if short: quote > stop loss price
-        // Set status = stop_loss
-
-
-        // Output column in signals.vue
-        // if true -> show red filled circle
-        // Add this red circle to execution.vue (to the header)
     }
-
 }

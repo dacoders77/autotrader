@@ -134,11 +134,8 @@ class ExecutionController extends Controller
         /* Get quote */
         try {
             $this->symbolQuote = $this->exchange->fetch_ticker($request['symbol'])['last'];
-            //LogToFile::add(__FILE__ . __LINE__, $this->symbolQuote);
         } catch (\Exception $e) {
-            //LogToFile::add(__FILE__ . __LINE__, $e->getMessage());
             throw (new Exception($e->getMessage()));
-            //return $e->getMessage();
         }
 
         /**
@@ -306,9 +303,16 @@ class ExecutionController extends Controller
         return(['execution' => Execution::latest()->where('signal_id', $id)->paginate(10), 'signal' => $signal]);
     }
 
+    /**
+     * Stop button handler.
+     * Called from Execution.vue
+     * Route: execclose
+     *
+     * @param Request $request
+     * @return void
+     */
     public function closeSymbol(Request $request){
-
-        /* Action is not allowed if job and failed_job tables are not empty. Que tasks may be in progress */
+        /* Action is not allowed if job and failed_job tables are not empty. Que tasks may be in progress. */
         if (!QueLock::getStatus()){
             throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
         }
@@ -320,13 +324,17 @@ class ExecutionController extends Controller
             GetClientTradingBalanceOut::dispatch($this->exchange, $execution)->delay(5);
         }
 
-        //Signal::where('id', $execution->signal_id)->update(['status' => 'pending']);
+        /* Set info column to manual_close. This will not let stop loss to fire when a position is manually closed. */
+        Signal::where('id', $request['id'])
+            ->update([
+                'info' => 'manual_close'
+            ]);
     }
 
     public function stopLoss($signalId){
         foreach (Execution::where('signal_id', $signalId)
         ->where('in_place_order_status', 'ok')
-                     ->get() as $execution) {
+         ->get() as $execution) {
             OutPlaceOrder::dispatch($this->exchange, $execution);
             GetClientTradingBalanceOut::dispatch($this->exchange, $execution)->delay(5);
         }
@@ -334,19 +342,13 @@ class ExecutionController extends Controller
 
     /**
      * Empty jobs and failed_jobs tables.
-     * Emty button called from Execution.vue
+     * Empty button called from Execution.vue
      *
      * @return void
      */
     public function clearJobTables(){
-
-        // drop jobs
-        // drop failed_jobs
-        // send executionEvent
         Job::truncate();
         Failed_job::truncate();
-
-
     }
 }
 

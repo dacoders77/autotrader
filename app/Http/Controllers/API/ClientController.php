@@ -232,17 +232,36 @@ class ClientController extends Controller
         return($request);
     }
 
+    /**
+     * Get client balance button handler.
+     * Called from Client.vue
+     *
+     * @param Request $request
+     * @return array
+     */
     public function getClientTradingBalance(Request $request){
-
-        $arr = \App\Classes\Client::makeClientTradingBalanceString(\App\Classes\Client::checkBalance($request['api'], $request['api_secret'], 'getTradingBalance'));
-        Client::where('id', $request['id'])->update([
-            'balance_symbols' => $arr
-        ]);
-        return (["message" => "Client's trading balance received", "arr" => $arr]);
+        try{
+            $arr = \App\Classes\Client::makeClientTradingBalanceString(\App\Classes\Client::checkBalance($request['api'], $request['api_secret'], 'getTradingBalance'));
+            Client::where('id', $request['id'])->update([
+                'balance_symbols' => $arr
+            ]);
+            return (["message" => "Client's trading balance received", "arr" => $arr]);
+        }
+        catch (\Exception $e){
+            //throw (new Exception($e->getMessage()));
+            return (["message" => "Exchange did not return array while requesting balance. It may be overloaded. Try again later", "arr" => $e->getMessage()]);
+        }
     }
 
+    /**
+     * Drop client balance button handler.
+     * Get client balance and close all positions.
+     * Called from Client.vue
+     *
+     * @param Request $request
+     * @return void
+     */
     public function dropClientTradingBalance(Request $request){
-
         $response = \App\Classes\Client::checkBalance($request['api'], $request['api_secret'], 'getTradingBalance');
         foreach ($response as $symbol){
             if ($symbol['currentQty'] > 0){
