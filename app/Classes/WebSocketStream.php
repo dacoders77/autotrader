@@ -48,8 +48,19 @@ class WebSocketStream
         if (self::$isFirstTimeTickCheck || $quoteTickTime >= self::$addedTickTime){
             self::$isFirstTimeTickCheck = false;
             self::$addedTickTime = $quoteTickTime + 1; // Allow ticks not frequenter than twice a second
-            /* Event is received in signals.vue, symbols.vue */
-            event(new AttrUpdateEvent(['signal' => Signal::paginate(), 'symbol' => Symbol::paginate(), 'ticker' => $message[0]['symbol'], 'price' => $message[0]['lastPrice']]));
+            try{
+                /* Event is received in signals.vue, symbols.vue */
+                event(new AttrUpdateEvent([
+                    'signal' => Signal::paginate(),
+                    'symbol' => Symbol::paginate(),
+                    'ticker' => $message[0]['symbol'],
+                    'price' => $message[0]['lastPrice']
+                ]));
+            }
+            catch (\Exception $e){
+                Log::info('Pusher error: ' . __FILE__ . ' ' . __LINE__ . ' ' . Signal::paginate() . ' ' . Symbol::paginate());
+                throw new Exception($e);
+            }
         }
     }
 

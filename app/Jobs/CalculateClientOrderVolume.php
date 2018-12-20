@@ -45,22 +45,19 @@ class CalculateClientOrderVolume implements ShouldQueue
                      ->where('client_funds_value', '!=', null)
                      ->get() as $execution){
 
-
-            // Balance share calculation
-
+            /* Balance share calculation */
             $balancePortionXBT = Execution::where('id', $execution->id)->value('client_funds_value') * Execution::where('id', $execution->id)->value('percent') / 100;
             $this->symbolQuote = Signal::where('id', $execution->signal_id)->value('quote_value');
-            
-            // Contract formula
-            // Formulas are set in Symbols.vue
-            // Get the formula. Use symbol as the key
 
-
+            /**
+             * Contract formula
+             * Formulas are set in Symbols.vue
+             * Get the formula. Use symbol as the key
+             */
             $formula = Symbol::where('execution_name', $execution->symbol)->value('formula');
             if ($formula == "=1/symbolQuote(BTC)") $this->symbolInXBT = 1 / $this->symbolQuote;
             if ($formula == "=symbolQuote*multp(ETH)") $this->symbolInXBT = $this->symbolQuote * 0.000001;
             if ($formula == "=symbolQuote") $this->symbolInXBT = $this->symbolQuote;
-
 
             Execution::where('id', $execution->id)
                 ->update([

@@ -53,7 +53,6 @@ class GetClientFundsCheck implements ShouldQueue
         catch (\Exception $e)
         {
             $this->response = $e->getMessage();
-
             Execution::where('id', $this->execution->id)
                 ->update([
                     'client_funds_status' => 'error',
@@ -76,11 +75,11 @@ class GetClientFundsCheck implements ShouldQueue
         dump($this->response);
 
         if (gettype($this->response) == 'string'){
-            // Error
+
             /**
+             * Error.
              * @todo move all text possible errors to a dictionary. Allow user to change these values.
              */
-
             // Overload message: "The system is currently overloaded. Please try again later."
             // "bitmex requires `apiKey`"
             if ($this->response == "bitmex {\"error\":{\"message\":\"The system is currently overloaded. Please try again later.\",\"name\":\"HTTPError\"}}\""){

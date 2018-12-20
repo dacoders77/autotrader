@@ -53,6 +53,7 @@ class ExecutionController extends Controller
      * Execute a symbol an multiple clients accounts.
      *
      * @param Request $request
+     * @return string
      */
     public function executeSymbol(Request $request){
 
@@ -61,7 +62,7 @@ class ExecutionController extends Controller
             throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
         }
         
-        // Do for both: new and open signals
+        /* Do for both: new and open signals */
         foreach (Execution::where('signal_id', $request['id'])
                      //->where('client_volume', '!=', null)
                      ->get() as $execution) {
@@ -77,13 +78,14 @@ class ExecutionController extends Controller
 
         Signal::where('id', $execution->signal_id)->update(['status' => 'pending']);
 
-
         return 'Return from exec controller! ' . __FILE__;
         die(__FILE__);
 
 
-
-        /*Delete this code*/
+        /**
+         * @todo Delete this code
+         * NOT USED ANYMORE
+         */
 
 
         // Do it once. Only for a new signal

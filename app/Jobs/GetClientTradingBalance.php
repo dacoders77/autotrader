@@ -54,7 +54,6 @@ class GetClientTradingBalance implements ShouldQueue
         catch (\Exception $e)
         {
             $this->response = $e->getMessage();
-
             Execution::where('id', $this->execution->id)
                 ->update([
                     'in_balance_status' => 'error',

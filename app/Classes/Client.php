@@ -47,18 +47,14 @@ class Client
             if ($direction == 'long'){
                 self::$response = self::bitmex($api, $apiSecret)
                     ->createMarketSellOrder(Symbol::where('leverage_name', $symbol)->value('execution_name'), $quantity, []);
-                LogToFile::add(__FILE__, json_encode(self::$response));
             }
             if ($direction == 'short'){
                 self::$response = self::bitmex($api, $apiSecret)
                     ->createMarketBuyOrder(Symbol::where('leverage_name', $symbol)->value('execution_name'), abs($quantity), []);
-                LogToFile::add(__FILE__, json_encode(self::$response));
             }
         }
         catch (\Exception $e){
-            LogToFile::add(__FILE__, json_encode($e->getMessage()));
             throw (new Exception(json_encode($e->getMessage())));
-            //return $e->getMessage();
         }
 
         /* Need to wait a bit. Exchange delays balance update. */
@@ -68,7 +64,13 @@ class Client
             'balance_symbols' => self::makeClientTradingBalanceString(self::checkBalance($api, $apiSecret, 'getTradingBalance'))
         ]);
 
-        event(new AttrUpdateEvent(['clients' => \App\Client::paginate()])); // Received in Clients.vue
+        try{
+            event(new AttrUpdateEvent(['clients' => \App\Client::paginate()])); // Received in Clients.vue
+        }
+        catch (\Exception $e){
+            Log::info('Pusher error: ' . __FILE__ . ' ' . __LINE__ . ' ' . \App\Client::paginate());
+            throw new Exception($e);
+        }
     }
 
     public static function checkSmallOrderExecution($api = '', $apiSecret = '', $symbol = 'BTC/USD'){

@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Classes\WebSocketStream;
-use App\Events\AttrUpdateEvent;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Ratchet\Client\WebSocket;

@@ -71,8 +71,8 @@ class SetLeverageCheck implements ShouldQueue
                 ]);
         }
 
-        dump(gettype($this->response));
-        dump($this->response);
+        //dump(gettype($this->response));
+        //dump($this->response);
 
 
         if (gettype($this->response) == 'string'){

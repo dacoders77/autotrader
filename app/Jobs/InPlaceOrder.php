@@ -58,7 +58,6 @@ class InPlaceOrder implements ShouldQueue
         catch (\Exception $e)
         {
             $this->response = $e->getMessage();
-
             Execution::where('id', $this->execution->id)
                 ->update([
                     'in_place_order_status' => 'error',
@@ -76,9 +75,8 @@ class InPlaceOrder implements ShouldQueue
                 ]);
         }
 
-        dump(gettype($this->response));
-        dump($this->response);
-
+        //dump(gettype($this->response));
+        //dump($this->response);
 
         if (gettype($this->response) == 'string'){
             // Error
