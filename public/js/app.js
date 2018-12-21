@@ -82035,7 +82035,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 swal('Updated!', 'Signal has been updated', 'success');
                 _this4.$Progress.finish();
                 Fire.$emit('AfterCreateSignal');
-            }).catch(function () {
+            }).catch(function (error) {
+                swal("Failed!", "Error: \n" + error.response.data.message, "warning");
                 _this4.$Progress.fail();
             });
         },
@@ -85371,7 +85372,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             interval: null,
             jsonModalMessage: [],
             jobs: null,
-            failedJobsQuantity: 0
+            failedJobsQuantity: 0,
+            jobsQuantity: 0
         };
     },
 
@@ -85493,6 +85495,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 //console.log(e.update.payLoad);
                 _this2.jobs = e.update.payLoad.jobsTable;
                 _this2.failedJobsQuantity = e.update.payLoad.failedJobsQuantity;
+                _this2.jobsQuantity = e.update.payLoad.jobsQuantity;
             }
         });
     }
@@ -85838,7 +85841,9 @@ var render = function() {
           _c("div", { staticClass: "card-header" }, [
             _c("span", { staticStyle: { "font-size": "140%" } }, [
               _vm._v(
-                "\n                            Jobs. Failed: " +
+                "\n                            Jobs: " +
+                  _vm._s(_vm.jobsQuantity) +
+                  ". Failed: " +
                   _vm._s(_vm.failedJobsQuantity) +
                   "\n                            "
               ),

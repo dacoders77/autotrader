@@ -266,7 +266,8 @@
                         this.$Progress.finish();
                         Fire.$emit('AfterCreateSignal');
                     })
-                    .catch(() => {
+                    .catch(error => {
+                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
                         this.$Progress.fail();
                     });
             },

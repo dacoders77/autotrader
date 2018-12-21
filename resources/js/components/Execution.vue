@@ -124,7 +124,7 @@
                 <div class="card h-100">
                     <div class="card-header">
                             <span style="font-size:140%">
-                                Jobs. Failed: {{ failedJobsQuantity }}
+                                Jobs: {{ jobsQuantity }}. Failed: {{ failedJobsQuantity }}
                                 <button type="button" class="btn btn-success float-right" @click="clearJobTables">
                                 <i class="far fa-trash-alt"></i>
                                 </button>
@@ -181,7 +181,8 @@
                 interval: null,
                 jsonModalMessage: [],
                 jobs: null,
-                failedJobsQuantity: 0
+                failedJobsQuantity: 0,
+                jobsQuantity: 0
             }
         },
         methods: {
@@ -310,10 +311,10 @@
                         //console.log(e.update.payLoad);
                         this.jobs = e.update.payLoad.jobsTable;
                         this.failedJobsQuantity = e.update.payLoad.failedJobsQuantity;
+                        this.jobsQuantity = e.update.payLoad.jobsQuantity;
                     }
 
                 });
-
         },
     }
 </script>

@@ -83,7 +83,6 @@ class OutPlaceOrder implements ShouldQueue
              * @todo move all text possible errors to a dictionary. Allow user to change these values.
              */
             if ($this->response == "bitmex {\"error\":{\"message\":\"The system is currently overloaded. Please try again later.\",\"name\":\"HTTPError\"}}\""){
-                // Set get client status to: overloaded
                 dump('EXCHANGE OVERLOADED! RESTART JOB! IN place order');
                 throw new Exception();
             }

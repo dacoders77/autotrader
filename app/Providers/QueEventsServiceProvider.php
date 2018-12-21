@@ -13,6 +13,9 @@ use App\Failed_job;
 /**
  * Add que actions: before and after. 
  * These actions are needed for real-time jobs management table render in Execution.vue.
+ * Jobs are added to the window in the realtime. Once a job is copleted, it removes from the window.
+ * In order to acces the window click on signal status (new, error, success etc.) at signals page.
+ * The window is shown at Execution.vue.
  *
  * Class QueEventsServiceProvider
  * @package App\Providers
@@ -57,16 +60,16 @@ class QueEventsServiceProvider extends ServiceProvider
 
     /**
      * Build jobs table and pass it to Execuion.vue
-     * Payload cell is too heavy and can not be fit int 1024 byte pusher packet size.
+     * Payload cell is too heavy and can not be fit int 10240 byte pusher packet size.
      * We take only displayName out of payload.
      *
      * @return array
      */
     private function buildJobsTable(){
         $this->json = [];
-        foreach (Job::all() as $job){
+        foreach (Job::all()->take(50) as $job){
             $displayName = json_decode($job->payload)->displayName;
-            $displayName = str_replace("App\\Jobs\\", '', $displayName);
+            $displayName = str_replace("App\\Jobs\\", '', $displayName); // Shorten the string
             array_push($this->json, ['id' => $job->id, 'displayName' => $displayName, 'attempts' => $job->attempts]);
         }
         return $this->json;
@@ -77,7 +80,8 @@ class QueEventsServiceProvider extends ServiceProvider
             'eventName' => 'execution',
             'payLoad' => [
                 'jobsTable' => self::buildJobsTable(),
-                'failedJobsQuantity' => Failed_job::count()
+                'jobsQuantity' => Job::count(),
+                'failedJobsQuantity' => Failed_job::count(),
             ]
         ];
         return $array;

@@ -11,6 +11,15 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
+/**
+ * Create an event.
+ * This event can have several types which are later classified in vue.js.
+ * Also this event is called from Providers/QueEventsServiceProvider.php in order to show how jobs are processed
+ * in real-time in Execution.vue (jobs table).
+ *
+ * Class AttrUpdateEvent
+ * @package App\Events
+ */
 class AttrUpdateEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;

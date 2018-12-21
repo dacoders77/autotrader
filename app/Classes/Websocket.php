@@ -40,7 +40,6 @@ class Websocket
     }
 
     public static function listenCache($connection){
-
         echo "order obj: " . self::$webSocketObject . "\n";
 
         if (Cache::get('object'))
@@ -59,8 +58,9 @@ class Websocket
                 ]);
             }
 
-
-            /** Not used. For now we only subscribe
+            /**
+             * Not used. For now we only subscribe.
+             * Unsubscription disabled and not used.
              * @todo DELETE IT
              */
             if(array_key_exists('unsubscribe', Cache::get('object'))){

@@ -76,26 +76,33 @@ class WebSocketStream
         $executionSymbolName = Symbol::where('leverage_name', $message[0]['symbol'])->value('execution_name');
         /* Run through all signals array */
         foreach (Signal::where('symbol', $executionSymbolName)->get() as $signal){
-            /* Stop loss for longs. Fire stop loss only when a position is not closed. */
-            if($signal->direction == "long" && $signal->status != "new" && ($signal->info != "stop_loss" || $signal->info != "manual_close") ){
-                if($message[0]['lastPrice'] < (double)$signal->stop_loss_price){
-                    Signal::where('id', $signal->id)
-                        ->update([
-                            'info' => 'stop_loss'
-                        ]);
-                    /* Initiate stop button click via controller */
-                    app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
+            /* Stop loss for long positions */
+            if($signal->direction == "long" ){
+                /** Fire stop loss only for not closed positions (info == null, when not null == manual_close or stop_loss)
+                 * And for only open positions: status == new or error */
+                if($signal->info == null && ($signal->status == "success" || $signal->status == "error")){
+                    //LogToFile::add(__FILE__ . __LINE__, " stop_loss for longs " . $signal->id . 'signal_status: ' . $signal->info    );
+                    if($message[0]['lastPrice'] < (double)$signal->stop_loss_price){
+                        Signal::where('id', $signal->id)
+                            ->update([
+                                'info' => 'stop_loss'
+                            ]);
+                        /* Initiate stop button click via controller */
+                        app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
+                    }
                 }
             }
 
-            /* Stop loss for Shorts */
-            if($signal->direction == "short" && ($signal->info != "stop_loss" && $signal->status != "new")){
-                if($message[0]['lastPrice'] > (double)$signal->stop_loss_price){
-                    Signal::where('id', $signal->id)
-                        ->update([
-                            'info' => 'stop_loss'
-                        ]);
-                    app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
+            /* Stop loss for short positions */
+            if($signal->direction == "short" ){
+                if($signal->info == null && ($signal->status == "success" || $signal->status == "error")){
+                    if($message[0]['lastPrice'] > (double)$signal->stop_loss_price){
+                        Signal::where('id', $signal->id)
+                            ->update([
+                                'info' => 'stop_loss'
+                            ]);
+                        app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
+                    }
                 }
             }
         }

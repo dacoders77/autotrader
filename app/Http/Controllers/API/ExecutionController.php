@@ -50,7 +50,7 @@ class ExecutionController extends Controller
 
     /**
      * Controller is called from Signals.vue and Execution.vue.
-     * Execute a symbol an multiple clients accounts.
+     * Execute a symbol on multiple clients accounts.
      *
      * @param Request $request
      * @return string
@@ -76,7 +76,7 @@ class ExecutionController extends Controller
             GetClientTradingBalance::dispatch($this->exchange, $execution)->delay(5);
         }
 
-        Signal::where('id', $execution->signal_id)->update(['status' => 'pending']);
+        Signal::where('id', $request['id'])->update(['status' => 'pending']);
 
         return 'Return from exec controller! ' . __FILE__;
         die(__FILE__);
@@ -314,6 +314,7 @@ class ExecutionController extends Controller
      * @return void
      */
     public function closeSymbol(Request $request){
+        //LogToFile::add(__FILE__ . __LINE__, "closeSymbol method activated ");
         /* Action is not allowed if job and failed_job tables are not empty. Que tasks may be in progress. */
         if (!QueLock::getStatus()){
             throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
@@ -334,6 +335,7 @@ class ExecutionController extends Controller
     }
 
     public function stopLoss($signalId){
+        //LogToFile::add(__FILE__ . __LINE__, "stop_loss activated! ");
         foreach (Execution::where('signal_id', $signalId)
         ->where('in_place_order_status', 'ok')
          ->get() as $execution) {
@@ -344,7 +346,7 @@ class ExecutionController extends Controller
 
     /**
      * Empty jobs and failed_jobs tables.
-     * Empty button called from Execution.vue
+     * Empty button click performed in Execution.vue
      *
      * @return void
      */

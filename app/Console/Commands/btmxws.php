@@ -43,7 +43,6 @@ class btmxws extends Command
      */
     public function handle()
     {
-
         /**
          * Ratchet/pawl websocket library
          * @see https://github.com/ratchetphp/Pawl
@@ -69,7 +68,6 @@ class btmxws extends Command
         $connector($exchangeWebSocketEndPoint, [], ['Origin' => 'http://localhost'])
             ->then(function(\Ratchet\Client\WebSocket $conn) use ($loop) {
                 $this->connection = $conn;
-
                 $conn->on('message', function(\Ratchet\RFC6455\Messaging\MessageInterface $socketMessage) use ($conn, $loop) {
                     $jsonMessage = json_decode($socketMessage->getPayload(), true);
                     dump($jsonMessage);
