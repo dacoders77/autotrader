@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="122d7a5d-d4c1-468d-81ee-8464a15c8350" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/1.txt" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/autotrader.iml" afterPath="$PROJECT_DIR$/.idea/autotrader.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Classes/LogToFile.php" afterPath="$PROJECT_DIR$/app/Classes/LogToFile.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Classes/WebSocketStream.php" afterPath="$PROJECT_DIR$/app/Classes/WebSocketStream.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Classes/Websocket.php" afterPath="$PROJECT_DIR$/app/Classes/Websocket.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Console/Commands/btmxws.php" afterPath="$PROJECT_DIR$/app/Console/Commands/btmxws.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Events/AttrUpdateEvent.php" afterPath="$PROJECT_DIR$/app/Events/AttrUpdateEvent.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/API/ExecutionController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/ExecutionController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Jobs/OutPlaceOrder.php" afterPath="$PROJECT_DIR$/app/Jobs/OutPlaceOrder.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Providers/QueEventsServiceProvider.php" afterPath="$PROJECT_DIR$/app/Providers/QueEventsServiceProvider.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/app.js" afterPath="$PROJECT_DIR$/public/js/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/js/components/Execution.vue" afterPath="$PROJECT_DIR$/resources/js/components/Execution.vue" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/js/components/Signals.vue" afterPath="$PROJECT_DIR$/resources/js/components/Signals.vue" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -40,11 +27,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="OutPlaceOrder.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="OutPlaceOrder.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Jobs/OutPlaceOrder.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="410">
-              <caret line="84" column="160" lean-forward="false" selection-start-line="84" selection-start-column="160" selection-end-line="84" selection-end-column="160" />
+            <state relative-caret-position="-357">
+              <caret line="13" column="6" lean-forward="false" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -65,8 +52,8 @@
       <file leaf-file-name="ExecutionController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/ExecutionController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="58">
-              <caret line="316" column="10" lean-forward="false" selection-start-line="316" selection-start-column="10" selection-end-line="316" selection-end-column="10" />
+            <state relative-caret-position="381">
+              <caret line="341" column="22" lean-forward="true" selection-start-line="341" selection-start-column="22" selection-end-line="341" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -84,10 +71,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WebSocketStream.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="WebSocketStream.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Classes/WebSocketStream.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1">
+            <state relative-caret-position="135">
               <caret line="82" column="106" lean-forward="false" selection-start-line="82" selection-start-column="106" selection-end-line="82" selection-end-column="106" />
               <folding />
             </state>
@@ -229,7 +216,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="841" />
     <option name="width" value="606" />
     <option name="height" value="675" />
@@ -413,12 +400,12 @@
       <workItem from="1545118957694" duration="11121000" />
       <workItem from="1545289234510" duration="3867000" />
       <workItem from="1545326647825" duration="27000" />
-      <workItem from="1545382222182" duration="20018000" />
+      <workItem from="1545382222182" duration="21376000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="746353000" />
+    <option name="totallyTimeSpent" value="747711000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -430,7 +417,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17549168" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -825,22 +812,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Jobs/OutPlaceOrder.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="84" column="160" lean-forward="false" selection-start-line="84" selection-start-column="160" selection-end-line="84" selection-end-column="160" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/ExecutionController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58">
-          <caret line="316" column="10" lean-forward="false" selection-start-line="316" selection-start-column="10" selection-end-line="316" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Console/Commands/btmxws.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
@@ -869,8 +840,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Classes/WebSocketStream.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1">
+        <state relative-caret-position="135">
           <caret line="82" column="106" lean-forward="false" selection-start-line="82" selection-start-column="106" selection-end-line="82" selection-end-column="106" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/ExecutionController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="381">
+          <caret line="341" column="22" lean-forward="true" selection-start-line="341" selection-start-column="22" selection-end-line="341" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Jobs/OutPlaceOrder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-357">
+          <caret line="13" column="6" lean-forward="false" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
           <folding />
         </state>
       </provider>
