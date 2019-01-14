@@ -80,11 +80,6 @@ class btmx extends Command
 
         dump($exchange->privateGetPosition());
 
-
-
-
-
-
     }
 
 }

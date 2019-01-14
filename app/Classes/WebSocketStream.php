@@ -9,10 +9,10 @@
 namespace App\Classes;
 
 use App\Events\AttrUpdateEvent;
-use App\Http\Controllers\API\ExecutionController;
+//use App\Http\Controllers\API\ExecutionController;
 use App\Signal; // Link model
 use App\Symbol;
-
+use Illuminate\Support\Facades\Log;
 /**
  * Pars websocket messages.
  * On each message update it's value in symbols, signals table and send an event to symbols.vue and signals.vue via pusher.

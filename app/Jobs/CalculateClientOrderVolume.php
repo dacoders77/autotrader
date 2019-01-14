@@ -46,13 +46,17 @@ class CalculateClientOrderVolume implements ShouldQueue
                      ->get() as $execution){
 
             /* Balance share calculation */
-            $balancePortionXBT = Execution::where('id', $execution->id)->value('client_funds_value') * Execution::where('id', $execution->id)->value('percent') / 100;
+            $balancePortionXBT = Execution::where('id', $execution->id)
+                    ->value('client_funds_value') * Execution::where('id', $execution->id)->value('percent') / 100;
             $this->symbolQuote = Signal::where('id', $execution->signal_id)->value('quote_value');
 
             /**
              * Contract formula
              * Formulas are set in Symbols.vue
              * Get the formula. Use symbol as the key
+             *
+             * Symbol guide:
+             * @see https://www.bitmex.com/app/seriesGuide/TRX
              */
             $formula = Symbol::where('execution_name', $execution->symbol)->value('formula');
             if ($formula == "=1/symbolQuote(BTC)") $this->symbolInXBT = 1 / $this->symbolQuote;
@@ -61,9 +65,9 @@ class CalculateClientOrderVolume implements ShouldQueue
 
             Execution::where('id', $execution->id)
                 ->update([
-                    'client_volume' => round($balancePortionXBT / $this->symbolInXBT),
+                    'client_volume' => round($balancePortionXBT / $this->symbolInXBT * $execution->leverage), // Only values with no decimal points accepted
+                    'client_funds_use' => $balancePortionXBT,
                 ]);
-
         }
     }
 }

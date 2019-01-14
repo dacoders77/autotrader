@@ -9,7 +9,6 @@ use Ratchet\Client\WebSocket;
 
 class btmxws extends Command
 {
-
     protected $connection;
 
     /**

@@ -58,7 +58,7 @@
                                     <th>Client ID</th>
                                     <th>Name</th>
                                     <th>Volume</th>
-                                    <th>Funds</th>
+                                    <th>Funds/Use</th>
                                     <th>Result</th>
                                 </tr>
 
@@ -75,7 +75,7 @@
                                         <td>{{ execution.client_name }}</td>
 
                                         <td>{{ execution.client_volume}}</td>
-                                        <td>{{ execution.client_funds_value }}</td>
+                                        <td>{{ execution.client_funds_value }}/{{ execution.client_funds_use }}</td>
                                         <td>
                                             <span v-if="execution.in_place_order_status == 'ok'" class="badge badge-pill badge-success">IN</span>
                                             <span v-if="execution.in_place_order_status == 'error'" class="badge badge-pill badge-danger">IN</span>

@@ -11,6 +11,8 @@ use App\Events\AttrUpdateEvent;
 use App\Symbol; // Link model
 use ccxt\bitmex;
 use Mockery\Exception;
+use Illuminate\Support\Facades\Log;
+
 /**
  * Class Client.
  * Check api keys via balance access and execution permissions via small order execution.

@@ -26,13 +26,10 @@ class ExecutionCheck
         // Meaning that if all executions have at least pending status - stop button will become available.
         // Some can have ok status and some pending/fail
 
-
         // Run through all executions and see whether +
         // in_order_status != null -> set button to Stop. status = proceeded
         // in_order_status == ok -> set button to Stop. status = success
         // any of in_order_status == error -> set button to Stop. status = error
-
-
 
         $arr = Execution::where('signal_id', $execution->signal_id)->get(['in_place_order_status']); // Get executions with the same signal_id
         $push = array();

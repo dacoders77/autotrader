@@ -53,11 +53,10 @@ class SetLeverageCheck implements ShouldQueue
         catch (\Exception $e)
         {
             $this->response = $e->getMessage();
-
             Execution::where('id', $this->execution->id)
                 ->update([
                     'leverage_status' => 'error',
-                    'leverage_response' => json_encode($this->response) // Overloaded should be here
+                    'leverage_response' => json_encode($this->response) // Exchange overload should be here
                 ]);
         }
 
@@ -71,10 +70,6 @@ class SetLeverageCheck implements ShouldQueue
                 ]);
         }
 
-        //dump(gettype($this->response));
-        //dump($this->response);
-
-
         if (gettype($this->response) == 'string'){
             // Error
             /**
@@ -86,7 +81,6 @@ class SetLeverageCheck implements ShouldQueue
                 throw new Exception();
             }
         }
-
         return;
     }
 }

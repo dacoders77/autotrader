@@ -29,6 +29,7 @@ class Execution extends Model
         'client_funds_status',
         'client_funds_response',
         'client_funds_value',
+        'client_funds_use', // Calculated funds to use accordingly to the given %
 
         'leverage_status',
         'leverage_response',

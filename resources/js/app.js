@@ -13,6 +13,7 @@ import moment from 'moment'; // Working with date formats
 // https://sweetalert2.github.io/#download
 import swal from 'sweetalert2'
 window.swal = swal;
+
 const toast = swal.mixin({
     toast: true,
     position: 'top-end',
@@ -106,7 +107,6 @@ Vue.use(TreeView)
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
-
 const app = new Vue({
     el: '#app',
     router

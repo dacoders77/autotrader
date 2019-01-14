@@ -100,44 +100,95 @@
 
                     <form @submit.prevent="editmode ? updateSignal() : createSignal()">
                         <div class="modal-body">
-                            <div class="form-group">
+
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:80px;">Symbol:</div>
+                                </div>
                                 <select name="symbol" v-model="form.symbol" id="symbol" class="form-control" :class="{ 'is-invalid': form.errors.has('symbol') }">
-                                    <option value="">Symbol</option>
-
-                                    <option v-for="symbol in symbols.data">
-                                        {{ symbol.execution_name }}
-                                    </option>
-
+                                    <option v-for="symbol in symbols.data">{{ symbol.execution_name }}</option>
                                 </select>
                                 <has-error :form="form" field="symbol"></has-error>
                             </div>
 
-                            <div class="form-group">
+                            <!--<div class="form-group">
+                                <select name="symbol" v-model="form.symbol" id="symbol" class="form-control" :class="{ 'is-invalid': form.errors.has('symbol') }">
+                                    <option value="">Symbol</option>
+                                    <option v-for="symbol in symbols.data">{{ symbol.execution_name }}</option>
+                                </select>
+
+                                <has-error :form="form" field="symbol"></has-error>
+                            </div>-->
+
+
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:80px;">%</div>
+                                </div>
+                                <input v-model="form.percent" type="number" name="percent"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('percent') }">
+                                <has-error :form="form" field="percent"></has-error>
+                            </div>
+
+                            <!--<div class="form-group">
                                 <input v-model="form.percent" type="number" name="percent"
                                        placeholder="%"
                                        class="form-control" :class="{ 'is-invalid': form.errors.has('percent') }">
                                 <has-error :form="form" field="percent"></has-error>
+                            </div>-->
+
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:80px;">Leverage:</div>
+                                </div>
+                                <input v-model="form.leverage" type="number" name="leverage"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('leverage') }">
+                                <has-error :form="form" field="leverage"></has-error>
                             </div>
-                            <div class="form-group">
+
+                            <!--<div class="form-group">
                                 <input v-model="form.leverage" type="number" name="leverage"
                                        placeholder="Leverage"
                                        class="form-control" :class="{ 'is-invalid': form.errors.has('leverage') }">
                                 <has-error :form="form" field="leverage"></has-error>
+                            </div>-->
+
+
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:80px;">Direction:</div>
+                                </div>
+                                <select name="type" v-model="form.direction" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('direction') }">
+                                    <option value="long">Long</option>
+                                    <option value="short">Short</option>
+                                </select>
+                                <has-error :form="form" field="direction"></has-error>
                             </div>
-                            <div class="form-group">
+
+                            <!--<div class="form-group">
                                 <select name="type" v-model="form.direction" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('direction') }">
                                     <option value="">Side(direction)</option>
                                     <option value="long">Long</option>
                                     <option value="short">Short</option>
                                 </select>
                                 <has-error :form="form" field="direction"></has-error>
+                            </div>-->
+
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:80px;">Stop loss:</div>
+                                </div>
+                                <input v-model="form.stop_loss_price" type="number" step="0.000000001" name="stop_loss_price"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('stop_loss_price') }">
+                                <has-error :form="form" field="stop_loss_price"></has-error>
                             </div>
-                            <div class="form-group">
+
+                            <!--<div class="form-group">
                                 <input v-model="form.stop_loss_price" type="number" step="0.000000001" name="stop_loss_price"
                                        placeholder="Stop loss price"
                                        class="form-control" :class="{ 'is-invalid': form.errors.has('stop_loss_price') }">
                                 <has-error :form="form" field="stop_loss_price"></has-error>
-                            </div>
+                            </div>-->
 
                         </div>
                         <div class="modal-footer">

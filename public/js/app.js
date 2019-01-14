@@ -30455,6 +30455,7 @@ window.Vue = __webpack_require__(164);
 // https://sweetalert2.github.io/#download
 
 window.swal = __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default.a;
+
 var toast = __WEBPACK_IMPORTED_MODULE_1_sweetalert2___default.a.mixin({
     toast: true,
     position: 'top-end',
@@ -30533,7 +30534,6 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_5_vue_json_tree_view___default.a);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 Vue.component('example-component', __webpack_require__(195));
-
 var app = new Vue({
     el: '#app',
     router: router
@@ -81922,6 +81922,57 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -82339,8 +82390,10 @@ var render = function() {
                   _c("div", { staticClass: "modal-body" }, [
                     _c(
                       "div",
-                      { staticClass: "form-group" },
+                      { staticClass: "input-group mb-2 mr-sm-2" },
                       [
+                        _vm._m(2),
+                        _vm._v(" "),
                         _c(
                           "select",
                           {
@@ -82377,22 +82430,11 @@ var render = function() {
                               }
                             }
                           },
-                          [
-                            _c("option", { attrs: { value: "" } }, [
-                              _vm._v("Symbol")
-                            ]),
-                            _vm._v(" "),
-                            _vm._l(_vm.symbols.data, function(symbol) {
-                              return _c("option", [
-                                _vm._v(
-                                  "\n                                    " +
-                                    _vm._s(symbol.execution_name) +
-                                    "\n                                "
-                                )
-                              ])
-                            })
-                          ],
-                          2
+                          _vm._l(_vm.symbols.data, function(symbol) {
+                            return _c("option", [
+                              _vm._v(_vm._s(symbol.execution_name))
+                            ])
+                          })
                         ),
                         _vm._v(" "),
                         _c("has-error", {
@@ -82404,8 +82446,10 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "form-group" },
+                      { staticClass: "input-group mb-2 mr-sm-2" },
                       [
+                        _vm._m(3),
+                        _vm._v(" "),
                         _c("input", {
                           directives: [
                             {
@@ -82419,11 +82463,7 @@ var render = function() {
                           class: {
                             "is-invalid": _vm.form.errors.has("percent")
                           },
-                          attrs: {
-                            type: "number",
-                            name: "percent",
-                            placeholder: "%"
-                          },
+                          attrs: { type: "number", name: "percent" },
                           domProps: { value: _vm.form.percent },
                           on: {
                             input: function($event) {
@@ -82444,8 +82484,10 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "form-group" },
+                      { staticClass: "input-group mb-2 mr-sm-2" },
                       [
+                        _vm._m(4),
+                        _vm._v(" "),
                         _c("input", {
                           directives: [
                             {
@@ -82459,11 +82501,7 @@ var render = function() {
                           class: {
                             "is-invalid": _vm.form.errors.has("leverage")
                           },
-                          attrs: {
-                            type: "number",
-                            name: "leverage",
-                            placeholder: "Leverage"
-                          },
+                          attrs: { type: "number", name: "leverage" },
                           domProps: { value: _vm.form.leverage },
                           on: {
                             input: function($event) {
@@ -82488,8 +82526,10 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "form-group" },
+                      { staticClass: "input-group mb-2 mr-sm-2" },
                       [
+                        _vm._m(5),
+                        _vm._v(" "),
                         _c(
                           "select",
                           {
@@ -82527,10 +82567,6 @@ var render = function() {
                             }
                           },
                           [
-                            _c("option", { attrs: { value: "" } }, [
-                              _vm._v("Side(direction)")
-                            ]),
-                            _vm._v(" "),
                             _c("option", { attrs: { value: "long" } }, [
                               _vm._v("Long")
                             ]),
@@ -82550,8 +82586,10 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "form-group" },
+                      { staticClass: "input-group mb-2 mr-sm-2" },
                       [
+                        _vm._m(6),
+                        _vm._v(" "),
                         _c("input", {
                           directives: [
                             {
@@ -82568,8 +82606,7 @@ var render = function() {
                           attrs: {
                             type: "number",
                             step: "0.000000001",
-                            name: "stop_loss_price",
-                            placeholder: "Stop loss price"
+                            name: "stop_loss_price"
                           },
                           domProps: { value: _vm.form.stop_loss_price },
                           on: {
@@ -82692,6 +82729,66 @@ var staticRenderFns = [
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "80px" } },
+        [_vm._v("Symbol:")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "80px" } },
+        [_vm._v("%")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "80px" } },
+        [_vm._v("Leverage:")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "80px" } },
+        [_vm._v("Direction:")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "80px" } },
+        [_vm._v("Stop loss:")]
+      )
+    ])
   }
 ]
 render._withStripped = true
@@ -82756,12 +82853,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -83450,8 +83541,6 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(signal.status))]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(signal.funds))]),
-                        _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(signal.info))])
                       ])
                     })
@@ -83925,8 +84014,6 @@ var staticRenderFns = [
       _c("th", [_vm._v("Secret")]),
       _vm._v(" "),
       _c("th", [_vm._v("Status")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Funds")]),
       _vm._v(" "),
       _c("th", [_vm._v("Info")])
     ])
@@ -85646,7 +85733,11 @@ var render = function() {
                           _c("td", [_vm._v(_vm._s(execution.client_volume))]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(_vm._s(execution.client_funds_value))
+                            _vm._v(
+                              _vm._s(execution.client_funds_value) +
+                                "/" +
+                                _vm._s(execution.client_funds_use)
+                            )
                           ]),
                           _vm._v(" "),
                           _c("td", [
@@ -85950,7 +86041,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Volume")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Funds")]),
+      _c("th", [_vm._v("Funds/Use")]),
       _vm._v(" "),
       _c("th", [_vm._v("Result")])
     ])

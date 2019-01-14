@@ -32,11 +32,10 @@ class CreateExecutionsTable extends Migration
             $table->string('in_status')->nullable();
             $table->string('out_status')->nullable();
 
-
-
             $table->string('client_funds_status')->nullable();
             $table->text('client_funds_response')->nullable();
             $table->decimal('client_funds_value', 12,6)->nullable();
+            $table->decimal('client_funds_use', 12,6)->nullable(); // Calculated funds to use accordingly to the given %
 
             $table->string('leverage_status')->nullable();
             $table->text('leverage_response')->nullable();
@@ -61,8 +60,6 @@ class CreateExecutionsTable extends Migration
             $table->string('out_balance_status')->nullable();
             $table->text('out_balance_response')->nullable();
             $table->integer('out_balance_value')->nullable();
-
-
 
             $table->text('close_funds_response')->nullable();
             $table->string('open_status')->nullable();

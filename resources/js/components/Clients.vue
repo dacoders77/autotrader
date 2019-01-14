@@ -38,7 +38,6 @@
                                     <th>Secret</th>
                                     <th>Status</th>
 
-                                    <th>Funds</th>
                                     <th>Info</th>
 
 
@@ -95,8 +94,6 @@
                                         </div>
                                     </td>
 
-
-
                                     <td>
                                         <div class="btn-group">
                                             <button v-if="true" class="btn btn-warning" @click="dropClientTradingBalance(signal)">
@@ -109,8 +106,6 @@
                                     </td>
 
                                     <td>{{ signal.balance_symbols }}</td>
-
-
                                     <td>{{ signal.created_at | myDate }}</td>
                                     <td>{{ signal.name }}</td>
                                     <td>{{ signal.last_name }}</td>
@@ -121,7 +116,6 @@
                                     <td>{{ signal.api_secret }}</td>
 
                                     <td>{{ signal.status }}</td>
-                                    <td>{{ signal.funds }}</td>
                                     <td>{{ signal.info }}</td>
                                 </tr>
                                 </tbody>
