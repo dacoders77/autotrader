@@ -41,10 +41,13 @@ Route::get('/getexecution/{id}', 'API\ExecutionController@getExecution');
  */
 Route::get('{zzz}', "HomeController@index")->where( 'path', '([A-z\d-\/_.]+)?' );
 
-// Symbol execution. Called from signal.vue
+// Signal execution. Called from Signal.vue and Execution.vue
 Route::post('/exec', 'API\ExecutionController@executeSymbol');
 
-//
+// Repeat failed signal for a specific client. Called only from Execution.vue
+Route::post('/repeatsignal', 'API\ExecutionController@repeatSignal');
+
+// ..
 Route::post('/execclose', 'API\ExecutionController@closeSymbol');
 
 // Clear jobs and failed_jobs tables. Called from Execution.vue

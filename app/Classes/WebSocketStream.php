@@ -13,6 +13,7 @@ use App\Events\AttrUpdateEvent;
 use App\Signal; // Link model
 use App\Symbol;
 use Illuminate\Support\Facades\Log;
+use Mockery\Exception;
 /**
  * Pars websocket messages.
  * On each message update it's value in symbols, signals table and send an event to symbols.vue and signals.vue via pusher.

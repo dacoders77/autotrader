@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 
 /**
  * Class Client.
- * Check api keys via balance access and execution permissions via small order execution.
+ * Check api keys via balance access and execution permissions via small order placement.
  * Called from Client.php controller.
  * Used as an additional validation prior to client record creation on the DB.
  * @package App\Classes

@@ -70,7 +70,11 @@
 
                                 <template v-for="execution in signals.data">
                                     <tr>
-                                        <td>{{ execution.id }}</td>
+
+                                        <!--v-on="click: submit('hello!', $event)"-->
+                                        <!--@click="repeatExecution(execution.id)-->
+
+                                        <td>{{ execution.id }} <a href="" v-on:click.prevent="repeatExecution(execution)"><i class="fas fa-sync-alt"></i></a> </td>
                                         <td>{{ execution.client_id }}</td>
                                         <td>{{ execution.client_name }}</td>
 
@@ -186,6 +190,36 @@
             }
         },
         methods: {
+            repeatExecution(signal){
+                //alert('repeat execution: ' + id); // Works good
+
+                swal({
+                    title: "You've got to be sure about that!?",
+                    text: "Signal will be repeated only for selected client!!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Hit the road, Jack!'
+                }).then((result) => {
+                    if (result.value){
+                        axios.post('repeatsignal', signal)
+                            .then(response => {
+                                swal(
+                                    'Proceeded!',
+                                    'Signal has been repeated',
+                                    'success'
+                                )
+                                //Fire.$emit('AfterCreateSignal');
+                                // even delete this signal?
+                            })
+                            .catch(error => {
+                                swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+                                //Fire.$emit('AfterCreateSignal');
+                            });
+                    }
+                })
+            },
             clearJobTables(){
                 axios.post('clearjobs')
                     .then(response => {

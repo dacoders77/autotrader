@@ -79,23 +79,16 @@ class ExecutionController extends Controller
         Signal::where('id', $request['id'])->update(['status' => 'pending']);
 
         return 'Return from exec controller! ' . __FILE__;
+        dump('Stopped in ExecutionController. Line: ' . __LINE__);
         die(__FILE__);
-
-
-        /**
-         * @todo Delete this code
-         * NOT USED ANYMORE
-         */
-
-
+/*
+Delete this code
         // Do it once. Only for a new signal
         if ($request['status'] == "new"){
             // $this->fillExecutionsTable($request); // Moved to Signal controller
             //$this->getClientsFunds($request, $this->exchange);
             //$this->fillVolume($request, $this->exchange);
         }
-
-
 
             $this->exchange->apiKey = Client::where('id', $execution->client_id)->value('api');
             $this->exchange->secret = Client::where('id', $execution->client_id)->value('api_secret');
@@ -117,12 +110,50 @@ class ExecutionController extends Controller
                     $this->openPosition($this->exchange, $execution, "long");
                 }
             }
+*/
         }
 
-        //return "position closed";
-        //return response('No symbol found', 412);
+    /**
+     * Repeat failed signal. Sometimes some clients inside an execution do not get their signals executed.
+     * Execute manually only this client.
+     * Called from Execution.vue by clicking the reload icon.
+     *
+     * @param Request $request
+     */
+    public function repeatSignal(Request $request){
 
+        // Determine if the error was on in or out signal
+        // Based on the result repeat in or out
 
+        // in_place_order_status == "error" ->
+        // in_place_order_status == "error" ->
+        // if non of the are ok -> 'Selected signal does not contain any errors and will not be repeated'
+
+        if (!QueLock::getStatus()){
+            throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
+        }
+
+        $execution = Execution::where('id', $request['id'])->get()[0];
+        if ($execution->in_place_order_status == 'ok' && $execution->out_place_order_status == 'ok'){
+            throw (new Exception('Selected signal does not contain any errors and will not be repeated'));
+        }
+        
+        if($execution->in_place_order_status == 'error'){
+            GetClientFundsCheck::dispatch($this->exchange, $execution);
+            SetLeverageCheck::dispatch($this->exchange, $execution);
+            InPlaceOrder::dispatch($this->exchange, $execution);
+            GetClientTradingBalance::dispatch($this->exchange, $execution);
+            Signal::where('id', $request['id'])->update(['status' => 'repeating']);
+        }
+
+        if($execution->out_place_order_status == 'error'){
+            OutPlaceOrder::dispatch($this->exchange, $execution);
+            GetClientTradingBalanceOut::dispatch($this->exchange, $execution);
+
+            /* Set info column to manual_close. This will not let stop loss to fire when the position is manually closed. */
+            Signal::where('id', $request['id'])->update(['info' => 'manual_close']);
+        }
+    }
 
     /**
      * Calculate and fill volume for each client (each record in the table).
@@ -208,8 +239,9 @@ class ExecutionController extends Controller
      * @param $direction
      * @param $orderVolume
      */
+    /*
     private function openPosition(bitmex $exchange, $execution, $direction){
-        /* Set leverage */
+        // Set leverage
         try{
             //$setLeverageResponse = $exchange->privatePostPositionLeverage(array('symbol' => Symbol::where('execution_name', $execution->symbol)->value('leverage_name'), 'leverage' => $execution->leverage));
             $setLeverageResponse = $exchange->privatePostPositionLeverage(array('symbol' => 'ETHUSD_ddd', 'leverage' => $execution->leverage));
@@ -220,7 +252,6 @@ class ExecutionController extends Controller
             throw (New Exception('Leverage set error. ' . $e->getMessage()));
         }
 
-        /* Place order */
         if ($direction == 'long'){
             try{
                 $this->placeOrderResponse = $exchange->createMarketBuyOrder($execution->symbol, $execution->client_volume * $execution->leverage, []);
@@ -292,6 +323,7 @@ class ExecutionController extends Controller
             ]);
         }
     }
+    */
 
     /**
      * Display a listing of the resource.
@@ -314,28 +346,23 @@ class ExecutionController extends Controller
      * @return void
      */
     public function closeSymbol(Request $request){
-        //LogToFile::add(__FILE__ . __LINE__, "closeSymbol method activated ");
         /* Action is not allowed if job and failed_job tables are not empty. Que tasks may be in progress. */
         if (!QueLock::getStatus()){
             throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
         }
 
         foreach (Execution::where('signal_id', $request['id'])
-        ->where('in_place_order_status', 'ok')
-        ->get() as $execution) {
-            OutPlaceOrder::dispatch($this->exchange, $execution);
-            GetClientTradingBalanceOut::dispatch($this->exchange, $execution)->delay(5);
-        }
+            ->where('in_place_order_status', 'ok')
+            ->get() as $execution) {
+                OutPlaceOrder::dispatch($this->exchange, $execution);
+                GetClientTradingBalanceOut::dispatch($this->exchange, $execution)->delay(5);
+            }
 
-        /* Set info column to manual_close. This will not let stop loss to fire when a position is manually closed. */
-        Signal::where('id', $request['id'])
-            ->update([
-                'info' => 'manual_close'
-            ]);
+        /* Set info column to manual_close. This will not let stop loss to fire when the position is manually closed. */
+        Signal::where('id', $request['id'])->update(['info' => 'manual_close']);
     }
 
     public function stopLoss($signalId){
-        //LogToFile::add(__FILE__ . __LINE__, "stop_loss activated! ");
         foreach (Execution::where('signal_id', $signalId)
         ->where('in_place_order_status', 'ok')
          ->get() as $execution) {

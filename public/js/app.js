@@ -85450,6 +85450,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -85465,6 +85469,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        repeatExecution: function repeatExecution(signal) {
+            //alert('repeat execution: ' + id); // Works good
+
+            swal({
+                title: "You've got to be sure about that!?",
+                text: "Signal will be repeated only for selected client!!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Hit the road, Jack!'
+            }).then(function (result) {
+                if (result.value) {
+                    axios.post('repeatsignal', signal).then(function (response) {
+                        swal('Proceeded!', 'Signal has been repeated', 'success');
+                        //Fire.$emit('AfterCreateSignal');
+                        // even delete this signal?
+                    }).catch(function (error) {
+                        swal("Failed!", "Error: \n" + error.response.data.message, "warning");
+                        //Fire.$emit('AfterCreateSignal');
+                    });
+                }
+            });
+        },
         clearJobTables: function clearJobTables() {
             axios.post('clearjobs').then(function (response) {
                 toast({
@@ -85724,7 +85752,22 @@ var render = function() {
                     _vm._l(_vm.signals.data, function(execution) {
                       return [
                         _c("tr", [
-                          _c("td", [_vm._v(_vm._s(execution.id))]),
+                          _c("td", [
+                            _vm._v(_vm._s(execution.id) + " "),
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    _vm.repeatExecution(execution)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "fas fa-sync-alt" })]
+                            )
+                          ]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(execution.client_id))]),
                           _vm._v(" "),
