@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 
 /**
  * Generate fake quotes for testing purposes.
+ * Sine curve is used as a direction source.
  *
  * Class QuoteFaker
  * @package App\Console\Commands

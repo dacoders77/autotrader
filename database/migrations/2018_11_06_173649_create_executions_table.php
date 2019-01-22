@@ -70,6 +70,33 @@ class CreateExecutionsTable extends Migration
             $table->text('close_response')->nullable();
             $table->string('info', 10000)->nullable();
 
+            // OUTS:
+            $table->integer('out_percent_1')->nullable();
+            $table->decimal('out_price_1', 16,8)->nullable();
+            $table->text('out_response_1')->nullable();
+            $table->integer('out_value_1')->nullable();
+            $table->string('out_status_1')->nullable();
+
+            $table->integer('out_percent_2')->nullable();
+            $table->decimal('out_price_2', 16,8)->nullable();
+            $table->text('out_response_2')->nullable();
+            $table->integer('out_value_2')->nullable();
+            $table->string('out_status_2')->nullable();
+
+            $table->integer('out_percent_3')->nullable();
+            $table->decimal('out_price_3', 16,8)->nullable();
+            $table->text('out_response_3')->nullable();
+            $table->integer('out_value_3')->nullable();
+            $table->string('out_status_3')->nullable();
+
+            $table->integer('out_percent_4')->nullable();
+            $table->decimal('out_price_4', 16,8)->nullable();
+            $table->text('out_response_4')->nullable();
+            $table->integer('out_value_4')->nullable();
+            $table->string('out_status_4')->nullable();
+
+
+
         });
     }
 

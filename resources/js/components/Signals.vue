@@ -24,13 +24,13 @@
                                     <th>Symbol</th>
 
                                     <th>Status</th>
-                                    <th>%</th>
+                                    <th>% / lvrg</th>
 
-                                    <th>Lvrg</th>
                                     <th>Side</th>
                                     <th>Quote</th>
                                     <th>StopLoss</th>
                                     <th>Info</th>
+                                    <th>Exits %</th>
 
                                 </tr>
                                 <tr v-for="signal in signals.data" :key="signal.id" :class="signal.status == 'finished' ? 'grey' : '' ">
@@ -62,12 +62,12 @@
 
                                     <td><router-link :to="{ name: 'Page2', params: { signal: signal } }">{{ signal.status }}</router-link></td>
 
-                                    <td>{{ signal.percent }}</td>
-                                    <td>{{ signal.leverage }}</td>
+                                    <td>{{ signal.percent }}/{{ signal.leverage }}</td>
                                     <td>{{ signal.direction }}</td>
                                     <td>{{ signal.quote_value }}</td>
                                     <td>{{ signal.stop_loss_price }}</td>
                                     <td>{{ signal.info }}</td>
+                                    <td>25/25/10/40</td>
                                 </tr>
                                 </tbody></table>
                         </div>
