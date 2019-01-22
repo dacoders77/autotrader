@@ -1,16 +1,16 @@
 <template>
-    <div class="container">
-        <div class="row mt-3">
-            <div class="col">
-                <div class="card h-100">
-                    <div class="card-header">
+
+    <div class="row pt-3">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header">
                         <span style="font-size:140%">
 
                             <div class="card-body table-responsive p-0">
-                            <table class="table table-hover"  style="width:600px">
+                            <table class="table table-hover" style="width:100%">
                                 <tbody>
                                 <tr>
-                                    <td>
+                                    <td class="px-2">
                                         Signal id: {{ (signal ? signal.id : null) }}<br>
                                         Symbol: {{ (signal ? signal.symbol : null) }}<br>
                                         Quote: {{ (signal ? signal.quote_value : null) }}<br>
@@ -24,17 +24,14 @@
                                     </td>
                                     <td>
                                         <div class="card-tools text-right">
-                                            <div class="btn-group">
-                                                <div v-if="true">
-                                                    <button class="btn btn-success" @click="executeSymbol(signal)"><i class="fas fa-play"></i></button>
-                                                </div>
-                                                <div v-if="true">
-                                                    <button class="btn btn-danger" @click="closeSymbol(signal)"><i class="fas fa-stop"></i></button>
-                                                </div>
-                                                <div v-if="false">
-                                                    <button class="btn btn-light" disabled><i class="fas fa-check"></i></button>
-                                                </div>
-                                            </div>
+                                            <span v-for="item in items">
+                                                Out: {{ item }} %
+                                                <a href="" v-on:click.prevent="repeatExecution(execution)"
+                                                   class="text-success"><i class="fas fa-play"></i></a href="">
+                                                <a href="" v-on:click.prevent="repeatExecution(execution)"
+                                                   class="text-danger"><i class="fas fa-stop"></i></a>
+                                                <br>
+                                            </span>
                                         </div>
                                     </td>
                                 </tr>
@@ -42,90 +39,72 @@
                             </table>
                             </div>
                         </span>
+                </div>
 
+                <div class="card-body">
 
-                    </div>
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover">
+                            <tbody>
 
+                            <template v-for="execution in signals.data">
 
-
-                    <div class="card-body">
-                        <!-- /.card-header -->
-                        <div class="card-body table-responsive p-0">
-                            <table class="table table-hover">
-                                <tbody>
                                 <tr>
-                                    <th><i class="fas fa-info-circle blue"></i></th>
-                                    <th>Client ID</th>
-                                    <th>Name</th>
-                                    <th>Volume</th>
-                                    <th>Funds/Use</th>
-                                    <th>Result</th>
+                                    <td>{{ execution.id }} <a href="" v-on:click.prevent="repeatExecution(execution)"><i class="fas fa-sync-alt"></i></a></td>
+                                    <td>{{ execution.client_id }}</td>
+                                    <td>{{ execution.client_name }}</td>
+
+                                    <td>{{ execution.client_volume}}</td>
+                                    <td>{{ execution.client_funds_value }}/{{ execution.client_funds_use }}</td>
+                                    <td>
+                                        <span v-if="execution.in_place_order_status == 'ok'" class="badge badge-pill badge-success">IN</span>
+                                        <span v-if="execution.in_place_order_status == 'error'" class="badge badge-pill badge-danger">IN</span>
+                                        <span v-if="execution.out_place_order_status == 'ok'" class="badge badge-pill badge-success">OUT</span>
+                                        <span v-if="execution.out_place_order_status == 'error'" class="badge badge-pill badge-danger">OUT</span>
+                                    </td>
                                 </tr>
 
-                                <!--<tr v-for="signal in signals.data" :key="signal.id" :class="signal.status == 'finished' ? 'grey' : '' ">
-                                    <td>{{ signal.id }}</td>
-                                    <td>{{ signal.client_id }}</td>
-                                    <td>{{ signal.client_name }}</td>
-                                </tr>-->
-
-                                <template v-for="execution in signals.data">
-                                    <tr>
-
-                                        <!--v-on="click: submit('hello!', $event)"-->
-                                        <!--@click="repeatExecution(execution.id)-->
-
-                                        <td>{{ execution.id }} <a href="" v-on:click.prevent="repeatExecution(execution)"><i class="fas fa-sync-alt"></i></a> </td>
-                                        <td>{{ execution.client_id }}</td>
-                                        <td>{{ execution.client_name }}</td>
-
-                                        <td>{{ execution.client_volume}}</td>
-                                        <td>{{ execution.client_funds_value }}/{{ execution.client_funds_use }}</td>
-                                        <td>
-                                            <span v-if="execution.in_place_order_status == 'ok'" class="badge badge-pill badge-success">IN</span>
-                                            <span v-if="execution.in_place_order_status == 'error'" class="badge badge-pill badge-danger">IN</span>
-                                            <span v-if="execution.out_place_order_status == 'ok'" class="badge badge-pill badge-success">OUT</span>
-                                            <span v-if="execution.out_place_order_status == 'error'" class="badge badge-pill badge-danger">OUT</span>
-                                        </td>
-                                    </tr>
-                                    <tr class="detail-row">
-                                        <td colspan="3">
-                                            IN:<br>
-                                            Calculate volume:
-                                            <span v-if="signal.quote_value != null">ok</span>
-                                            <span v-if="signal.quote_value == null">No quote!</span>
-                                            <br>
-                                            Get client funds: <a href="#" @click="newModal(execution.client_funds_response)">{{ execution.client_funds_status }}</a><br>
-                                            Set leverage: <a href="#" @click="newModal(execution.leverage_response)">{{ execution.leverage_status }}</a><br>
-                                            Place order: <a href="#" @click="newModal(execution.in_place_order_response)">{{ execution.in_place_order_status }}</a><br>
-                                            Balance: <a href="#" @click="newModal(execution.in_balance_response)">{{ execution.in_balance_value }}</a><br>
-                                        </td>
-                                        <td colspan="3">
-                                            OUT:<br>
-                                            Place order: <a href="#" @click="newModal(execution.out_place_order_response)">{{ execution.out_place_order_status }}</a><br>
-                                            Balance: <a href="#" @click="newModal(execution.out_balance_response)">{{ execution.out_balance_value }}</a><br>
-                                        </td>
-                                    </tr>
-                                </template>
+                                <tr class="detail-row">
+                                    <td colspan="6">
+                                        <div style="display: flex">
+                                            <div>
+                                                IN:<br>
+                                                Calculate volume:
+                                                <span v-if="signal.quote_value != null">ok</span>
+                                                <span v-if="signal.quote_value == null">No quote!</span>
+                                                <br>
+                                                Get client funds: <a href="#" @click="newModal(execution.client_funds_response)">{{ execution.client_funds_status}}</a><br>
+                                                Set leverage: <a href="#" @click="newModal(execution.leverage_response)">{{ execution.leverage_status}}</a><br>
+                                                Place order: <a href="#" @click="newModal(execution.in_place_order_response)">{{ execution.in_place_order_status}}</a><br>
+                                                Balance: <a href="#" @click="newModal(execution.in_balance_response)">{{ execution.in_balance_value}}</a><br>
+                                            </div>
 
 
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
-                        <!-- Pagination -->
-                        <div class="card-footer">
+                                            <span v-for="item in items" class="pl-4">
+                                                Out {{ item }}%:<br>
+                                                Place order: <a href="">error</a> <br>
+                                                Balance: -223
+                                            </span>
 
-                            <!--<ul class="pagination justify-content-center">
-                                <pagination :data="signals" @pagination-change-page="getResults"></pagination>
-                            </ul>-->
+                                        </div>
+                                    </td>
+                                </tr>
 
-                        </div>
+                            </template>
+                            </tbody>
+                        </table>
+
                     </div>
+
                 </div>
             </div>
+        </div>
 
-            <div class="col">
-                <div class="card h-100">
+
+
+        <div class="col-3">
+            <div>
+                <div class="card" style="width: 18rem;">
                     <div class="card-header">
                             <span style="font-size:140%">
                                 Jobs: {{ jobsQuantity }}. Failed: {{ failedJobsQuantity }}
@@ -133,9 +112,6 @@
                                 <i class="far fa-trash-alt"></i>
                                 </button>
                             </span>
-                        <div class="card-tools">
-
-                        </div>
                     </div>
                     <div class="card-body">
                         <span v-for="job in jobs">
@@ -146,34 +122,10 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
-
-        <!-- Modal -->
-        <div class="modal fade" id="addNewSignalModal" tabindex="-1" role="dialog" aria-labelledby="newSignalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="newSignalLabel">Response data</h5>
-
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <!-- content -->
-                    <div>
-                        <tree-view :data="jsonModalMessage" :options="{maxDepth: 3}"></tree-view>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
 
     </div>
+
 </template>
 
 <script>
@@ -186,11 +138,12 @@
                 jsonModalMessage: [],
                 jobs: null,
                 failedJobsQuantity: 0,
-                jobsQuantity: 0
+                jobsQuantity: 0,
+                items: [25, 25, 40, 10]
             }
         },
         methods: {
-            repeatExecution(signal){
+            repeatExecution(signal) {
                 //alert('repeat execution: ' + id); // Works good
 
                 swal({
@@ -202,7 +155,7 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Hit the road, Jack!'
                 }).then((result) => {
-                    if (result.value){
+                    if (result.value) {
                         axios.post('repeatsignal', signal)
                             .then(response => {
                                 swal(
@@ -220,7 +173,7 @@
                     }
                 })
             },
-            clearJobTables(){
+            clearJobTables() {
                 axios.post('clearjobs')
                     .then(response => {
                         toast({
@@ -232,14 +185,14 @@
                         swal("Failed!", "Error: \n" + error.response.data.message, "warning");
                     });
             },
-            newModal(message){
+            newModal(message) {
                 //this.editmode = false;
                 //this.form.reset();
 
                 this.jsonModalMessage = JSON.parse(message);
                 $('#addNewSignalModal').modal('show');
             },
-            closeSymbol(signal){
+            closeSymbol(signal) {
                 swal({
                     title: 'Are you sure?',
                     text: "Signal will be proceeded!!",
@@ -249,7 +202,7 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, proceed it!'
                 }).then((result) => {
-                    if (result.value){
+                    if (result.value) {
                         axios.post('execclose', signal)
                             .then(response => {
                                 swal(
@@ -266,7 +219,7 @@
                     }
                 })
             },
-            executeSymbol(signal){
+            executeSymbol(signal) {
                 swal({
                     title: 'Are you sure?',
                     text: "Signal will be proceeded!!",
@@ -276,7 +229,7 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, proceed it!'
                 }).then((result) => {
-                    if (result.value){
+                    if (result.value) {
                         axios.post('exec', signal)
                             .then(response => {
                                 swal(
@@ -293,7 +246,7 @@
                     }
                 })
             },
-            loadUsers(){
+            loadUsers() {
                 // Pagination disabled
                 axios.get('getexecution/' + this.signal.id).then(({data}) => {
                     this.signals = data['execution']
@@ -301,13 +254,13 @@
                 });
             },
 
-/*            loadData: function () {
-                alert('load data');
-                axios.get('/api/data', function (response) {
-                    //this.items = response.items;
-                }.bind(this));
-            },*/
-            showError(error){
+            /*            loadData: function () {
+                            alert('load data');
+                            axios.get('/api/data', function (response) {
+                                //this.items = response.items;
+                            }.bind(this));
+                        },*/
+            showError(error) {
                 /*swal({
                     type: 'info',
                     title: 'Bimex response: ',
@@ -322,7 +275,7 @@
                 this.loadUsers();
             }.bind(this), 3000);
         },
-        destroyed(){
+        destroyed() {
             // Stop timer when closed
             clearInterval(this.interval);
         },
@@ -341,7 +294,7 @@
             Echo.channel('ATTR')
                 .listen('AttrUpdateEvent', (e) => {
                     //this.jobs = e.update; //this.jobs = JSON.parse(e.update);
-                    if(e.update.eventName === 'execution'){
+                    if (e.update.eventName === 'execution') {
                         //console.log(e.update.payLoad);
                         this.jobs = e.update.payLoad.jobsTable;
                         this.failedJobsQuantity = e.update.payLoad.failedJobsQuantity;

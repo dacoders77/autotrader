@@ -41,7 +41,6 @@
 
                                     <th>Info</th>
 
-
                                 </tr>
                                 <tr v-for="signal in clients.data" :key="signal.id">
                                     <td>{{ signal.id }}</td>

@@ -81973,6 +81973,69 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -82628,6 +82691,354 @@ var render = function() {
                         })
                       ],
                       1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "input-group mb-2 mr-sm-2" },
+                      [
+                        _vm._m(7),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.stop_loss_price,
+                              expression: "form.stop_loss_price"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                          },
+                          attrs: {
+                            type: "number",
+                            step: "0.000000001",
+                            name: "stop_loss_price"
+                          },
+                          domProps: { value: _vm.form.stop_loss_price },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "stop_loss_price",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                        }),
+                        _vm._v(
+                          "\n                             \n                            "
+                        ),
+                        _vm._m(8),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.stop_loss_price,
+                              expression: "form.stop_loss_price"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                          },
+                          attrs: {
+                            type: "number",
+                            step: "0.000000001",
+                            name: "stop_loss_price"
+                          },
+                          domProps: { value: _vm.form.stop_loss_price },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "stop_loss_price",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "input-group mb-2 mr-sm-2" },
+                      [
+                        _vm._m(9),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.stop_loss_price,
+                              expression: "form.stop_loss_price"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                          },
+                          attrs: {
+                            type: "number",
+                            step: "0.000000001",
+                            name: "stop_loss_price"
+                          },
+                          domProps: { value: _vm.form.stop_loss_price },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "stop_loss_price",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                        }),
+                        _vm._v(
+                          "\n                             \n                            "
+                        ),
+                        _vm._m(10),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.stop_loss_price,
+                              expression: "form.stop_loss_price"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                          },
+                          attrs: {
+                            type: "number",
+                            step: "0.000000001",
+                            name: "stop_loss_price"
+                          },
+                          domProps: { value: _vm.form.stop_loss_price },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "stop_loss_price",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "input-group mb-2 mr-sm-3" },
+                      [
+                        _vm._m(11),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.stop_loss_price,
+                              expression: "form.stop_loss_price"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                          },
+                          attrs: {
+                            type: "number",
+                            step: "0.000000001",
+                            name: "stop_loss_price"
+                          },
+                          domProps: { value: _vm.form.stop_loss_price },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "stop_loss_price",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                        }),
+                        _vm._v(
+                          "\n                             \n                            "
+                        ),
+                        _vm._m(12),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.stop_loss_price,
+                              expression: "form.stop_loss_price"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                          },
+                          attrs: {
+                            type: "number",
+                            step: "0.000000001",
+                            name: "stop_loss_price"
+                          },
+                          domProps: { value: _vm.form.stop_loss_price },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "stop_loss_price",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "input-group mb-2 mr-sm-2" },
+                      [
+                        _vm._m(13),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.stop_loss_price,
+                              expression: "form.stop_loss_price"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                          },
+                          attrs: {
+                            type: "number",
+                            step: "0.000000001",
+                            name: "stop_loss_price"
+                          },
+                          domProps: { value: _vm.form.stop_loss_price },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "stop_loss_price",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                        }),
+                        _vm._v(
+                          "\n                             \n                            "
+                        ),
+                        _vm._m(14),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.stop_loss_price,
+                              expression: "form.stop_loss_price"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                          },
+                          attrs: {
+                            type: "number",
+                            step: "0.000000001",
+                            name: "stop_loss_price"
+                          },
+                          domProps: { value: _vm.form.stop_loss_price },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "stop_loss_price",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                        })
+                      ],
+                      1
                     )
                   ]),
                   _vm._v(" "),
@@ -82787,6 +83198,102 @@ var staticRenderFns = [
         "div",
         { staticClass: "input-group-text", staticStyle: { width: "80px" } },
         [_vm._v("Stop loss:")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "80px" } },
+        [_vm._v("Out 1:")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "40px" } },
+        [_vm._v("%:")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "80px" } },
+        [_vm._v("Out 2:")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "40px" } },
+        [_vm._v("%:")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "80px" } },
+        [_vm._v("Out 3:")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "40px" } },
+        [_vm._v("%:")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "80px" } },
+        [_vm._v("Out 4:")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "div",
+        { staticClass: "input-group-text", staticStyle: { width: "40px" } },
+        [_vm._v("%:")]
       )
     ])
   }
@@ -84191,7 +84698,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -85406,54 +85912,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -85464,7 +85922,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             jsonModalMessage: [],
             jobs: null,
             failedJobsQuantity: 0,
-            jobsQuantity: 0
+            jobsQuantity: 0,
+            items: [25, 25, 40, 10]
         };
     },
 
@@ -85624,354 +86083,353 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row mt-3" }, [
-      _c("div", { staticClass: "col" }, [
-        _c("div", { staticClass: "card h-100" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _c("span", { staticStyle: { "font-size": "140%" } }, [
-              _c("div", { staticClass: "card-body table-responsive p-0" }, [
-                _c(
-                  "table",
-                  {
-                    staticClass: "table table-hover",
-                    staticStyle: { width: "600px" }
-                  },
-                  [
-                    _c("tbody", [
+  return _c("div", { staticClass: "row pt-3" }, [
+    _c("div", { staticClass: "col-8" }, [
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("span", { staticStyle: { "font-size": "140%" } }, [
+            _c("div", { staticClass: "card-body table-responsive p-0" }, [
+              _c(
+                "table",
+                {
+                  staticClass: "table table-hover",
+                  staticStyle: { width: "100%" }
+                },
+                [
+                  _c("tbody", [
+                    _c("tr", [
+                      _c("td", { staticClass: "px-2" }, [
+                        _vm._v(
+                          "\n                                    Signal id: " +
+                            _vm._s(_vm.signal ? _vm.signal.id : null)
+                        ),
+                        _c("br"),
+                        _vm._v(
+                          "\n                                    Symbol: " +
+                            _vm._s(_vm.signal ? _vm.signal.symbol : null)
+                        ),
+                        _c("br"),
+                        _vm._v(
+                          "\n                                    Quote: " +
+                            _vm._s(_vm.signal ? _vm.signal.quote_value : null)
+                        ),
+                        _c("br"),
+                        _vm._v(
+                          "\n                                    Quote status: " +
+                            _vm._s(_vm.signal ? _vm.signal.quote_status : null)
+                        ),
+                        _c("br")
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          "\n                                    Perсent: " +
+                            _vm._s(_vm.signal ? _vm.signal.percent : null)
+                        ),
+                        _c("br"),
+                        _vm._v(
+                          "\n                                    Leverage: " +
+                            _vm._s(_vm.signal ? _vm.signal.leverage : null)
+                        ),
+                        _c("br"),
+                        _vm._v(
+                          "\n                                    Status: " +
+                            _vm._s(_vm.signal ? _vm.signal.status : null)
+                        ),
+                        _c("br"),
+                        _vm._v(
+                          "\n                                    Clients: " +
+                            _vm._s(
+                              _vm.signal
+                                ? Object.keys(_vm.signals.data).length
+                                : null
+                            ) +
+                            "\n                                "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "div",
+                          { staticClass: "card-tools text-right" },
+                          _vm._l(_vm.items, function(item) {
+                            return _c("span", [
+                              _vm._v(
+                                "\n                                            Out: " +
+                                  _vm._s(item) +
+                                  " %\n                                            "
+                              ),
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "text-success",
+                                  attrs: { href: "" },
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      _vm.repeatExecution(_vm.execution)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "fas fa-play" })]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "text-danger",
+                                  attrs: { href: "" },
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      _vm.repeatExecution(_vm.execution)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "fas fa-stop" })]
+                              ),
+                              _vm._v(" "),
+                              _c("br")
+                            ])
+                          })
+                        )
+                      ])
+                    ])
+                  ])
+                ]
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "card-body table-responsive p-0" }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _c(
+                "tbody",
+                [
+                  _vm._l(_vm.signals.data, function(execution) {
+                    return [
                       _c("tr", [
                         _c("td", [
-                          _vm._v(
-                            "\n                                    Signal id: " +
-                              _vm._s(_vm.signal ? _vm.signal.id : null)
-                          ),
-                          _c("br"),
-                          _vm._v(
-                            "\n                                    Symbol: " +
-                              _vm._s(_vm.signal ? _vm.signal.symbol : null)
-                          ),
-                          _c("br"),
-                          _vm._v(
-                            "\n                                    Quote: " +
-                              _vm._s(_vm.signal ? _vm.signal.quote_value : null)
-                          ),
-                          _c("br"),
-                          _vm._v(
-                            "\n                                    Quote status: " +
-                              _vm._s(
-                                _vm.signal ? _vm.signal.quote_status : null
-                              )
-                          ),
-                          _c("br")
+                          _vm._v(_vm._s(execution.id) + " "),
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "" },
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  _vm.repeatExecution(execution)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-sync-alt" })]
+                          )
                         ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(execution.client_id))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(execution.client_name))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(execution.client_volume))]),
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(
-                            "\n                                    Perсent: " +
-                              _vm._s(_vm.signal ? _vm.signal.percent : null)
-                          ),
-                          _c("br"),
-                          _vm._v(
-                            "\n                                    Leverage: " +
-                              _vm._s(_vm.signal ? _vm.signal.leverage : null)
-                          ),
-                          _c("br"),
-                          _vm._v(
-                            "\n                                    Status: " +
-                              _vm._s(_vm.signal ? _vm.signal.status : null)
-                          ),
-                          _c("br"),
-                          _vm._v(
-                            "\n                                    Clients: " +
-                              _vm._s(
-                                _vm.signal
-                                  ? Object.keys(_vm.signals.data).length
-                                  : null
-                              ) +
-                              "\n                                "
+                            _vm._s(execution.client_funds_value) +
+                              "/" +
+                              _vm._s(execution.client_funds_use)
                           )
                         ]),
                         _vm._v(" "),
                         _c("td", [
-                          _c("div", { staticClass: "card-tools text-right" }, [
-                            _c("div", { staticClass: "btn-group" }, [
-                              true
-                                ? _c("div", [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-success",
-                                        on: {
-                                          click: function($event) {
-                                            _vm.executeSymbol(_vm.signal)
-                                          }
-                                        }
-                                      },
-                                      [_c("i", { staticClass: "fas fa-play" })]
+                          execution.in_place_order_status == "ok"
+                            ? _c(
+                                "span",
+                                {
+                                  staticClass: "badge badge-pill badge-success"
+                                },
+                                [_vm._v("IN")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          execution.in_place_order_status == "error"
+                            ? _c(
+                                "span",
+                                {
+                                  staticClass: "badge badge-pill badge-danger"
+                                },
+                                [_vm._v("IN")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          execution.out_place_order_status == "ok"
+                            ? _c(
+                                "span",
+                                {
+                                  staticClass: "badge badge-pill badge-success"
+                                },
+                                [_vm._v("OUT")]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          execution.out_place_order_status == "error"
+                            ? _c(
+                                "span",
+                                {
+                                  staticClass: "badge badge-pill badge-danger"
+                                },
+                                [_vm._v("OUT")]
+                              )
+                            : _vm._e()
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", { staticClass: "detail-row" }, [
+                        _c("td", { attrs: { colspan: "6" } }, [
+                          _c(
+                            "div",
+                            { staticStyle: { display: "flex" } },
+                            [
+                              _c("div", [
+                                _vm._v(
+                                  "\n                                            IN:"
+                                ),
+                                _c("br"),
+                                _vm._v(
+                                  "\n                                            Calculate volume:\n                                            "
+                                ),
+                                _vm.signal.quote_value != null
+                                  ? _c("span", [_vm._v("ok")])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm.signal.quote_value == null
+                                  ? _c("span", [_vm._v("No quote!")])
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _c("br"),
+                                _vm._v(
+                                  "\n                                            Get client funds: "
+                                ),
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.newModal(
+                                          execution.client_funds_response
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(execution.client_funds_status)
                                     )
-                                  ])
-                                : _vm._e(),
-                              _vm._v(" "),
-                              true
-                                ? _c("div", [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-danger",
-                                        on: {
-                                          click: function($event) {
-                                            _vm.closeSymbol(_vm.signal)
-                                          }
-                                        }
-                                      },
-                                      [_c("i", { staticClass: "fas fa-stop" })]
+                                  ]
+                                ),
+                                _c("br"),
+                                _vm._v(
+                                  "\n                                            Set leverage: "
+                                ),
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.newModal(
+                                          execution.leverage_response
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(execution.leverage_status))]
+                                ),
+                                _c("br"),
+                                _vm._v(
+                                  "\n                                            Place order: "
+                                ),
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.newModal(
+                                          execution.in_place_order_response
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(execution.in_place_order_status)
                                     )
-                                  ])
-                                : _vm._e(),
+                                  ]
+                                ),
+                                _c("br"),
+                                _vm._v(
+                                  "\n                                            Balance: "
+                                ),
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.newModal(
+                                          execution.in_balance_response
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(execution.in_balance_value))]
+                                ),
+                                _c("br")
+                              ]),
                               _vm._v(" "),
-                              false ? _c("div", [_vm._m(0)]) : _vm._e()
-                            ])
-                          ])
+                              _vm._l(_vm.items, function(item) {
+                                return _c("span", { staticClass: "pl-4" }, [
+                                  _vm._v(
+                                    "\n                                            Out " +
+                                      _vm._s(item) +
+                                      "%:"
+                                  ),
+                                  _c("br"),
+                                  _vm._v(
+                                    "\n                                            Place order: "
+                                  ),
+                                  _c("a", { attrs: { href: "" } }, [
+                                    _vm._v("error")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("br"),
+                                  _vm._v(
+                                    "\n                                            Balance: -223\n                                        "
+                                  )
+                                ])
+                              })
+                            ],
+                            2
+                          )
                         ])
                       ])
-                    ])
-                  ]
-                )
-              ])
+                    ]
+                  })
+                ],
+                2
+              )
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "card-body table-responsive p-0" }, [
-              _c("table", { staticClass: "table table-hover" }, [
-                _c(
-                  "tbody",
-                  [
-                    _vm._m(1),
-                    _vm._v(" "),
-                    _vm._l(_vm.signals.data, function(execution) {
-                      return [
-                        _c("tr", [
-                          _c("td", [
-                            _vm._v(_vm._s(execution.id) + " "),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "" },
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    _vm.repeatExecution(execution)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "fas fa-sync-alt" })]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(execution.client_id))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(execution.client_name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(execution.client_volume))]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              _vm._s(execution.client_funds_value) +
-                                "/" +
-                                _vm._s(execution.client_funds_use)
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            execution.in_place_order_status == "ok"
-                              ? _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "badge badge-pill badge-success"
-                                  },
-                                  [_vm._v("IN")]
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            execution.in_place_order_status == "error"
-                              ? _c(
-                                  "span",
-                                  {
-                                    staticClass: "badge badge-pill badge-danger"
-                                  },
-                                  [_vm._v("IN")]
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            execution.out_place_order_status == "ok"
-                              ? _c(
-                                  "span",
-                                  {
-                                    staticClass:
-                                      "badge badge-pill badge-success"
-                                  },
-                                  [_vm._v("OUT")]
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            execution.out_place_order_status == "error"
-                              ? _c(
-                                  "span",
-                                  {
-                                    staticClass: "badge badge-pill badge-danger"
-                                  },
-                                  [_vm._v("OUT")]
-                                )
-                              : _vm._e()
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", { staticClass: "detail-row" }, [
-                          _c("td", { attrs: { colspan: "3" } }, [
-                            _vm._v(
-                              "\n                                        IN:"
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                                        Calculate volume:\n                                        "
-                            ),
-                            _vm.signal.quote_value != null
-                              ? _c("span", [_vm._v("ok")])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.signal.quote_value == null
-                              ? _c("span", [_vm._v("No quote!")])
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _c("br"),
-                            _vm._v(
-                              "\n                                        Get client funds: "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.newModal(
-                                      execution.client_funds_response
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(execution.client_funds_status))]
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                                        Set leverage: "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.newModal(execution.leverage_response)
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(execution.leverage_status))]
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                                        Place order: "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.newModal(
-                                      execution.in_place_order_response
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(execution.in_place_order_status))]
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                                        Balance: "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.newModal(execution.in_balance_response)
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(execution.in_balance_value))]
-                            ),
-                            _c("br")
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { attrs: { colspan: "3" } }, [
-                            _vm._v(
-                              "\n                                        OUT:"
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                                        Place order: "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.newModal(
-                                      execution.out_place_order_response
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(execution.out_place_order_status))]
-                            ),
-                            _c("br"),
-                            _vm._v(
-                              "\n                                        Balance: "
-                            ),
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    _vm.newModal(execution.out_balance_response)
-                                  }
-                                }
-                              },
-                              [_vm._v(_vm._s(execution.out_balance_value))]
-                            ),
-                            _c("br")
-                          ])
-                        ])
-                      ]
-                    })
-                  ],
-                  2
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-footer" })
           ])
         ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col" }, [
-        _c("div", { staticClass: "card h-100" }, [
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-3" }, [
+      _c("div", [
+        _c("div", { staticClass: "card", staticStyle: { width: "18rem" } }, [
           _c("div", { staticClass: "card-header" }, [
             _c("span", { staticStyle: { "font-size": "140%" } }, [
               _vm._v(
@@ -85990,9 +86448,7 @@ var render = function() {
                 },
                 [_c("i", { staticClass: "far fa-trash-alt" })]
               )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-tools" })
+            ])
           ]),
           _vm._v(" "),
           _c(
@@ -86016,105 +86472,10 @@ var render = function() {
           )
         ])
       ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "addNewSignalModal",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "newSignalLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c(
-          "div",
-          {
-            staticClass: "modal-dialog modal-dialog-centered",
-            attrs: { role: "document" }
-          },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _vm._m(2),
-              _vm._v(" "),
-              _c(
-                "div",
-                [
-                  _c("tree-view", {
-                    attrs: {
-                      data: _vm.jsonModalMessage,
-                      options: { maxDepth: 3 }
-                    }
-                  })
-                ],
-                1
-              )
-            ])
-          ]
-        )
-      ]
-    )
+    ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-light", attrs: { disabled: "" } },
-      [_c("i", { staticClass: "fas fa-check" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", [_c("i", { staticClass: "fas fa-info-circle blue" })]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Client ID")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Name")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Volume")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Funds/Use")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("Result")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "newSignalLabel" } },
-        [_vm._v("Response data")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

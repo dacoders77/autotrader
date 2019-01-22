@@ -115,20 +115,12 @@ Delete this code
 
     /**
      * Repeat failed signal. Sometimes some clients inside an execution do not get their signals executed.
-     * Execute manually only this client.
+     * Allows to executa failed clients manually.
      * Called from Execution.vue by clicking the reload icon.
      *
      * @param Request $request
      */
     public function repeatSignal(Request $request){
-
-        // Determine if the error was on in or out signal
-        // Based on the result repeat in or out
-
-        // in_place_order_status == "error" ->
-        // in_place_order_status == "error" ->
-        // if non of the are ok -> 'Selected signal does not contain any errors and will not be repeated'
-
         if (!QueLock::getStatus()){
             throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
         }
@@ -351,12 +343,14 @@ Delete this code
             throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
         }
 
-        foreach (Execution::where('signal_id', $request['id'])
+        /* DELETE
+         * foreach (Execution::where('signal_id', $request['id'])
             ->where('in_place_order_status', 'ok')
             ->get() as $execution) {
                 OutPlaceOrder::dispatch($this->exchange, $execution);
                 GetClientTradingBalanceOut::dispatch($this->exchange, $execution)->delay(5);
-            }
+            }*/
+        $this->stopLoss($request['id']);
 
         /* Set info column to manual_close. This will not let stop loss to fire when the position is manually closed. */
         Signal::where('id', $request['id'])->update(['info' => 'manual_close']);
@@ -381,6 +375,7 @@ Delete this code
         Job::truncate();
         Failed_job::truncate();
     }
+
 }
 
 

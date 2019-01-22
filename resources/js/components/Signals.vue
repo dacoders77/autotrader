@@ -183,6 +183,69 @@
                                 <has-error :form="form" field="stop_loss_price"></has-error>
                             </div>
 
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:80px;">Out 1:</div>
+                                </div>
+                                <input v-model="form.stop_loss_price" type="number" step="0.000000001" name="stop_loss_price"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('stop_loss_price') }">
+                                <has-error :form="form" field="stop_loss_price"></has-error>
+                                &nbsp
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:40px;">%:</div>
+                                </div>
+                                <input v-model="form.stop_loss_price" type="number" step="0.000000001" name="stop_loss_price"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('stop_loss_price') }">
+                                <has-error :form="form" field="stop_loss_price"></has-error>
+                            </div>
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:80px;">Out 2:</div>
+                                </div>
+                                <input v-model="form.stop_loss_price" type="number" step="0.000000001" name="stop_loss_price"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('stop_loss_price') }">
+                                <has-error :form="form" field="stop_loss_price"></has-error>
+                                &nbsp
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:40px;">%:</div>
+                                </div>
+                                <input v-model="form.stop_loss_price" type="number" step="0.000000001" name="stop_loss_price"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('stop_loss_price') }">
+                                <has-error :form="form" field="stop_loss_price"></has-error>
+                            </div>
+
+                            <div class="input-group mb-2 mr-sm-3">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:80px;">Out 3:</div>
+                                </div>
+                                <input v-model="form.stop_loss_price" type="number" step="0.000000001" name="stop_loss_price"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('stop_loss_price') }">
+                                <has-error :form="form" field="stop_loss_price"></has-error>
+                                &nbsp
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:40px;">%:</div>
+                                </div>
+                                <input v-model="form.stop_loss_price" type="number" step="0.000000001" name="stop_loss_price"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('stop_loss_price') }">
+                                <has-error :form="form" field="stop_loss_price"></has-error>
+                            </div>
+
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:80px;">Out 4:</div>
+                                </div>
+                                <input v-model="form.stop_loss_price" type="number" step="0.000000001" name="stop_loss_price"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('stop_loss_price') }">
+                                <has-error :form="form" field="stop_loss_price"></has-error>
+                                &nbsp
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text" style="width:40px;">%:</div>
+                                </div>
+                                <input v-model="form.stop_loss_price" type="number" step="0.000000001" name="stop_loss_price"
+                                       class="form-control" :class="{ 'is-invalid': form.errors.has('stop_loss_price') }">
+                                <has-error :form="form" field="stop_loss_price"></has-error>
+                            </div>
+
                             <!--<div class="form-group">
                                 <input v-model="form.stop_loss_price" type="number" step="0.000000001" name="stop_loss_price"
                                        placeholder="Stop loss price"

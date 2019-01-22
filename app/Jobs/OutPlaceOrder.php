@@ -56,7 +56,6 @@ class OutPlaceOrder implements ShouldQueue
         catch (\Exception $e)
         {
             $this->response = $e->getMessage();
-
             Execution::where('id', $this->execution->id)
                 ->update([
                     'out_place_order_status' => 'error',
@@ -74,8 +73,6 @@ class OutPlaceOrder implements ShouldQueue
                 ]);
         }
 
-        //dump(gettype($this->response));
-        //dump($this->response);
 
         if (gettype($this->response) == 'string'){
             // Error
