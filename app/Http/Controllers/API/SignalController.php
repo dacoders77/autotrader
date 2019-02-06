@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Classes\LogToFile;
 use App\Classes\QueLock;
 use App\Jobs\CalculateClientOrderVolume;
 use App\Jobs\GetClientFundsCheck;
@@ -48,7 +49,6 @@ class SignalController extends Controller
      */
     public function store(Request $request)
     {
-
         /* Action is not allowed if job and failed_job tables are not empty. Que tasks may be in progress */
         if (!QueLock::getStatus()){
             throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
@@ -61,6 +61,16 @@ class SignalController extends Controller
             'leverage' => 'required|numeric|max:100',
             'direction' => 'required|string|max:6',
             'stop_loss_price' => 'required|string|max:14',
+
+            'out_price_1' => 'required|numeric',
+            'out_percent_1' => 'required|numeric|max:100',
+            'out_price_2' => 'required|numeric',
+            'out_percent_2' => 'required|numeric|max:100',
+            'out_price_3' => 'required|numeric',
+            'out_percent_3' => 'required|numeric|max:100',
+            'out_price_4' => 'required|numeric',
+            'out_percent_4' => 'required|numeric|max:100',
+
         ]);
 
         $response = Signal::create([
@@ -69,7 +79,17 @@ class SignalController extends Controller
             'percent' => $request['percent'],
             'leverage' => $request['leverage'],
             'direction' => $request['direction'],
-            'stop_loss_price' => $request['stop_loss_price']
+            'stop_loss_price' => $request['stop_loss_price'],
+
+            'out_price_1' => $request['out_price_1'],
+            'out_percent_1' => $request['out_percent_1'],
+            'out_price_2' => $request['out_price_2'],
+            'out_percent_2' => $request['out_percent_2'],
+            'out_price_3' => $request['out_price_3'],
+            'out_percent_3' => $request['out_percent_3'],
+            'out_price_4' => $request['out_price_4'],
+            'out_percent_4' => $request['out_percent_4'],
+
         ]);
 
         $id = (array)$response;
@@ -123,6 +143,17 @@ class SignalController extends Controller
             'leverage' => 'required|numeric|max:100',
             'direction' => 'required|string|max:6',
             'stop_loss_price' => 'required|string|max:14',
+
+            'out_price_1' => 'required|numeric',
+            'out_percent_1' => 'required|numeric|max:100',
+            'out_price_2' => 'required|numeric',
+            'out_percent_2' => 'required|numeric|max:100',
+            'out_price_3' => 'required|numeric',
+            'out_percent_3' => 'required|numeric|max:100',
+            'out_price_4' => 'required|numeric',
+            'out_percent_4' => 'required|numeric|max:100',
+
+
         ]);
 
         $signal->update($request->all());
@@ -147,9 +178,11 @@ class SignalController extends Controller
     /**
      * Fill executions table with a job. A job - symbolize a signal executed on a client account.
      * Clone signal to all clients.
-     * Quantity of records = quantity of clients
+     * Quantity of records = quantity of clients.
+     * Signal is created in Signals.vue
      *
      * @param Request $request
+     * @param int $id
      */
     private function fillExecutionsTable(Request $request, $id){
         foreach (Client::where('active', 1)->get() as $client){
@@ -162,13 +195,21 @@ class SignalController extends Controller
                 'percent' => $request['percent'],
                 'leverage' => $request['leverage'],
                 'status' => 'new',
+
+                'out_price_1' => $request['out_price_1'], // Take profits
+                'out_percent_1' => $request['out_percent_1'],
+                'out_price_2' => $request['out_price_2'],
+                'out_percent_2' => $request['out_percent_2'],
+                'out_price_3' => $request['out_price_3'],
+                'out_percent_3' => $request['out_percent_3'],
+                'out_price_4' => $request['out_price_4'],
+                'out_percent_4' => $request['out_percent_4'],
             ]);
             GetClientFundsCheck::dispatch(new bitmex(), $execution);
         }
 
         GetSignalSymbolQuote::dispatch(new bitmex(), $request['symbol'], $id);
-        // Add volume calculate job
-        CalculateClientOrderVolume::dispatch($id);
+        CalculateClientOrderVolume::dispatch($id); // Add volume calculate job
     }
 
     /**

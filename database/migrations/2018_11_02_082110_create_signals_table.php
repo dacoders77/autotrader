@@ -23,13 +23,9 @@ class CreateSignalsTable extends Migration
             $table->decimal('leverage')->nullable()->nullable();
             $table->string('direction')->nullable()->nullable();
 
-
             $table->decimal('quote_value', 16, 8)->nullable();
             $table->string('quote_response')->nullable();
             $table->string('quote_status')->nullable();
-
-
-
             $table->string('status')->default('new')->nullable();
 
             $table->dateTime('open_date')->nullable();
@@ -42,6 +38,15 @@ class CreateSignalsTable extends Migration
 
             $table->string('info')->nullable();
             $table->boolean('is_deleted')->default(0);
+
+            $table->decimal('out_price_1', 14, 9)->nullable();
+            $table->decimal('out_percent_1')->nullable();
+            $table->decimal('out_price_2', 14, 9)->nullable();
+            $table->decimal('out_percent_2')->nullable();
+            $table->decimal('out_price_3', 14, 9)->nullable();
+            $table->decimal('out_percent_3')->nullable();
+            $table->decimal('out_price_4', 14, 9)->nullable();
+            $table->decimal('out_percent_4')->nullable();
         });
     }
 

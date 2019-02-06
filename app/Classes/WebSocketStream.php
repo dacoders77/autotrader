@@ -73,7 +73,7 @@ class WebSocketStream
      * @return void
      */
     public  static function stopLossCheck($message){
-        /* We don't have execution name in signals table, but we do in symbols */
+        /* We don't have execution symbol name in signals table, but we do in symbols */
         $executionSymbolName = Symbol::where('leverage_name', $message[0]['symbol'])->value('execution_name');
         /* Run through all signals array */
         foreach (Signal::where('symbol', $executionSymbolName)->get() as $signal){
@@ -96,6 +96,47 @@ class WebSocketStream
 
             /* Stop loss for short positions */
             if($signal->direction == "short" ){
+                if($signal->info == null && ($signal->status == "success" || $signal->status == "error")){
+                    if($message[0]['lastPrice'] > (double)$signal->stop_loss_price){
+                        Signal::where('id', $signal->id)
+                            ->update([
+                                'info' => 'stop_loss'
+                            ]);
+                        app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
+                    }
+                }
+            }
+        }
+    }
+
+    public  static function takeProfitCheck($message){
+
+        /* We don't have execution symbol name in signals table, but we do in symbols */
+        $executionSymbolName = Symbol::where('leverage_name', $message[0]['symbol'])->value('execution_name');
+
+        /* Run through all signals array */
+        foreach (Signal::where('symbol', $executionSymbolName)->get() as $signal){
+            /* For long positions */
+            if($signal->direction == "long" ){
+                /** Fire take profit only for not closed positions (info == null, when not null == manual_close or stop_loss)
+                 * And for only open positions: status == new or error */
+                if($signal->info == null && ($signal->status == "success" || $signal->status == "error")){
+
+                    if($message[0]['lastPrice'] < (double)$signal->stop_loss_price){
+                        Signal::where('id', $signal->id)
+                            ->update([
+                                'info' => 'stop_loss'
+                            ]);
+
+                        /* Initiate stop button click via controller */
+                        app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
+                    }
+                }
+            }
+
+            /* For short positions */
+            if($signal->direction == "short" ){
+                /** Fire only for not closed positions */
                 if($signal->info == null && ($signal->status == "success" || $signal->status == "error")){
                     if($message[0]['lastPrice'] > (double)$signal->stop_loss_price){
                         Signal::where('id', $signal->id)

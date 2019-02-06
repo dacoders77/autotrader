@@ -7,13 +7,15 @@ use Illuminate\Console\Command;
 
 /**
  * Generate fake quotes for testing purposes.
- * Sine curve is used as a direction source.
+ * Sine curve is used as a quotes stream source.
  *
  * Class QuoteFaker
  * @package App\Console\Commands
  */
 class QuoteFaker extends Command
 {
+    private $arr = array();
+
     /**
      * The name and signature of the console command.
      *
@@ -40,20 +42,29 @@ class QuoteFaker extends Command
 
     /**
      * Execute the console command.
+     * $x1 - step number
+     * $y1 - sine curve value
      *
      * @return mixed
      */
     public function handle()
     {
-        $height = 200; // Height of the canvas
-        $steps=2;     // The Jump in value of X - Axis for each loop.
-        $x1=88;
+        /**
+         * Example:
+         * Height: 100
+         * 50 -> 95 -> 5 -> 95 -> 5
+         */
+        $height = 100; // Height of the canvas. 200
+        $steps = 10;     // The jump in value of X - Axis for each loop.
+        $x1=1;
 
         $i = 0;
+        //for($z = 1; $z < 1000; $z++) {
         while (true) {
-            $y1 = ($height / 2) - number_format(sin(deg2rad($x1)) * 90, 0);
+            //$y1 = ($height / 2) - number_format(sin(deg2rad($x1)) * 90, 0); // * 90 - sine values start coming down.
+            $y1 = ($height / 2) + number_format(sin(deg2rad($x1)) * 45, 0); // * 45 - starts rising at the beginning
             $x2 = $x1 + $steps;
-            //dump($x1 . ' ' . $y1);
+            //dump($x1 . ' ' . $y1); // Output values
             $x1 = $x2;
             $i++;
             $time = time();
@@ -63,17 +74,21 @@ class QuoteFaker extends Command
                 "action" => "update",
                 "data" => [
                     "symbol" => "XBTUSD",
-                    "lastPrice" => $x1, // 3525.5
+                    "lastPrice" => $y1, // 3525.5
                     "lastTickDirection" => "PlusTick",
                     "lastChangePcnt" => -0.0441,
                     "timestamp" => date('c', $time) // 2019-01-21T08:37:31.536Z
                 ]
             ];
 
-            dump($jsonMessage);
-            WebSocketStream::Parse([$jsonMessage['data']]); // Update quotes, send events to vue
-            WebSocketStream::stopLossCheck($jsonMessage['data']); // Stop loss execution
+            //array_push($this->arr, $y1); // Use it with for loop, for testing
 
+            dump($jsonMessage);
+            //WebSocketStream::Parse([$jsonMessage['data']]); // Update quotes, send events to vue
+            //WebSocketStream::stopLossCheck($jsonMessage['data']); // Stop loss execution
+            //WebSocketStream::takeProfitCheck() ($jsonMessage['data']); // Take profit check and execution
         }
+
+        //dump($this->arr);
     }
 }

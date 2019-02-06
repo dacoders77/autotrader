@@ -2597,6 +2597,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2608,7 +2631,8 @@ __webpack_require__.r(__webpack_exports__);
       jobs: null,
       failedJobsQuantity: 0,
       jobsQuantity: 0,
-      items: [25, 25, 40, 10]
+      items: [25, 25, 40, 10] // Temp list of exits. Remove it
+
     };
   },
   methods: {
@@ -2649,7 +2673,7 @@ __webpack_require__.r(__webpack_exports__);
       this.jsonModalMessage = JSON.parse(message);
       $('#addNewSignalModal').modal('show');
     },
-    closeSymbol: function closeSymbol(signal) {
+    closeSymbol: function closeSymbol(signal, exitType) {
       swal({
         title: 'Are you sure?',
         text: "Signal will be proceeded!!",
@@ -2660,7 +2684,7 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, proceed it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post('execclose', signal).then(function (response) {
+          axios.post('execclose', [signal, exitType]).then(function (response) {
             swal('Proceeded!', 'Signal has been proceeded', 'success');
             Fire.$emit('AfterCreateSignal');
           }).catch(function (error) {
@@ -2695,27 +2719,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       // Pagination disabled
+      // TURN IT TO WEBSOCKET!
       axios.get('getexecution/' + this.signal.id).then(function (_ref) {
         var data = _ref.data;
         _this.signals = data['execution'];
         _this.signal = data['signal'][0];
       });
     },
-
-    /*            loadData: function () {
-                    alert('load data');
-                    axios.get('/api/data', function (response) {
-                        //this.items = response.items;
-                    }.bind(this));
-                },*/
-    showError: function showError(error) {
-      /*swal({
-          type: 'info',
-          title: 'Bimex response: ',
-          text: error,
-          footer: '<a href>Why do I have this issue?</a>'
-      })*/
-    }
+    showError: function showError(error) {}
   },
   mounted: function mounted() {
     this.interval = setInterval(function () {
@@ -2729,8 +2740,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this2 = this;
 
-    // Props link
-    this.signal = this.$route.params.signal; // Works good
+    this.signal = this.$route.params.signal; // Props. Parameter. Sent from Signals.vue
 
     this.loadUsers(); // Event listener
 
@@ -2939,9 +2949,43 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Signals.vue?vue&type=script&lang=js&":
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Report.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Report.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      id: {} // Props! Sent from Reports.vue
+
+    };
+  },
+  methods: {//
+  },
+  mounted: function mounted() {//console.log('Component mounted.')
+  },
+  created: function created() {
+    this.id = this.$route.params.id;
+    console.log(this.$route.params);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports.vue?vue&type=script&lang=js&":
 /*!******************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Signals.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Reports.vue?vue&type=script&lang=js& ***!
   \******************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2963,25 +3007,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {//.log($route);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Signals.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Signals.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 //
 //
 //
@@ -3235,7 +3276,15 @@ __webpack_require__.r(__webpack_exports__);
         percent: 30,
         leverage: 5,
         direction: 'long',
-        stop_loss_price: '5555'
+        stop_loss_price: '5555',
+        out_percent_1: 25,
+        out_price_1: 6000,
+        out_percent_2: 25,
+        out_price_2: 6100,
+        out_percent_3: 45,
+        out_price_3: 6200,
+        out_percent_4: 5,
+        out_price_4: 6300
       })
     };
   },
@@ -72593,44 +72642,15 @@ var render = function() {
                           "\n                                    Status: " +
                             _vm._s(_vm.signal ? _vm.signal.status : null)
                         ),
-                        _c("br"),
-                        _vm._v(
-                          "\n                                    Clients: " +
-                            _vm._s(
-                              _vm.signal
-                                ? Object.keys(_vm.signals.data).length
-                                : null
-                            ) +
-                            "\n                                "
-                        )
+                        _c("br")
                       ]),
                       _vm._v(" "),
                       _c("td", [
                         _c(
                           "div",
                           { staticClass: "card-tools text-right" },
-                          _vm._l(_vm.items, function(item) {
-                            return _c("span", [
-                              _vm._v(
-                                "\n                                            Out: " +
-                                  _vm._s(item) +
-                                  " %\n                                            "
-                              ),
-                              _c(
-                                "a",
-                                {
-                                  staticClass: "text-success",
-                                  attrs: { href: "" },
-                                  on: {
-                                    click: function($event) {
-                                      $event.preventDefault()
-                                      _vm.repeatExecution(_vm.execution)
-                                    }
-                                  }
-                                },
-                                [_c("i", { staticClass: "fas fa-play" })]
-                              ),
-                              _vm._v(" "),
+                          _vm._l(_vm.items, function(item, index) {
+                            return _c("span", { key: index }, [
                               _c(
                                 "a",
                                 {
@@ -72639,18 +72659,72 @@ var render = function() {
                                   on: {
                                     click: function($event) {
                                       $event.preventDefault()
-                                      _vm.repeatExecution(_vm.execution)
+                                      _vm.closeSymbol(
+                                        _vm.signal,
+                                        "takeProfit" + index
+                                      )
                                     }
                                   }
                                 },
                                 [_c("i", { staticClass: "fas fa-stop" })]
                               ),
-                              _vm._v(" "),
+                              _vm._v(
+                                "\n                                            Out " +
+                                  _vm._s(index + 1) +
+                                  ": " +
+                                  _vm._s(item) +
+                                  "%\n                                            "
+                              ),
                               _c("br")
                             ])
                           }),
                           0
                         )
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("div", { staticClass: "card-tools text-right" }, [
+                          _c("div", { staticClass: "btn-group" }, [
+                            true
+                              ? _c("div", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-success",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.executeSymbol(_vm.signal)
+                                        }
+                                      }
+                                    },
+                                    [_c("i", { staticClass: "fas fa-play" })]
+                                  )
+                                ])
+                              : undefined,
+                            _vm._v(" "),
+                            true
+                              ? _c("div", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-danger",
+                                      on: {
+                                        click: function($event) {
+                                          _vm.closeSymbol(
+                                            _vm.signal,
+                                            "stopLoss"
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_c("i", { staticClass: "fas fa-stop" })]
+                                  )
+                                ])
+                              : undefined,
+                            _vm._v(" "),
+                            false ? undefined : _vm._e()
+                          ])
+                        ])
                       ])
                     ])
                   ])
@@ -72666,7 +72740,7 @@ var render = function() {
               _c(
                 "tbody",
                 [
-                  _vm._l(_vm.signals.data, function(execution) {
+                  _vm._l(_vm.signals, function(execution) {
                     return [
                       _c("tr", [
                         _c("td", [
@@ -72745,13 +72819,15 @@ var render = function() {
                       _vm._v(" "),
                       _c("tr", { staticClass: "detail-row" }, [
                         _c("td", { attrs: { colspan: "6" } }, [
-                          _c(
-                            "div",
-                            { staticStyle: { display: "flex" } },
-                            [
-                              _c("div", [
-                                _vm._v(
-                                  "\n                                            IN:"
+                          _c("div", { staticStyle: { display: "flex" } }, [
+                            _c(
+                              "div",
+                              { staticStyle: { border: "0px solid red" } },
+                              [
+                                _c(
+                                  "span",
+                                  { staticClass: "bg-success text-white" },
+                                  [_vm._v("POS IN:")]
                                 ),
                                 _c("br"),
                                 _vm._v(
@@ -72846,32 +72922,58 @@ var render = function() {
                                   [_vm._v(_vm._s(execution.in_balance_value))]
                                 ),
                                 _c("br")
-                              ]),
-                              _vm._v(" "),
-                              _vm._l(_vm.items, function(item) {
-                                return _c("span", { staticClass: "pl-4" }, [
-                                  _vm._v(
-                                    "\n                                            Out " +
-                                      _vm._s(item) +
-                                      "%:"
-                                  ),
-                                  _c("br"),
-                                  _vm._v(
-                                    "\n                                            Place order: "
-                                  ),
-                                  _c("a", { attrs: { href: "" } }, [
-                                    _vm._v("error")
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("br"),
-                                  _vm._v(
-                                    "\n                                            Balance: -223\n                                        "
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              [
+                                _vm._l(_vm.items, function(item, index) {
+                                  return _c(
+                                    "div",
+                                    {
+                                      key: index,
+                                      staticClass: "d-inline-block px-1",
+                                      staticStyle: { border: "0px solid red" }
+                                    },
+                                    [
+                                      _c(
+                                        "span",
+                                        { staticClass: "bg-info text-white" },
+                                        [
+                                          _vm._v(
+                                            "Out " +
+                                              _vm._s(index + 1) +
+                                              ": " +
+                                              _vm._s(item) +
+                                              "%"
+                                          )
+                                        ]
+                                      ),
+                                      _c("br"),
+                                      _vm._v(
+                                        "\n                                                Place order: "
+                                      ),
+                                      _c("a", { attrs: { href: "" } }, [
+                                        _vm._v("error")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("br"),
+                                      _vm._v(
+                                        "\n                                                Balance: "
+                                      ),
+                                      _c("a", { attrs: { href: "#" } }, [
+                                        _vm._v("-221")
+                                      ])
+                                    ]
                                   )
-                                ])
-                              })
-                            ],
-                            2
-                          )
+                                }),
+                                _vm._v(" "),
+                                _vm._m(1, true)
+                              ],
+                              2
+                            )
+                          ])
                         ])
                       ])
                     ]
@@ -72934,7 +73036,41 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-light", attrs: { disabled: "" } },
+      [_c("i", { staticClass: "fas fa-check" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "px-1", staticStyle: { border: "0px solid green" } },
+      [
+        _c("span", { staticClass: "bg-warning text-dark" }, [
+          _vm._v("Stop loss OUT:")
+        ]),
+        _c("br"),
+        _vm._v(
+          "\n                                                Place order: "
+        ),
+        _c("a", { attrs: { href: "#" } }, [_vm._v("ok")]),
+        _c("br"),
+        _vm._v("\n                                                Balance: "),
+        _c("a", { attrs: { href: "#" } }, [_vm._v("0")]),
+        _c("br")
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -73147,6 +73283,76 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Report.vue?vue&type=template&id=24c36d42&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Report.vue?vue&type=template&id=24c36d42& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [_c("h1", [_vm._v("Report: " + _vm._s(_vm.id))])])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports.vue?vue&type=template&id=6c52f8b8&":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Reports.vue?vue&type=template&id=6c52f8b8& ***!
+  \**********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("h1", [_vm._v("Reports Reports")]),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v("\n    report_1\n    "),
+    _c("br"),
+    _vm._v("\n    report_2\n    "),
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "td",
+      [
+        _c(
+          "router-link",
+          { attrs: { to: { name: "report", params: { id: 12345 } } } },
+          [_vm._v("router link")]
+        )
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("br")
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -73669,20 +73875,20 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.stop_loss_price,
-                              expression: "form.stop_loss_price"
+                              value: _vm.form.out_price_1,
+                              expression: "form.out_price_1"
                             }
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                            "is-invalid": _vm.form.errors.has("out_price_1")
                           },
                           attrs: {
                             type: "number",
                             step: "0.000000001",
-                            name: "stop_loss_price"
+                            name: "out_price_1"
                           },
-                          domProps: { value: _vm.form.stop_loss_price },
+                          domProps: { value: _vm.form.out_price_1 },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -73690,7 +73896,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.form,
-                                "stop_loss_price",
+                                "out_price_1",
                                 $event.target.value
                               )
                             }
@@ -73698,7 +73904,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                          attrs: { form: _vm.form, field: "out_price_1" }
                         }),
                         _vm._v(
                           "\n                             \n                            "
@@ -73710,20 +73916,20 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.stop_loss_price,
-                              expression: "form.stop_loss_price"
+                              value: _vm.form.out_percent_1,
+                              expression: "form.out_percent_1"
                             }
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                            "is-invalid": _vm.form.errors.has("out_percent_1")
                           },
                           attrs: {
                             type: "number",
-                            step: "0.000000001",
-                            name: "stop_loss_price"
+                            step: "1",
+                            name: "out_percent_1"
                           },
-                          domProps: { value: _vm.form.stop_loss_price },
+                          domProps: { value: _vm.form.out_percent_1 },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -73731,7 +73937,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.form,
-                                "stop_loss_price",
+                                "out_percent_1",
                                 $event.target.value
                               )
                             }
@@ -73739,7 +73945,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                          attrs: { form: _vm.form, field: "out_percent_1" }
                         })
                       ],
                       1
@@ -73756,20 +73962,20 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.stop_loss_price,
-                              expression: "form.stop_loss_price"
+                              value: _vm.form.out_price_2,
+                              expression: "form.out_price_2"
                             }
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                            "is-invalid": _vm.form.errors.has("out_price_2")
                           },
                           attrs: {
                             type: "number",
                             step: "0.000000001",
-                            name: "stop_loss_price"
+                            name: "out_price_2"
                           },
-                          domProps: { value: _vm.form.stop_loss_price },
+                          domProps: { value: _vm.form.out_price_2 },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -73777,7 +73983,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.form,
-                                "stop_loss_price",
+                                "out_price_2",
                                 $event.target.value
                               )
                             }
@@ -73785,7 +73991,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                          attrs: { form: _vm.form, field: "out_price_2" }
                         }),
                         _vm._v(
                           "\n                             \n                            "
@@ -73797,20 +74003,20 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.stop_loss_price,
-                              expression: "form.stop_loss_price"
+                              value: _vm.form.out_percent_2,
+                              expression: "form.out_percent_2"
                             }
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                            "is-invalid": _vm.form.errors.has("out_percent_2")
                           },
                           attrs: {
                             type: "number",
-                            step: "0.000000001",
-                            name: "stop_loss_price"
+                            step: "1",
+                            name: "out_percent_2"
                           },
-                          domProps: { value: _vm.form.stop_loss_price },
+                          domProps: { value: _vm.form.out_percent_2 },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -73818,7 +74024,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.form,
-                                "stop_loss_price",
+                                "out_percent_2",
                                 $event.target.value
                               )
                             }
@@ -73826,7 +74032,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                          attrs: { form: _vm.form, field: "out_percent_2" }
                         })
                       ],
                       1
@@ -73843,20 +74049,20 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.stop_loss_price,
-                              expression: "form.stop_loss_price"
+                              value: _vm.form.out_price_3,
+                              expression: "form.out_price_3"
                             }
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                            "is-invalid": _vm.form.errors.has("out_price_3")
                           },
                           attrs: {
                             type: "number",
                             step: "0.000000001",
-                            name: "stop_loss_price"
+                            name: "out_price_3"
                           },
-                          domProps: { value: _vm.form.stop_loss_price },
+                          domProps: { value: _vm.form.out_price_3 },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -73864,7 +74070,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.form,
-                                "stop_loss_price",
+                                "out_price_3",
                                 $event.target.value
                               )
                             }
@@ -73872,7 +74078,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                          attrs: { form: _vm.form, field: "out_price_3" }
                         }),
                         _vm._v(
                           "\n                             \n                            "
@@ -73884,20 +74090,20 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.stop_loss_price,
-                              expression: "form.stop_loss_price"
+                              value: _vm.form.out_percent_3,
+                              expression: "form.out_percent_3"
                             }
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                            "is-invalid": _vm.form.errors.has("out_percent_3")
                           },
                           attrs: {
                             type: "number",
                             step: "0.000000001",
-                            name: "stop_loss_price"
+                            name: "out_percent_3"
                           },
-                          domProps: { value: _vm.form.stop_loss_price },
+                          domProps: { value: _vm.form.out_percent_3 },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -73905,7 +74111,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.form,
-                                "stop_loss_price",
+                                "out_percent_3",
                                 $event.target.value
                               )
                             }
@@ -73913,7 +74119,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                          attrs: { form: _vm.form, field: "out_percent_3" }
                         })
                       ],
                       1
@@ -73930,20 +74136,20 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.stop_loss_price,
-                              expression: "form.stop_loss_price"
+                              value: _vm.form.out_price_4,
+                              expression: "form.out_price_4"
                             }
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                            "is-invalid": _vm.form.errors.has("out_price_4")
                           },
                           attrs: {
                             type: "number",
                             step: "0.000000001",
-                            name: "stop_loss_price"
+                            name: "out_price_4"
                           },
-                          domProps: { value: _vm.form.stop_loss_price },
+                          domProps: { value: _vm.form.out_price_4 },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -73951,7 +74157,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.form,
-                                "stop_loss_price",
+                                "out_price_4",
                                 $event.target.value
                               )
                             }
@@ -73959,7 +74165,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                          attrs: { form: _vm.form, field: "out_price_4" }
                         }),
                         _vm._v(
                           "\n                             \n                            "
@@ -73971,20 +74177,20 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.form.stop_loss_price,
-                              expression: "form.stop_loss_price"
+                              value: _vm.form.out_percent_4,
+                              expression: "form.out_percent_4"
                             }
                           ],
                           staticClass: "form-control",
                           class: {
-                            "is-invalid": _vm.form.errors.has("stop_loss_price")
+                            "is-invalid": _vm.form.errors.has("out_percent_4")
                           },
                           attrs: {
                             type: "number",
                             step: "0.000000001",
-                            name: "stop_loss_price"
+                            name: "out_percent_4"
                           },
-                          domProps: { value: _vm.form.stop_loss_price },
+                          domProps: { value: _vm.form.out_percent_4 },
                           on: {
                             input: function($event) {
                               if ($event.target.composing) {
@@ -73992,7 +74198,7 @@ var render = function() {
                               }
                               _vm.$set(
                                 _vm.form,
-                                "stop_loss_price",
+                                "out_percent_4",
                                 $event.target.value
                               )
                             }
@@ -74000,7 +74206,7 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("has-error", {
-                          attrs: { form: _vm.form, field: "stop_loss_price" }
+                          attrs: { form: _vm.form, field: "out_percent_4" }
                         })
                       ],
                       1
@@ -74198,7 +74404,7 @@ var staticRenderFns = [
       _c(
         "div",
         { staticClass: "input-group-text", staticStyle: { width: "80px" } },
-        [_vm._v("Out 2:")]
+        [_vm._v("Out 1:")]
       )
     ])
   },
@@ -88702,7 +88908,8 @@ __webpack_require__.r(__webpack_exports__);
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js"); // ********Don't use .default in here! https://github.com/vuejs/vue-loader/releases/tag/v13.0.0
+
  // Working with date formats
 // Sweet alert
 // https://sweetalert2.github.io/#download
@@ -88748,26 +88955,34 @@ Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_4___default.a, options); // Def
 
 var routes = [{
   path: '/signals',
-  component: __webpack_require__(/*! ./components/Signals.vue */ "./resources/js/components/Signals.vue")
+  component: __webpack_require__(/*! ./components/Signals.vue */ "./resources/js/components/Signals.vue").default
 }, {
   path: '/clients',
-  component: __webpack_require__(/*! ./components/Clients.vue */ "./resources/js/components/Clients.vue")
+  component: __webpack_require__(/*! ./components/Clients.vue */ "./resources/js/components/Clients.vue").default
 }, {
   path: '/executions',
-  component: __webpack_require__(/*! ./components/Executions.vue */ "./resources/js/components/Executions.vue")
+  component: __webpack_require__(/*! ./components/Executions.vue */ "./resources/js/components/Executions.vue").default
 }, {
   path: '/symbols',
-  component: __webpack_require__(/*! ./components/Symbols.vue */ "./resources/js/components/Symbols.vue")
+  component: __webpack_require__(/*! ./components/Symbols.vue */ "./resources/js/components/Symbols.vue").default
 }, {
   path: '/execution',
   name: 'Page2',
-  component: __webpack_require__(/*! ./components/Execution.vue */ "./resources/js/components/Execution.vue")
+  component: __webpack_require__(/*! ./components/Execution.vue */ "./resources/js/components/Execution.vue").default
 }, {
   path: '/dashboard',
-  component: __webpack_require__(/*! ./components/Dashboard.vue */ "./resources/js/components/Dashboard.vue")
+  component: __webpack_require__(/*! ./components/Dashboard.vue */ "./resources/js/components/Dashboard.vue").default
 }, {
   path: '/profile',
-  component: __webpack_require__(/*! ./components/Profile.vue */ "./resources/js/components/Profile.vue")
+  component: __webpack_require__(/*! ./components/Profile.vue */ "./resources/js/components/Profile.vue").default
+}, // Temp components.
+{
+  path: '/reports',
+  component: __webpack_require__(/*! ./components/Reports.vue */ "./resources/js/components/Reports.vue").default
+}, {
+  path: '/report',
+  name: 'report',
+  component: __webpack_require__(/*! ./components/Report.vue */ "./resources/js/components/Report.vue").default
 }]; // Link vue component without vue router
 //Vue.component('signals', require('./components/signals.vue'));
 // Link a new instance of vue router
@@ -88797,7 +89012,7 @@ Vue.use(vue_json_tree_view__WEBPACK_IMPORTED_MODULE_5___default.a);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue"));
+Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default);
 var app = new Vue({
   el: '#app',
   router: router
@@ -89280,6 +89495,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Profile_vue_vue_type_template_id_3bd692e4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Profile_vue_vue_type_template_id_3bd692e4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Report.vue":
+/*!********************************************!*\
+  !*** ./resources/js/components/Report.vue ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Report_vue_vue_type_template_id_24c36d42___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Report.vue?vue&type=template&id=24c36d42& */ "./resources/js/components/Report.vue?vue&type=template&id=24c36d42&");
+/* harmony import */ var _Report_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Report.vue?vue&type=script&lang=js& */ "./resources/js/components/Report.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Report_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Report_vue_vue_type_template_id_24c36d42___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Report_vue_vue_type_template_id_24c36d42___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Report.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Report.vue?vue&type=script&lang=js&":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/Report.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Report_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Report.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Report.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Report_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Report.vue?vue&type=template&id=24c36d42&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/Report.vue?vue&type=template&id=24c36d42& ***!
+  \***************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Report_vue_vue_type_template_id_24c36d42___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Report.vue?vue&type=template&id=24c36d42& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Report.vue?vue&type=template&id=24c36d42&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Report_vue_vue_type_template_id_24c36d42___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Report_vue_vue_type_template_id_24c36d42___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Reports.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/components/Reports.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Reports_vue_vue_type_template_id_6c52f8b8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Reports.vue?vue&type=template&id=6c52f8b8& */ "./resources/js/components/Reports.vue?vue&type=template&id=6c52f8b8&");
+/* harmony import */ var _Reports_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Reports.vue?vue&type=script&lang=js& */ "./resources/js/components/Reports.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Reports_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Reports_vue_vue_type_template_id_6c52f8b8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Reports_vue_vue_type_template_id_6c52f8b8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Reports.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Reports.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/Reports.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Reports_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Reports.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Reports_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Reports.vue?vue&type=template&id=6c52f8b8&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/Reports.vue?vue&type=template&id=6c52f8b8& ***!
+  \****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Reports_vue_vue_type_template_id_6c52f8b8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Reports.vue?vue&type=template&id=6c52f8b8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Reports.vue?vue&type=template&id=6c52f8b8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Reports_vue_vue_type_template_id_6c52f8b8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Reports_vue_vue_type_template_id_6c52f8b8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

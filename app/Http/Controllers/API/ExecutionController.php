@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Cache;
 use Mockery\Exception;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use test\Mockery\SubclassWithFinalWakeup;
 
 /**
@@ -326,13 +327,17 @@ Delete this code
     public function getExecution($id)
     {
         $signal = Signal::where('id', $id)->get();
-        return(['execution' => Execution::latest()->where('signal_id', $id)->paginate(10), 'signal' => $signal]);
+        // 10 clients bug is here
+        // return(['execution' => Execution::latest()->where('signal_id', $id)->paginate(10), 'signal' => $signal]);
+        // LogToFile::add(__FILE__, json_encode(Execution::latest()->where('signal_id', $id)->get()));
+        return(['execution' => Execution::latest()->where('signal_id', $id)->get(), 'signal' => $signal]);
     }
 
     /**
      * Stop button handler.
      * Called from Execution.vue
      * Route: execclose
+     * $request->json()->all()[1] - is an type variable. Can be: stopLoss, takeProfit0, takeProfit1, takeProfit2, takeProfit3
      *
      * @param Request $request
      * @return void
@@ -343,24 +348,28 @@ Delete this code
             throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
         }
 
-        /* DELETE
-         * foreach (Execution::where('signal_id', $request['id'])
-            ->where('in_place_order_status', 'ok')
-            ->get() as $execution) {
-                OutPlaceOrder::dispatch($this->exchange, $execution);
-                GetClientTradingBalanceOut::dispatch($this->exchange, $execution)->delay(5);
-            }*/
-        $this->stopLoss($request['id']);
+        $this->stopLoss($request[0]['id'], $request->json()->all()[1]); // Here we need to pass an exit param: stop loss or take profit 1,2,3 or 4
+        //LogToFile::add(__FILE__, print_r($request->json()->all()[1], true));
 
-        /* Set info column to manual_close. This will not let stop loss to fire when the position is manually closed. */
-        Signal::where('id', $request['id'])->update(['info' => 'manual_close']);
+        /* Set info column to manual_close. This will not let stop loss to fire again when the position is manually closed. */
+        Signal::where('id', $request['id'])->update(['info' => 'manual_close stop loss or take profit']);
     }
 
-    public function stopLoss($signalId){
+    /**
+     *
+     *
+     * @param $signalId
+     * @param $exitType
+     */
+    public function stopLoss($signalId, $exitType){
+
+        LogToFile::add(__FILE__, $signalId);
+
         foreach (Execution::where('signal_id', $signalId)
         ->where('in_place_order_status', 'ok')
          ->get() as $execution) {
-            OutPlaceOrder::dispatch($this->exchange, $execution);
+
+            OutPlaceOrder::dispatch($this->exchange, $execution, $exitType);
             GetClientTradingBalanceOut::dispatch($this->exchange, $execution)->delay(5);
         }
     }

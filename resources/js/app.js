@@ -6,7 +6,7 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+window.Vue = require('vue'); // ********Don't use .default in here! https://github.com/vuejs/vue-loader/releases/tag/v13.0.0
 import moment from 'moment'; // Working with date formats
 
 // Sweet alert
@@ -26,6 +26,7 @@ window.toast = toast;
 // https://github.com/cretueusebiu/vform
 import { Form, HasError, AlertError } from 'vform';
 window.Form = Form;
+
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
@@ -58,14 +59,18 @@ Vue.use(VueProgressBar, options)
 // Define routes for vue routing
 // https://router.vuejs.org/guide/#javascript
 let routes = [
-    { path: '/signals', component: require('./components/Signals.vue') },
-    { path: '/clients', component: require('./components/Clients.vue') },
-    { path: '/executions', component: require('./components/Executions.vue') },
-    { path: '/symbols', component: require('./components/Symbols.vue') },
-    { path: '/execution', name: 'Page2', component: require('./components/Execution.vue') },
+    { path: '/signals', component: require('./components/Signals.vue').default },
+    { path: '/clients', component: require('./components/Clients.vue').default },
+    { path: '/executions', component: require('./components/Executions.vue').default },
+    { path: '/symbols', component: require('./components/Symbols.vue').default },
+    { path: '/execution', name: 'Page2', component: require('./components/Execution.vue').default },
 
-    { path: '/dashboard', component: require('./components/Dashboard.vue') },
-    { path: '/profile', component: require('./components/Profile.vue') }
+    { path: '/dashboard', component: require('./components/Dashboard.vue').default },
+    { path: '/profile', component: require('./components/Profile.vue').default },
+
+    // Temp components.
+    { path: '/reports', component: require('./components/Reports.vue').default },
+    { path: '/report', name: 'report', component: require('./components/Report.vue').default }
 ]
 
 // Link vue component without vue router
@@ -99,14 +104,12 @@ Vue.use(TreeView)
 
 
 
-
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 const app = new Vue({
     el: '#app',
     router

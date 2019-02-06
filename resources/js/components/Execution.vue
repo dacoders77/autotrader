@@ -20,20 +20,37 @@
                                         Perсent: {{ (signal ? signal.percent : null) }}<br>
                                         Leverage: {{ (signal ? signal.leverage : null) }}<br>
                                         Status: {{ (signal ? signal.status : null) }}<br>
-                                        Clients: {{ (signal ? Object.keys(signals.data).length : null) }}
+                                        <!--Clients: {{ (signal ? Object.keys(signals.data).length : null) }}-->
                                     </td>
+
+                                    <!-- START STOP BUTTONS WERE HERE!!! -->
+
                                     <td>
                                         <div class="card-tools text-right">
-                                            <span v-for="item in items">
-                                                Out: {{ item }} %
-                                                <a href="" v-on:click.prevent="repeatExecution(execution)"
-                                                   class="text-success"><i class="fas fa-play"></i></a href="">
-                                                <a href="" v-on:click.prevent="repeatExecution(execution)"
-                                                   class="text-danger"><i class="fas fa-stop"></i></a>
+                                            <span v-for="(item, index) in items" :key="index">
+                                                <a href="" @click.prevent="closeSymbol(signal, 'takeProfit' + index )" class="text-danger"><i class="fas fa-stop"></i></a>
+                                                Out {{ index + 1 }}: {{ item }}%
                                                 <br>
                                             </span>
                                         </div>
                                     </td>
+
+                                    <td>
+                                        <div class="card-tools text-right">
+                                            <div class="btn-group">
+                                                <div v-if="true">
+                                                    <button class="btn btn-success" @click="executeSymbol(signal)"><i class="fas fa-play"></i></button>
+                                                </div>
+                                                <div v-if="true">
+                                                    <button class="btn btn-danger" @click="closeSymbol(signal, 'stopLoss')"><i class="fas fa-stop"></i></button>
+                                                </div>
+                                                <div v-if="false">
+                                                    <button class="btn btn-light" disabled><i class="fas fa-check"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
                                 </tr>
                                 </tbody>
                             </table>
@@ -47,7 +64,7 @@
                         <table class="table table-hover">
                             <tbody>
 
-                            <template v-for="execution in signals.data">
+                            <template v-for="execution in signals">
 
                                 <tr>
                                     <td>{{ execution.id }} <a href="" v-on:click.prevent="repeatExecution(execution)"><i class="fas fa-sync-alt"></i></a></td>
@@ -67,8 +84,8 @@
                                 <tr class="detail-row">
                                     <td colspan="6">
                                         <div style="display: flex">
-                                            <div>
-                                                IN:<br>
+                                            <div style="border: 0px solid red">
+                                                <span class="bg-success text-white">POS IN:</span><br>
                                                 Calculate volume:
                                                 <span v-if="signal.quote_value != null">ok</span>
                                                 <span v-if="signal.quote_value == null">No quote!</span>
@@ -78,14 +95,19 @@
                                                 Place order: <a href="#" @click="newModal(execution.in_place_order_response)">{{ execution.in_place_order_status}}</a><br>
                                                 Balance: <a href="#" @click="newModal(execution.in_balance_response)">{{ execution.in_balance_value}}</a><br>
                                             </div>
-
-
-                                            <span v-for="item in items" class="pl-4">
-                                                Out {{ item }}%:<br>
-                                                Place order: <a href="">error</a> <br>
-                                                Balance: -223
-                                            </span>
-
+                                            <div>
+                                                <!-- Four divs for exits -->
+                                                <div v-for="(item, index) in items" :key="index" class="d-inline-block px-1" style="border: 0px solid red;">
+                                                    <span class="bg-info text-white">Out {{ index + 1 }}: {{ item }}%</span><br>
+                                                    Place order: <a href="">error</a> <br>
+                                                    Balance: <a href="#">-221</a>
+                                                </div>
+                                                <div class="px-1" style="border: 0px solid green">
+                                                    <span class="bg-warning text-dark">Stop loss OUT:</span><br>
+                                                    Place order: <a href="#">ok</a><br>
+                                                    Balance: <a href="#">0</a><br>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -128,6 +150,7 @@
 
 </template>
 
+
 <script>
     export default {
         data() {
@@ -139,7 +162,7 @@
                 jobs: null,
                 failedJobsQuantity: 0,
                 jobsQuantity: 0,
-                items: [25, 25, 40, 10]
+                items: [25, 25, 40, 10] // Temp list of exits. Remove it
             }
         },
         methods: {
@@ -188,11 +211,10 @@
             newModal(message) {
                 //this.editmode = false;
                 //this.form.reset();
-
                 this.jsonModalMessage = JSON.parse(message);
                 $('#addNewSignalModal').modal('show');
             },
-            closeSymbol(signal) {
+            closeSymbol(signal, exitType) {
                 swal({
                     title: 'Are you sure?',
                     text: "Signal will be proceeded!!",
@@ -203,7 +225,7 @@
                     confirmButtonText: 'Yes, proceed it!'
                 }).then((result) => {
                     if (result.value) {
-                        axios.post('execclose', signal)
+                        axios.post('execclose', [signal, exitType])
                             .then(response => {
                                 swal(
                                     'Proceeded!',
@@ -248,40 +270,28 @@
             },
             loadUsers() {
                 // Pagination disabled
+                // TURN IT TO WEBSOCKET!
                 axios.get('getexecution/' + this.signal.id).then(({data}) => {
-                    this.signals = data['execution']
-                    this.signal = data['signal'][0]
+                    this.signals = data['execution'];
+                    this.signal = data['signal'][0];
                 });
             },
-
-            /*            loadData: function () {
-                            alert('load data');
-                            axios.get('/api/data', function (response) {
-                                //this.items = response.items;
-                            }.bind(this));
-                        },*/
             showError(error) {
-                /*swal({
-                    type: 'info',
-                    title: 'Bimex response: ',
-                    text: error,
-                    footer: '<a href>Why do I have this issue?</a>'
-                })*/
-
             }
         },
         mounted: function () {
+
             this.interval = setInterval(function () {
                 this.loadUsers();
             }.bind(this), 3000);
+
         },
         destroyed() {
             // Stop timer when closed
             clearInterval(this.interval);
         },
         created() {
-            // Props link
-            this.signal = this.$route.params.signal; // Works good
+            this.signal = this.$route.params.signal; // Props. Parameter. Sent from Signals.vue
             this.loadUsers();
 
             // Event listener
@@ -305,3 +315,7 @@
         },
     }
 </script>
+
+
+
+
