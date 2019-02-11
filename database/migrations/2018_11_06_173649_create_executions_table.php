@@ -75,7 +75,8 @@ class CreateExecutionsTable extends Migration
             $table->decimal('out_price_1', 16,8)->nullable();
             $table->integer('out_volume_1')->nullable();
             $table->text('out_response_1')->nullable();
-            $table->integer('out_value_1')->nullable();
+            $table->decimal('out_value_1', 12,6)->nullable();
+            $table->integer('out_exec_volume_1')->nullable();
             $table->string('out_status_1')->nullable();
             $table->string('out_balance_status_1')->nullable(); // Balance
             $table->text('out_balance_response_1')->nullable();
@@ -85,7 +86,8 @@ class CreateExecutionsTable extends Migration
             $table->decimal('out_price_2', 16,8)->nullable();
             $table->integer('out_volume_2')->nullable();
             $table->text('out_response_2')->nullable();
-            $table->integer('out_value_2')->nullable();
+            $table->decimal('out_value_2', 12,6)->nullable();
+            $table->integer('out_exec_volume_2')->nullable();
             $table->string('out_status_2')->nullable();
             $table->string('out_balance_status_2')->nullable();
             $table->text('out_balance_response_2')->nullable();
@@ -95,7 +97,8 @@ class CreateExecutionsTable extends Migration
             $table->decimal('out_price_3', 16,8)->nullable();
             $table->integer('out_volume_3')->nullable();
             $table->text('out_response_3')->nullable();
-            $table->integer('out_value_3')->nullable();
+            $table->decimal('out_value_3', 12,6)->nullable();
+            $table->integer('out_exec_volume_3')->nullable();
             $table->string('out_status_3')->nullable();
             $table->string('out_balance_status_3')->nullable();
             $table->text('out_balance_response_3')->nullable();
@@ -105,7 +108,8 @@ class CreateExecutionsTable extends Migration
             $table->decimal('out_price_4', 16,8)->nullable();
             $table->integer('out_volume_4')->nullable();
             $table->text('out_response_4')->nullable();
-            $table->integer('out_value_4')->nullable();
+            $table->decimal('out_value_4', 12,6)->nullable();
+            $table->integer('out_exec_volume_4')->nullable();
             $table->string('out_status_4')->nullable();
             $table->string('out_balance_status_4')->nullable();
             $table->text('out_balance_response_4')->nullable();

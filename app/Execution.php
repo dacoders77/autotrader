@@ -60,11 +60,13 @@ class Execution extends Model
         'open_status',
         'close_status',
 
+        // Outs:
         'out_percent_1',
         'out_price_1',
         'out_volume_1',
         'out_response_1',
-        'out_value_1', // Trade execution value
+        'out_value_1', // Trade execution price
+        'out_exec_volume_1',
         'out_status_1',
         'out_balance_status_1',
         'out_balance_response_1',
@@ -75,6 +77,7 @@ class Execution extends Model
         'out_volume_2',
         'out_response_2',
         'out_value_2',
+        'out_exec_volume_2',
         'out_status_2',
         'out_balance_status_2',
         'out_balance_response_2',
@@ -85,6 +88,7 @@ class Execution extends Model
         'out_volume_3',
         'out_response_3',
         'out_value_3',
+        'out_exec_volume_3',
         'out_status_3',
         'out_balance_status_3',
         'out_balance_response_3',
@@ -95,6 +99,7 @@ class Execution extends Model
         'out_volume_4',
         'out_response_4',
         'out_value_4',
+        'out_exec_volume_4',
         'out_status_4',
         'out_balance_status_1',
         'out_balance_response_1',

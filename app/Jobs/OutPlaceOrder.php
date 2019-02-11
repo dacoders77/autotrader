@@ -91,7 +91,7 @@ class OutPlaceOrder implements ShouldQueue
                     'out_place_order_response' => json_encode($this->response)
                 ]);*/
 
-            $this->writeOutOrderStatus(null, json_encode($this->response), 'error', $this->exitType);
+            $this->writeOutOrderStatus(null, json_encode($this->response), 'error', null, $this->exitType);
         }
 
         if (gettype($this->response) == 'array'){
@@ -99,7 +99,7 @@ class OutPlaceOrder implements ShouldQueue
             // Need to write to DB cell accordingly to exitType
 
             // Success
-            $this->writeOutOrderStatus($this->response['price'], json_encode($this->response), 'ok', $this->exitType);
+            $this->writeOutOrderStatus($this->response['price'], json_encode($this->response), 'ok', $this->response['filled'], $this->exitType);
         }
 
         if (gettype($this->response) == 'string'){
@@ -122,8 +122,16 @@ class OutPlaceOrder implements ShouldQueue
         return;
     }
 
-    private function writeOutOrderStatus($orderExecutionPrice, $orderExecutionJsonResponse, $orderExecutionStatus, $exitType){
-
+    /**
+     * Update position close order statuses in the DB
+     *
+     * @param $orderExecutionPrice
+     * @param $orderExecutionJsonResponse
+     * @param $orderExecutionStatus
+     * @param $exitType
+     *
+     */
+    private function writeOutOrderStatus($orderExecutionPrice, $orderExecutionJsonResponse, $orderExecutionStatus, $orderExecutionVolume, $exitType){
         switch ($exitType){
             case "stopLoss":
                 Execution::where('id', $this->execution->id)
@@ -133,10 +141,13 @@ class OutPlaceOrder implements ShouldQueue
                         'out_place_order_status' => $orderExecutionStatus,
                     ]);
                 break;
+
+            // TAKE PROFITS:
             case "takeProfit0":
                 Execution::where('id', $this->execution->id)
                     ->update([
                         'out_value_1' => $orderExecutionPrice,
+                        'out_exec_volume_1' => $orderExecutionVolume,
                         'out_response_1' => $orderExecutionJsonResponse,
                         'out_status_1' => $orderExecutionStatus,
                     ]);
@@ -144,15 +155,18 @@ class OutPlaceOrder implements ShouldQueue
             case "takeProfit1":
                 Execution::where('id', $this->execution->id)
                     ->update([
-                        'out_value_2' => $orderExecutionPrice,
-                        'out_response_2' => $orderExecutionJsonResponse,
-                        'out_status_2' => $orderExecutionStatus,
+                        'out_value_2' => $orderExecutionPrice, // Execution price
+                        'out_exec_volume_2' => $orderExecutionVolume, // Execution volume
+                        'out_response_2' => $orderExecutionJsonResponse, // Response
+                        'out_status_2' => $orderExecutionStatus, // Status
+
                     ]);
                 break;
             case "takeProfit2":
                 Execution::where('id', $this->execution->id)
                     ->update([
                         'out_value_3' => $orderExecutionPrice,
+                        'out_exec_volume_3' => $orderExecutionVolume,
                         'out_response_3' => $orderExecutionJsonResponse,
                         'out_status_3' => $orderExecutionStatus,
                     ]);
@@ -161,6 +175,7 @@ class OutPlaceOrder implements ShouldQueue
                 Execution::where('id', $this->execution->id)
                     ->update([
                         'out_value_4' => $orderExecutionPrice,
+                        'out_exec_volume_4' => $orderExecutionVolume,
                         'out_response_4' => $orderExecutionJsonResponse,
                         'out_status_4' => $orderExecutionStatus,
                     ]);
