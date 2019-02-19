@@ -99,13 +99,13 @@
                                                 <!-- Four divs for exits -->
                                                 <div v-for="(item, index) in items" :key="index" class="d-inline-block px-1" style="border: 0px solid red;">
                                                     <span class="bg-info text-white">Out {{ index + 1 }}: {{ item }}%</span><br>
-                                                    Place order: <a href="">error</a> <br>
-                                                    Balance: <a href="#">-221</a>
+                                                    Place order: <a href="#" @click="newModal(execution['out_response_' + (index + 1)])">{{ execution['out_status_' + (index + 1)]}}</a><br>
+                                                    Balance: <a href="#" @click="newModal(execution['out_balance_response_' + (index + 1)])">{{ execution['out_balance_value_' + (index + 1)]}}</a><br>
                                                 </div>
                                                 <div class="px-1" style="border: 0px solid green">
                                                     <span class="bg-warning text-dark">Stop loss OUT:</span><br>
-                                                    Place order: <a href="#">ok</a><br>
-                                                    Balance: <a href="#">0</a><br>
+                                                    Place order: <a href="#" @click="newModal(execution.out_place_order_response)">{{ execution.out_place_order_status}}</a><br>
+                                                    Balance: <a href="#" @click="newModal(execution.out_balance_response)">{{ execution.out_balance_value}}</a><br>
                                                 </div>
                                             </div>
                                         </div>

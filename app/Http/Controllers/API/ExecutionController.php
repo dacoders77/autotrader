@@ -337,7 +337,7 @@ Delete this code
      * Stop button handler.
      * Called from Execution.vue
      * Route: execclose
-     * $request->json()->all()[1] - is an type variable. Can be: stopLoss, takeProfit0, takeProfit1, takeProfit2, takeProfit3
+     * $request->json()->all()[1] - is a type variable. Can be: stopLoss, takeProfit0, takeProfit1, takeProfit2, takeProfit3
      *
      * @param Request $request
      * @return void
@@ -352,7 +352,7 @@ Delete this code
         //LogToFile::add(__FILE__, print_r($request->json()->all()[1], true));
 
         /* Set info column to manual_close. This will not let stop loss to fire again when the position is manually closed. */
-        Signal::where('id', $request['id'])->update(['info' => 'manual_close stop loss or take profit']);
+        Signal::where('id', $request['id'])->update(['info' => 'manual_close, stop loss or take profit']);
     }
 
     /**
@@ -363,14 +363,15 @@ Delete this code
      */
     public function stopLoss($signalId, $exitType){
 
-        LogToFile::add(__FILE__, $signalId);
+        //LogToFile::add(__FILE__, $signalId);
 
         foreach (Execution::where('signal_id', $signalId)
         ->where('in_place_order_status', 'ok')
          ->get() as $execution) {
-
             OutPlaceOrder::dispatch($this->exchange, $execution, $exitType);
-            GetClientTradingBalanceOut::dispatch($this->exchange, $execution)->delay(5);
+
+            // Need to pass Balance get type
+            GetClientTradingBalanceOut::dispatch($this->exchange, $execution, $exitType)->delay(5);
         }
     }
 

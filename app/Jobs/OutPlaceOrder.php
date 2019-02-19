@@ -15,7 +15,7 @@ use Mockery\Exception;
 /**
  * There may by 5 types of out:
  * 1. Stop loss (Stop button)
- * 2. Exit 1 (Take progit button)
+ * 2. Exit 1 (Take profit button)
  * 3. Exit 2
  * 4. Exit 3
  * 5. Exit 4
@@ -39,6 +39,7 @@ class OutPlaceOrder implements ShouldQueue
     protected $execution;
     private $response;
     private $exitType;
+    private $clientVolume;
 
     /**
      * Create a new job instance.
@@ -64,19 +65,33 @@ class OutPlaceOrder implements ShouldQueue
                 'out_place_order_status' => 'pending',
             ]);
 
-        // Get order volume accordingly with exitType
-        // stopLoss - $this->execution->client_volume
-        // takeProfit1 = $this->execution->out_volume_1
+        switch ($this->exitType){
+            case("stopLoss") :
+                $this->clientVolume = $this->execution->client_volume;
+                break;
+            case("takeProfit0") :
+                $this->clientVolume = $this->execution->out_volume_1;
+                break;
+            case("takeProfit1") :
+                $this->clientVolume = $this->execution->out_volume_2;
+                break;
+            case("takeProfit2") :
+                $this->clientVolume = $this->execution->out_volume_3;
+                break;
+            case("takeProfit3") :
+                $this->clientVolume = $this->execution->out_volume_4;
+                break;
+        }
 
         $this->exchange->apiKey = Client::where('id', $this->execution->client_id)->value('api');
         $this->exchange->secret = Client::where('id', $this->execution->client_id)->value('api_secret');
 
         try{
             if ($this->execution->direction == 'long'){
-                $this->response = $this->exchange->createMarketSellOrder($this->execution->symbol, $this->execution->client_volume, []);
+                $this->response = $this->exchange->createMarketSellOrder($this->execution->symbol, $this->clientVolume, []);
             }
             else{
-                $this->response = $this->exchange->createMarketBuyOrder($this->execution->symbol, $this->execution->client_volume, []);
+                $this->response = $this->exchange->createMarketBuyOrder($this->execution->symbol, $this->clientVolume, []);
             }
         }
         catch (\Exception $e)
@@ -97,7 +112,6 @@ class OutPlaceOrder implements ShouldQueue
         if (gettype($this->response) == 'array'){
 
             // Need to write to DB cell accordingly to exitType
-
             // Success
             $this->writeOutOrderStatus($this->response['price'], json_encode($this->response), 'ok', $this->response['filled'], $this->exitType);
         }

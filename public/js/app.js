@@ -72954,22 +72954,126 @@ var render = function() {
                                       _vm._v(
                                         "\n                                                Place order: "
                                       ),
-                                      _c("a", { attrs: { href: "" } }, [
-                                        _vm._v("error")
-                                      ]),
-                                      _vm._v(" "),
+                                      _c(
+                                        "a",
+                                        {
+                                          attrs: { href: "#" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.newModal(
+                                                execution[
+                                                  "out_response_" + (index + 1)
+                                                ]
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              execution[
+                                                "out_status_" + (index + 1)
+                                              ]
+                                            )
+                                          )
+                                        ]
+                                      ),
                                       _c("br"),
                                       _vm._v(
                                         "\n                                                Balance: "
                                       ),
-                                      _c("a", { attrs: { href: "#" } }, [
-                                        _vm._v("-221")
-                                      ])
+                                      _c(
+                                        "a",
+                                        {
+                                          attrs: { href: "#" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.newModal(
+                                                execution[
+                                                  "out_balance_response_" +
+                                                    (index + 1)
+                                                ]
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              execution[
+                                                "out_balance_value_" +
+                                                  (index + 1)
+                                              ]
+                                            )
+                                          )
+                                        ]
+                                      ),
+                                      _c("br")
                                     ]
                                   )
                                 }),
                                 _vm._v(" "),
-                                _vm._m(1, true)
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "px-1",
+                                    staticStyle: { border: "0px solid green" }
+                                  },
+                                  [
+                                    _c(
+                                      "span",
+                                      { staticClass: "bg-warning text-dark" },
+                                      [_vm._v("Stop loss OUT:")]
+                                    ),
+                                    _c("br"),
+                                    _vm._v(
+                                      "\n                                                Place order: "
+                                    ),
+                                    _c(
+                                      "a",
+                                      {
+                                        attrs: { href: "#" },
+                                        on: {
+                                          click: function($event) {
+                                            _vm.newModal(
+                                              execution.out_place_order_response
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(
+                                            execution.out_place_order_status
+                                          )
+                                        )
+                                      ]
+                                    ),
+                                    _c("br"),
+                                    _vm._v(
+                                      "\n                                                Balance: "
+                                    ),
+                                    _c(
+                                      "a",
+                                      {
+                                        attrs: { href: "#" },
+                                        on: {
+                                          click: function($event) {
+                                            _vm.newModal(
+                                              execution.out_balance_response
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(execution.out_balance_value)
+                                        )
+                                      ]
+                                    ),
+                                    _c("br")
+                                  ]
+                                )
                               ],
                               2
                             )
@@ -73045,29 +73149,6 @@ var staticRenderFns = [
       "button",
       { staticClass: "btn btn-light", attrs: { disabled: "" } },
       [_c("i", { staticClass: "fas fa-check" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "px-1", staticStyle: { border: "0px solid green" } },
-      [
-        _c("span", { staticClass: "bg-warning text-dark" }, [
-          _vm._v("Stop loss OUT:")
-        ]),
-        _c("br"),
-        _vm._v(
-          "\n                                                Place order: "
-        ),
-        _c("a", { attrs: { href: "#" } }, [_vm._v("ok")]),
-        _c("br"),
-        _vm._v("\n                                                Balance: "),
-        _c("a", { attrs: { href: "#" } }, [_vm._v("0")]),
-        _c("br")
-      ]
     )
   }
 ]

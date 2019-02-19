@@ -21,16 +21,23 @@ class GetClientTradingBalanceOut implements ShouldQueue
     protected $execution;
     private $response;
     private $tradingBalance;
+    private $exitType;
+
+    private $outBalanceStatusCell;
+    private $outBalanceResponseCell;
+    private $outBalanceValueCell;
+
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($exchange, $execution)
+    public function __construct($exchange, $execution, $exitType)
     {
         $this->exchange = $exchange;
         $this->execution = $execution;
+        $this->exitType = $exitType;
     }
 
     /**
@@ -40,9 +47,37 @@ class GetClientTradingBalanceOut implements ShouldQueue
      */
     public function handle()
     {
+        switch ($this->exitType) {
+            case("stopLoss") :
+                $this->outBalanceResponseCell = 'out_balance_response';
+                $this->outBalanceValueCell = 'out_balance_value';
+                $this->outBalanceStatusCell = 'out_balance_status';
+                break;
+            case("takeProfit0") :
+                $this->outBalanceResponseCell = 'out_balance_response_1';
+                $this->outBalanceValueCell = 'out_balance_value_1';
+                $this->outBalanceStatusCell = 'out_balance_status_1';
+                break;
+            case("takeProfit1") :
+                $this->outBalanceResponseCell = 'out_balance_response_2';
+                $this->outBalanceValueCell = 'out_balance_value_2';
+                $this->outBalanceStatusCell = 'out_balance_status_2';
+                break;
+            case("takeProfit2") :
+                $this->outBalanceResponseCell = 'out_balance_response_3';
+                $this->outBalanceValueCell = 'out_balance_value_3';
+                $this->outBalanceStatusCell = 'out_balance_status_3';
+                break;
+            case("takeProfit3") :
+                $this->outBalanceResponseCell = 'out_balance_response_4';
+                $this->outBalanceValueCell = 'out_balance_value_4';
+                $this->outBalanceStatusCell = 'out_balance_status_4';
+                break;
+        }
+
         Execution::where('id', $this->execution->id)
             ->update([
-                'out_balance_status' => 'pending',
+                $this->outBalanceStatusCell => 'pending',
             ]);
 
         $this->exchange->apiKey = Client::where('id', $this->execution->client_id)->value('api');
@@ -57,8 +92,8 @@ class GetClientTradingBalanceOut implements ShouldQueue
 
             Execution::where('id', $this->execution->id)
                 ->update([
-                    'out_balance_status' => 'error',
-                    'out_balance_response' => json_encode($this->response)
+                    $this->outBalanceStatusCell => 'error',
+                    $this->outBalanceResponseCell => json_encode($this->response)
                 ]);
         }
 
@@ -71,14 +106,14 @@ class GetClientTradingBalanceOut implements ShouldQueue
             // Success
             Execution::where('id', $this->execution->id)
                 ->update([
-                    'out_balance_value' => $this->tradingBalance,
-                    'out_balance_response' => json_encode($this->response),
-                    'out_balance_status' => 'ok'
+                    $this->outBalanceValueCell => $this->tradingBalance,
+                    $this->outBalanceResponseCell => json_encode($this->response),
+                    $this->outBalanceStatusCell => 'ok'
                 ]);
         }
 
-        dump(gettype($this->response));
-        dump($this->response);
+        //dump(gettype($this->response));
+        //dump($this->response);
 
 
         if (gettype($this->response) == 'string'){
