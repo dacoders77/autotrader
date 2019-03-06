@@ -105,10 +105,10 @@ class CalculateClientOrderVolume implements ShouldQueue
             }
 
             // 2. Write it to out_status_4
-            Execution::where('id', $execution->id)
+            /*Execution::where('id', $execution->id)
                 ->update([
                     'out_status_4' => $outSumVolume // Works good
-                ]);
+                ]);*/
             // 3. open_value - exits_sum = exit_error
             // 4. out_value_4 = out_value_4 + exit_error
 
@@ -119,7 +119,6 @@ class CalculateClientOrderVolume implements ShouldQueue
                     Execution::where('id', $execution->id)
                         ->update([
                             "out_volume_" . $i => Execution::where('id', $execution->id)->value("out_volume_" . $i) + ( Execution::where('id', $execution->id)->value("client_volume") - $outSumVolume)
-                            //"out_volume_" . $i => 999
                         ]);
                     break; // Once the first exit != is found - correct it. We do this loop because the quantity of exits cna vary.
                 }

@@ -24,12 +24,11 @@
                                     </td>
 
                                     <!-- START STOP BUTTONS WERE HERE!!! -->
-
                                     <td>
-                                        <div class="card-tools text-right">
+                                        <div class="card-tools text-left">
                                             <span v-for="(item, index) in items" :key="index">
                                                 <a href="" @click.prevent="closeSymbol(signal, 'takeProfit' + index )" class="text-danger"><i class="fas fa-stop"></i></a>
-                                                Out {{ index + 1 }}: {{ item }}%
+                                                Out {{ index + 1 }}: {{ signal["out_percent_" + (index + 1)] }}%
                                                 <br>
                                             </span>
                                         </div>
@@ -98,7 +97,8 @@
                                             <div>
                                                 <!-- Four divs for exits -->
                                                 <div v-for="(item, index) in items" :key="index" class="d-inline-block px-1" style="border: 0px solid red;">
-                                                    <span class="bg-info text-white">Out {{ index + 1 }}: {{ item }}%</span><br>
+                                                    <!--<span class="bg-info text-white">Out {{ index + 1 }}: {{ signal["out_percent_" + (index + 1)] }}%</span><br>-->
+                                                    <span class="bg-info text-white">Out {{ index + 1 }}: {{ execution['out_exec_volume_' + (index + 1)] }}</span><br>
                                                     Place order: <a href="#" @click="newModal(execution['out_response_' + (index + 1)])">{{ execution['out_status_' + (index + 1)]}}</a><br>
                                                     Balance: <a href="#" @click="newModal(execution['out_balance_response_' + (index + 1)])">{{ execution['out_balance_value_' + (index + 1)]}}</a><br>
                                                 </div>
@@ -168,7 +168,6 @@
         methods: {
             repeatExecution(signal) {
                 //alert('repeat execution: ' + id); // Works good
-
                 swal({
                     title: "You've got to be sure about that!?",
                     text: "Signal will be repeated only for selected client!!",
@@ -272,15 +271,16 @@
                 // Pagination disabled
                 // TURN IT TO WEBSOCKET!
                 axios.get('getexecution/' + this.signal.id).then(({data}) => {
+                    // alert('sdf Execution.vue');
                     this.signals = data['execution'];
                     this.signal = data['signal'][0];
+                    console.log(data.signal[0]);
                 });
             },
             showError(error) {
             }
         },
         mounted: function () {
-
             this.interval = setInterval(function () {
                 this.loadUsers();
             }.bind(this), 3000);

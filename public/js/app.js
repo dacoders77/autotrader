@@ -2722,8 +2722,10 @@ __webpack_require__.r(__webpack_exports__);
       // TURN IT TO WEBSOCKET!
       axios.get('getexecution/' + this.signal.id).then(function (_ref) {
         var data = _ref.data;
+        // alert('sdf Execution.vue');
         _this.signals = data['execution'];
         _this.signal = data['signal'][0];
+        console.log(data.signal[0]);
       });
     },
     showError: function showError(error) {}
@@ -72648,7 +72650,7 @@ var render = function() {
                       _c("td", [
                         _c(
                           "div",
-                          { staticClass: "card-tools text-right" },
+                          { staticClass: "card-tools text-left" },
                           _vm._l(_vm.items, function(item, index) {
                             return _c("span", { key: index }, [
                               _c(
@@ -72672,7 +72674,9 @@ var render = function() {
                                 "\n                                            Out " +
                                   _vm._s(index + 1) +
                                   ": " +
-                                  _vm._s(item) +
+                                  _vm._s(
+                                    _vm.signal["out_percent_" + (index + 1)]
+                                  ) +
                                   "%\n                                            "
                               ),
                               _c("br")
@@ -72945,8 +72949,12 @@ var render = function() {
                                             "Out " +
                                               _vm._s(index + 1) +
                                               ": " +
-                                              _vm._s(item) +
-                                              "%"
+                                              _vm._s(
+                                                execution[
+                                                  "out_exec_volume_" +
+                                                    (index + 1)
+                                                ]
+                                              )
                                           )
                                         ]
                                       ),

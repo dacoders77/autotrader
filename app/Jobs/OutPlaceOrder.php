@@ -60,10 +60,10 @@ class OutPlaceOrder implements ShouldQueue
      */
     public function handle()
     {
-        Execution::where('id', $this->execution->id)
+        /*Execution::where('id', $this->execution->id)
             ->update([
                 'out_place_order_status' => 'pending',
-            ]);
+            ]);*/
 
         switch ($this->exitType){
             case("stopLoss") :

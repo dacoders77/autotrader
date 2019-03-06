@@ -40,13 +40,13 @@ class CreateSignalsTable extends Migration
             $table->boolean('is_deleted')->default(0);
 
             $table->decimal('out_price_1', 14, 9)->nullable();
-            $table->decimal('out_percent_1')->nullable();
+            $table->integer('out_percent_1')->nullable();
             $table->decimal('out_price_2', 14, 9)->nullable();
-            $table->decimal('out_percent_2')->nullable();
+            $table->integer('out_percent_2')->nullable();
             $table->decimal('out_price_3', 14, 9)->nullable();
-            $table->decimal('out_percent_3')->nullable();
+            $table->integer('out_percent_3')->nullable();
             $table->decimal('out_price_4', 14, 9)->nullable();
-            $table->decimal('out_percent_4')->nullable();
+            $table->integer('out_percent_4')->nullable();
         });
     }
 
