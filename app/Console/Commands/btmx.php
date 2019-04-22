@@ -19,7 +19,7 @@ class btmx extends Command
      *
      * @var string
      */
-    protected $signature = 'btmx:start';
+    protected $signature = 'btmx';
 
     /**
      * The console command description.
@@ -55,8 +55,11 @@ class btmx extends Command
         //dd($exchange->urls);
 
         $exchange = new bitmex();
-        $exchange->apiKey = '1pL3jbhVk0L8FC7bmzAKDPK0';
-        $exchange->secret = '3Vz1HEQ3VwBwsNTk-nRnPzXYMFeztMxK3jQRsrtkIrht5WDy';
+        $exchange->urls['api'] = $exchange->urls['test'];
+        $exchange->apiKey = 'AdpGKvlnElQmowv-SgKu9kiF';
+        $exchange->secret = 'KrcRtZ8SfAx_4xOSEm1DHon1gPF2wcSHPVZkyJ7SmOmCX0j1';
+
+        //dd($exchange->urls['api']);
 
         //dump(array_keys($exchange->load_markets())); // ETH/USD BTC/USD
 
@@ -70,15 +73,12 @@ class btmx extends Command
             //echo $e->getMessage();
         }
 
-        //dump($exchange->fetchBalance()['BTC']['free']); // BTC balance
+        dump($exchange->fetchBalance()['BTC']['free']); // BTC balance
         //$response = $exchange->createMarketSellOrder('BTC/USD', 14, []);
         //dump($response);
-
         //$response = $exchange->createMarketSellOrder('ETHUSD', 1, []);
-
         //dump($exchange->privatePostPositionLeverage(array('symbol' => 'ETHUSD', 'leverage' => 10))); // privatePostPositionLeverage ADAZ18
-
-        dump($exchange->privateGetPosition());
+        //dump($exchange->privateGetPosition());
 
     }
 

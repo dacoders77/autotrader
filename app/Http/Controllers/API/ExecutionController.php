@@ -39,7 +39,7 @@ use test\Mockery\SubclassWithFinalWakeup;
 class ExecutionController extends Controller
 {
     private $orderVolume;
-    private $exchange;
+    public $exchange;
     private $placeOrderResponse;
     private $symbolInXBT;
     private $symbolQuote;
@@ -47,6 +47,12 @@ class ExecutionController extends Controller
     public function __construct()
     {
         $this->exchange = new bitmex();
+        /**
+         * Live or testnet API
+         * If getting "unknown index error", run: php artisan config:clear
+         */
+        $this->exchange->urls['api'] = $this->exchange->urls[env("BITMEX_API_PATH")];
+        //$this->exchange->urls['api'] = $this->exchange->urls[$_ENV['BITMEX_API_PATH']];
     }
 
     /**
@@ -82,36 +88,6 @@ class ExecutionController extends Controller
         return 'Return from exec controller! ' . __FILE__;
         dump('Stopped in ExecutionController. Line: ' . __LINE__);
         die(__FILE__);
-/*
-Delete this code
-        // Do it once. Only for a new signal
-        if ($request['status'] == "new"){
-            // $this->fillExecutionsTable($request); // Moved to Signal controller
-            //$this->getClientsFunds($request, $this->exchange);
-            //$this->fillVolume($request, $this->exchange);
-        }
-
-            $this->exchange->apiKey = Client::where('id', $execution->client_id)->value('api');
-            $this->exchange->secret = Client::where('id', $execution->client_id)->value('api_secret');
-
-            if($request['status'] == "new"){
-                if ($request['direction'] == "long"){
-                    $this->openPosition($this->exchange, $execution, "long");
-                }
-                else{
-                    $this->openPosition($this->exchange, $execution, "short");
-                }
-            }
-            else
-            {
-                if ($request['direction'] == "long"){
-                    $this->openPosition($this->exchange, $execution, "short");
-                }
-                else{
-                    $this->openPosition($this->exchange, $execution, "long");
-                }
-            }
-*/
         }
 
     /**
@@ -200,9 +176,7 @@ Delete this code
      */
     public function getClientsFunds(Request $request, bitmex $exchange){
         foreach (Execution::where('signal_id', $request['id'])->get() as $execution){
-
             $exchange->apiKey = Client::where('id', $execution->client_id)->value('api');
-            //$exchange->apiKey = 123;
             $exchange->secret = Client::where('id', $execution->client_id)->value('api_secret');
 
             try{
@@ -222,101 +196,6 @@ Delete this code
             }
         }
     }
-
-
-
-    /**
-     * Open positions.
-     * Performed for each client record in executions table.
-     * @param bitmex $exchange
-     * @param $direction
-     * @param $orderVolume
-     */
-    /*
-    private function openPosition(bitmex $exchange, $execution, $direction){
-        // Set leverage
-        try{
-            //$setLeverageResponse = $exchange->privatePostPositionLeverage(array('symbol' => Symbol::where('execution_name', $execution->symbol)->value('leverage_name'), 'leverage' => $execution->leverage));
-            $setLeverageResponse = $exchange->privatePostPositionLeverage(array('symbol' => 'ETHUSD_ddd', 'leverage' => $execution->leverage));
-            //LogToFile::add(__FILE__ . __LINE__, "SET LEVERAGE RESPONSE: " . Symbol::where('execution_name', $execution->symbol)->value('leverage_name'));
-
-        }
-        catch (\Exception $e){
-            throw (New Exception('Leverage set error. ' . $e->getMessage()));
-        }
-
-        if ($direction == 'long'){
-            try{
-                $this->placeOrderResponse = $exchange->createMarketBuyOrder($execution->symbol, $execution->client_volume * $execution->leverage, []);
-            }
-            catch (\Exception $e){
-                $this->placeOrderResponse = $e->getMessage();
-            }
-        }
-        else{
-            try{
-                $this->placeOrderResponse = $exchange->createMarketSellOrder($execution->symbol, $execution->client_volume * $execution->leverage, []);
-            }
-            catch (\Exception $e)
-            {
-                $this->placeOrderResponse = $e->getMessage();
-            }
-        }
-
-        // CHECK WHETHER SUCCESS OR NOT!
-        if (gettype($this->placeOrderResponse) == 'array'){
-            // Success
-            //LogToFile::add(__FILE__ . __LINE__, "ORDER PLACED SUCCESS: " . gettype($this->placeOrderResponse));
-        }
-        else{
-            // Error
-            //LogToFile::add(__FILE__ . __LINE__, "ORDER ERROR: " . gettype($this->placeOrderResponse));
-        }
-
-        // CATCH BITMEX ERROR INSUFFICIENT FUNDS
-        // IS SO - STOP EXECUTION WITH ERROR AND THROW IT TO THE BROWSER
-
-
-        $updateSignalStatuses = ["status" => "proceeded"];
-        $updateExecutionOpenStatuses = [
-            'status' => 'open_placed',
-            'open_status' => (gettype($this->placeOrderResponse) == 'array' ? 'ok' : 'error'),
-            'open_response' => json_encode($this->placeOrderResponse),
-            'open_price' => (gettype($this->placeOrderResponse) == 'array' ? $this->placeOrderResponse['price'] : null),
-            'leverage_response' => json_encode($setLeverageResponse),
-        ];
-
-        $updateExecutionCloseStatuses = [
-            'status' => 'close_placed',
-            'close_status' => (gettype($this->placeOrderResponse) == 'array' ? 'ok' : 'error'),
-            'close_response' => json_encode($this->placeOrderResponse),
-            'close_price' => (gettype($this->placeOrderResponse) == 'array' ? $this->placeOrderResponse['price'] : null),
-        ];
-
-        // Write statuses to DB
-        // Open
-        Signal::where('id', $execution->signal_id)->update($updateSignalStatuses);
-
-        if ($execution->status == "new") {
-            Execution::where('id', $execution->id)->update($updateExecutionOpenStatuses);
-            Signal::where('id', $execution->signal_id)->update([
-                'open_date' => (gettype($this->placeOrderResponse) == 'array' ? date("Y-m-d G:i:s", $this->placeOrderResponse['timestamp'] / 1000) : null),
-                'open_price' => (gettype($this->placeOrderResponse) == 'array' ? $this->placeOrderResponse['price'] : null),
-                'quote' => (gettype($this->placeOrderResponse) == 'array' ? $this->placeOrderResponse['price'] : null),
-            ]);
-        }
-
-        // Close
-        if ($execution->status == "open_placed"){
-            Execution::where('id', $execution->id)->update($updateExecutionCloseStatuses);
-            Signal::where('id', $execution->signal_id)->update([
-                'status' => 'finished',
-                'close_date' => (gettype($this->placeOrderResponse) == 'array' ? date("Y-m-d G:i:s", $this->placeOrderResponse['timestamp'] / 1000) : null),
-                'close_price' => (gettype($this->placeOrderResponse) == 'array' ? $this->placeOrderResponse['price'] : null),
-            ]);
-        }
-    }
-    */
 
     /**
      * Display a listing of the resource.
@@ -348,29 +227,29 @@ Delete this code
             throw (new Exception('Some jobs are in progress! Wait until them finish or truncate Job and Failed job tables.'));
         }
 
-        $this->stopLoss($request[0]['id'], $request->json()->all()[1]); // Here we need to pass an exit param: stop loss or take profit 1,2,3 or 4
-        //LogToFile::add(__FILE__, print_r($request->json()->all()[1], true));
-
         /* Set info column to manual_close. This will not let stop loss to fire again when the position is manually closed. */
-        Signal::where('id', $request['id'])->update(['info' => 'manual_close, stop loss or take profit']);
+        Signal::where('id', $request[0]['id'])->update(['info' => 'manual_close stop loss or take profit']);
+
+        // Here we need to pass an exit param: stop loss or take profit 1,2,3 or 4
+        // Extract this value from the request
+        $this->stopLoss($request[0]['id'], $request->json()->all()[1]);
+
     }
 
     /**
-     *
+     * Stop loss feature for open positions.
+     * Used in both cases: stop loss and take profit.
      *
      * @param $signalId
      * @param $exitType
      */
     public function stopLoss($signalId, $exitType){
-
-        //LogToFile::add(__FILE__, $signalId);
-
+        // Run through all executions
         foreach (Execution::where('signal_id', $signalId)
         ->where('in_place_order_status', 'ok')
          ->get() as $execution) {
             OutPlaceOrder::dispatch($this->exchange, $execution, $exitType);
-
-            // Need to pass Balance get type
+            // @todo Need to pass Balance get type
             GetClientTradingBalanceOut::dispatch($this->exchange, $execution, $exitType)->delay(5);
         }
     }

@@ -67,7 +67,9 @@ class OutPlaceOrder implements ShouldQueue
 
         switch ($this->exitType){
             case("stopLoss") :
-                $this->clientVolume = $this->execution->client_volume;
+                // Volume calc formula:
+                $this->clientVolume = $this->execution->client_volume - ($this->execution->out_exec_volume_1 + $this->execution->out_exec_volume_2 + $this->execution->out_exec_volume_3 + $this->execution->out_exec_volume_4);
+                // And set status of the signal = false (not execute neither a stop loss nor a take profit)
                 break;
             case("takeProfit0") :
                 $this->clientVolume = $this->execution->out_volume_1;

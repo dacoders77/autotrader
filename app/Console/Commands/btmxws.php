@@ -16,7 +16,7 @@ class btmxws extends Command
      *
      * @var string
      */
-    protected $signature = 'btmxws:start';
+    protected $signature = 'btmxws';
 
     /**
      * The console command description.
@@ -57,7 +57,7 @@ class btmxws extends Command
 
         $loop->addPeriodicTimer(2, function() use($loop) {
             \App\Classes\Websocket::listenCache($this->connection);
-        });
+         });
 
         $connector = new \Ratchet\Client\Connector($loop, $reactConnector);
 
@@ -66,7 +66,7 @@ class btmxws extends Command
 
         $connector($exchangeWebSocketEndPoint, [], ['Origin' => 'http://localhost'])
             ->then(function(\Ratchet\Client\WebSocket $conn) use ($loop) {
-                $this->connection = $conn;
+                $this->connection = $conn; // In order to use $conn outside of this function
                 $conn->on('message', function(\Ratchet\RFC6455\Messaging\MessageInterface $socketMessage) use ($conn, $loop) {
                     $jsonMessage = json_decode($socketMessage->getPayload(), true);
                     dump($jsonMessage);

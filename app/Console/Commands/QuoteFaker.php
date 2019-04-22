@@ -21,7 +21,7 @@ class QuoteFaker extends Command
      *
      * @var string
      */
-    protected $signature = 'quotefaker:start';
+    protected $signature = 'faker';
 
     /**
      * The console command description.
@@ -52,10 +52,10 @@ class QuoteFaker extends Command
         /**
          * Example:
          * Height: 100
-         * 50 -> 95 -> 5 -> 95 -> 5
+         * 6050 -> 6095 -> 6005 -> 6095 -> 6005
          */
         $height = 100; // Height of the canvas. 200
-        $steps = 10;     // The jump in value of X - Axis for each loop.
+        $steps = 2;     // Rising speed. The jump in value of X - Axis for each loop.
         $x1=1;
 
         $i = 0;
@@ -74,7 +74,7 @@ class QuoteFaker extends Command
                 "action" => "update",
                 "data" => [
                     "symbol" => "XBTUSD",
-                    "lastPrice" => $y1, // 3525.5
+                    "lastPrice" => 6000 + $y1, // 3525.5
                     "lastTickDirection" => "PlusTick",
                     "lastChangePcnt" => -0.0441,
                     "timestamp" => date('c', $time) // 2019-01-21T08:37:31.536Z
@@ -84,9 +84,9 @@ class QuoteFaker extends Command
             //array_push($this->arr, $y1); // Use it with for loop, for testing
 
             dump($jsonMessage);
-            //WebSocketStream::Parse([$jsonMessage['data']]); // Update quotes, send events to vue
-            //WebSocketStream::stopLossCheck($jsonMessage['data']); // Stop loss execution
-            //WebSocketStream::takeProfitCheck() ($jsonMessage['data']); // Take profit check and execution
+            WebSocketStream::Parse([$jsonMessage['data']]); // Update quotes, send events to vue
+            WebSocketStream::stopLossCheck([$jsonMessage['data']]); // Stop loss execution
+            WebSocketStream::takeProfitCheck([$jsonMessage['data']]); // Take profit check and execution
         }
 
         //dump($this->arr);

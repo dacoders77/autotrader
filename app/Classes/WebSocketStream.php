@@ -82,18 +82,16 @@ class WebSocketStream
                 /** Fire stop loss only for not closed positions (info == null, when not null == manual_close or stop_loss)
                  * And for only open positions: status == new or error */
                 if($signal->info == null && ($signal->status == "success" || $signal->status == "error")){
-                    //LogToFile::add(__FILE__ . __LINE__, " stop_loss for longs " . $signal->id . 'signal_status: ' . $signal->info    );
                     if($message[0]['lastPrice'] < (double)$signal->stop_loss_price){
                         Signal::where('id', $signal->id)
                             ->update([
                                 'info' => 'stop_loss'
                             ]);
                         /* Initiate stop button click via controller */
-                        app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
+                        app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id, 'stopLoss');
                     }
                 }
             }
-
             /* Stop loss for short positions */
             if($signal->direction == "short" ){
                 if($signal->info == null && ($signal->status == "success" || $signal->status == "error")){
@@ -102,15 +100,14 @@ class WebSocketStream
                             ->update([
                                 'info' => 'stop_loss'
                             ]);
-                        app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
+                        app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id, 'stopLoss');
                     }
                 }
             }
         }
     }
 
-    public  static function takeProfitCheck($message){
-
+    public static function takeProfitCheck($message){
         /* We don't have execution symbol name in signals table, but we do in symbols */
         $executionSymbolName = Symbol::where('leverage_name', $message[0]['symbol'])->value('execution_name');
 
@@ -118,32 +115,40 @@ class WebSocketStream
         foreach (Signal::where('symbol', $executionSymbolName)->get() as $signal){
             /* For long positions */
             if($signal->direction == "long" ){
-                /** Fire take profit only for not closed positions (info == null, when not null == manual_close or stop_loss)
-                 * And for only open positions: status == new or error */
-                if($signal->info == null && ($signal->status == "success" || $signal->status == "error")){
 
-                    if($message[0]['lastPrice'] < (double)$signal->stop_loss_price){
+                // If take profit_1 is empty and never fired up
+                if ($signal->out_status_1 == null && $signal->info == null){
+
+                    // Check the limit
+                    // @todo need to check all take profits. Now only 1st is checked
+                    if($message[0]['lastPrice'] > (double)$signal->out_price_1){
                         Signal::where('id', $signal->id)
                             ->update([
-                                'info' => 'stop_loss'
+                                'out_status_1' => 'Triggered', // out1, out2 ...
                             ]);
 
                         /* Initiate stop button click via controller */
-                        app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
+                        app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id, "takeProfit0");
                     }
                 }
             }
 
             /* For short positions */
             if($signal->direction == "short" ){
-                /** Fire only for not closed positions */
-                if($signal->info == null && ($signal->status == "success" || $signal->status == "error")){
-                    if($message[0]['lastPrice'] > (double)$signal->stop_loss_price){
+
+                // If take profit_1 is empty and never fired up
+                if ($signal->out_status_1 == null && $signal->info == null){
+
+                    // Check the limit
+                    // @todo need to check all take profits. Now only 1st is checked
+                    if($message[0]['lastPrice'] < (double)$signal->out_price_1){
                         Signal::where('id', $signal->id)
                             ->update([
-                                'info' => 'stop_loss'
+                                'out_status_1' => 'Triggered', // out1, out2 ...
                             ]);
-                        app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id);
+
+                        /* Initiate stop button click via controller */
+                        app('App\Http\Controllers\API\ExecutionController')->stopLoss($signal->id, "takeProfit0");
                     }
                 }
             }

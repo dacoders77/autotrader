@@ -275,7 +275,7 @@
                 }).then((result) => {
                     // Ajax request
                     if (result.value){
-                        axios.post('exec', signal) // ExecutionController.php
+                        axios.post('exec', signal) // ExecutionController@executeSymbol
                             .then(response => {
                                 swal(
                                     'Proceeded!',
@@ -322,10 +322,8 @@
                 axios.get('api/symbol').then(({data}) => (this.symbols = data));
             },
             createSignal(){
-                // Progress bar
-                this.$Progress.start();
-                // Post request to the controller
-                this.form.post('api/signal')
+                this.$Progress.start(); // Progress bar
+                this.form.post('api/signal') // Post request to the controller.
                     .then(() => {
                         // Request successful
                         Fire.$emit('AfterCreateSignal'); // Trigger an event of the global object which is declared in app.js
@@ -334,13 +332,11 @@
                             type: 'success',
                             title: 'Signal created successfully'
                         });
-
                         this.$Progress.finish();
                     })
                     .catch(error => {
                         swal("Failed!", "Error: \n" + error.response.data.message, "warning");
                     })
-
             },
             updateSignal(){
                 this.$Progress.start();

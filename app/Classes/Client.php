@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Log;
  * Class Client.
  * Check api keys via balance access and execution permissions via small order placement.
  * Called from Client.php controller.
- * Used as an additional validation prior to client record creation on the DB.
+ * Executed when a new client is created at the website (Management -> Clients)
+ * Used as an additional validation prior to client record creation in the DB.
  * @package App\Classes
  */
 class Client
@@ -26,7 +27,8 @@ class Client
     private static $response;
 
     public static function bitmex($api = '', $apiSecret = '') {
-        if (!self::$exchange) self::$exchange = new bitmex();
+        if (!self::$exchange) self::$exchange = new bitmex(); // Create new Bitmex exchange instance
+        self::$exchange->urls['api'] = self::$exchange->urls[$_ENV['BITMEX_API_PATH']]; // Live or testnet API
         self::$exchange->apiKey = $api;
         self::$exchange->secret = $apiSecret;
         return self::$exchange;

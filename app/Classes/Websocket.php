@@ -28,7 +28,7 @@ class Websocket
 {
     private static $webSocketObject;
 
-    /* Get all symbols name and push the to array. This list is the same for subscribe and unsubscribe methods. */
+    /* Get all symbols name and push them to array. This list is the same for subscribe and unsubscribe methods. */
     public static function symbolsList()
     {
         $symbolList = array();

@@ -205,11 +205,25 @@ class SignalController extends Controller
                 'out_price_4' => $request['out_price_4'],
                 'out_percent_4' => $request['out_percent_4'],
             ]);
-            GetClientFundsCheck::dispatch(new bitmex(), $execution);
+            //
+            GetClientFundsCheck::dispatch($this->bitmexInstance(), $execution);
         }
 
-        GetSignalSymbolQuote::dispatch(new bitmex(), $request['symbol'], $id);
+        GetSignalSymbolQuote::dispatch($this->bitmexInstance(), $request['symbol'], $id);
         CalculateClientOrderVolume::dispatch($id); // Add volume calculate job
+    }
+
+    /**
+     * Used to create a new instance of Bitmex exchnage instance.
+     * Can be live API or Testnet.
+     * These settings are set in .env
+     *
+     * @return bitmex
+     */
+    private function bitmexInstance(){
+        $exchange = new bitmex();
+        $exchange->urls['api'] = $exchange->urls[env("BITMEX_API_PATH")]; // Live or testnet API
+        return $exchange;
     }
 
     /**
@@ -220,7 +234,7 @@ class SignalController extends Controller
      * @return string
      */
     public function fillVolume(Request $request){
-        $exchange = new bitmex();
+        $exchange = $this->bitmexInstance();
         /* Get quote */
         try {
             $this->symbolQuote = $exchange->fetch_ticker($request['symbol'])['last'];
