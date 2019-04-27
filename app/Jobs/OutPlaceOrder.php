@@ -90,9 +90,11 @@ class OutPlaceOrder implements ShouldQueue
 
         try{
             if ($this->execution->direction == 'long'){
+                if ($this->clientVolume != 0) // If take profit is 100% there is nothing to close. Don't place order.
                 $this->response = $this->exchange->createMarketSellOrder($this->execution->symbol, $this->clientVolume, []);
             }
             else{
+                if ($this->clientVolume != 0)
                 $this->response = $this->exchange->createMarketBuyOrder($this->execution->symbol, $this->clientVolume, []);
             }
         }

@@ -122,8 +122,6 @@
             </div>
         </div>
 
-
-
         <div class="col-3">
             <div>
                 <div class="card" style="width: 18rem;">
@@ -146,8 +144,26 @@
             </div>
         </div>
 
-    </div>
+        <!-- Modal -->
+        <div class="modal fade" id="addNewSignalModal" tabindex="-1" role="dialog" aria-labelledby="newSignalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newSignalLabel">Response data</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- content -->
+                    <div class="modal-body">
+                        <tree-view :data="jsonModalMessage" :options="{maxDepth: 3}"></tree-view>
+                    </div>
 
+                </div>
+            </div>
+        </div>
+
+    </div>
 </template>
 
 
@@ -212,6 +228,8 @@
                 //this.form.reset();
                 this.jsonModalMessage = JSON.parse(message);
                 $('#addNewSignalModal').modal('show');
+                // alert('Execution.vue JJ ' + this.jsonModalMessage);
+
             },
             closeSymbol(signal, exitType) {
                 swal({
@@ -225,7 +243,7 @@
                 }).then((result) => {
                     if (result.value) {
                         axios.post('execclose', [signal, exitType])
-                            .then(response => {
+                            .then(responsef => {
                                 swal(
                                     'Proceeded!',
                                     'Signal has been proceeded',

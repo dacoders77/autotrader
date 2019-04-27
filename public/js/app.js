@@ -2620,6 +2620,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2671,7 +2687,7 @@ __webpack_require__.r(__webpack_exports__);
       //this.editmode = false;
       //this.form.reset();
       this.jsonModalMessage = JSON.parse(message);
-      $('#addNewSignalModal').modal('show');
+      $('#addNewSignalModal').modal('show'); // alert('Execution.vue JJ ' + this.jsonModalMessage);
     },
     closeSymbol: function closeSymbol(signal, exitType) {
       swal({
@@ -2684,7 +2700,7 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, proceed it!'
       }).then(function (result) {
         if (result.value) {
-          axios.post('execclose', [signal, exitType]).then(function (response) {
+          axios.post('execclose', [signal, exitType]).then(function (responsef) {
             swal('Proceeded!', 'Signal has been proceeded', 'success');
             Fire.$emit('AfterCreateSignal');
           }).catch(function (error) {
@@ -3303,7 +3319,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         // Ajax request
         if (result.value) {
-          axios.post('exec', signal) // ExecutionController.php
+          axios.post('exec', signal) // ExecutionController@executeSymbol
           .then(function (response) {
             swal('Proceeded!', 'Signal has been proceeded', 'success');
             Fire.$emit('AfterCreateSignal');
@@ -3355,10 +3371,10 @@ __webpack_require__.r(__webpack_exports__);
     createSignal: function createSignal() {
       var _this3 = this;
 
-      // Progress bar
-      this.$Progress.start(); // Post request to the controller
+      this.$Progress.start(); // Progress bar
 
-      this.form.post('api/signal').then(function () {
+      this.form.post('api/signal') // Post request to the controller.
+      .then(function () {
         // Request successful
         Fire.$emit('AfterCreateSignal'); // Trigger an event of the global object which is declared in app.js
 
@@ -73145,7 +73161,49 @@ var render = function() {
           )
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addNewSignalModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "newSignalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "modal-body" },
+                [
+                  _c("tree-view", {
+                    attrs: {
+                      data: _vm.jsonModalMessage,
+                      options: { maxDepth: 3 }
+                    }
+                  })
+                ],
+                1
+              )
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -73158,6 +73216,31 @@ var staticRenderFns = [
       { staticClass: "btn btn-light", attrs: { disabled: "" } },
       [_c("i", { staticClass: "fas fa-check" })]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "newSignalLabel" } },
+        [_vm._v("Response data")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
   }
 ]
 render._withStripped = true

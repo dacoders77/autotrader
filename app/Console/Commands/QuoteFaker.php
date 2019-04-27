@@ -82,11 +82,11 @@ class QuoteFaker extends Command
             ];
 
             //array_push($this->arr, $y1); // Use it with for loop, for testing
-
             dump($jsonMessage);
             WebSocketStream::Parse([$jsonMessage['data']]); // Update quotes, send events to vue
             WebSocketStream::stopLossCheck([$jsonMessage['data']]); // Stop loss execution
             WebSocketStream::takeProfitCheck([$jsonMessage['data']]); // Take profit check and execution
+            sleep(1);
         }
 
         //dump($this->arr);

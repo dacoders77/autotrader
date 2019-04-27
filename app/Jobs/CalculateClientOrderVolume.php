@@ -114,7 +114,6 @@ class CalculateClientOrderVolume implements ShouldQueue
 
             for ($i = 4; $i >= 1; $i--) {
                 if(Execution::where('id', $execution->id)->value("out_volume_" . $i) != 0){
-                    LogToFile::add(__FILE__, "out_volume_" . $i);
                     // Increase out volume
                     Execution::where('id', $execution->id)
                         ->update([
